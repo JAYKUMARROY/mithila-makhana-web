@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mithila Makhana Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FDFBF7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d0c5af;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7f7663;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#ffe088",
+                        "forest-deep": "#2C4C3B",
+                        "surface": "#fbf9f5",
+                        "primary-fixed-dim": "#e9c349",
+                        "tertiary-fixed": "#ffdad4",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#ab3425",
+                        "tertiary-fixed-dim": "#ffb4a8",
+                        "vermillion-clay": "#E05A47",
+                        "on-secondary-container": "#496a57",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#1b1c1a",
+                        "surface-container-high": "#eae8e4",
+                        "tertiary-container": "#ff9685",
+                        "on-background": "#1b1c1a",
+                        "on-tertiary-container": "#871a0e",
+                        "secondary-container": "#c4e8d1",
+                        "background": "#fbf9f5",
+                        "inverse-primary": "#e9c349",
+                        "secondary-fixed-dim": "#abcfb8",
+                        "surface-container-low": "#f5f3ef",
+                        "primary": "#735c00",
+                        "primary-container": "#d4af37",
+                        "surface-tint": "#735c00",
+                        "error-container": "#ffdad6",
+                        "gold-accent": "#D4AF37",
+                        "surface-container": "#efeeea",
+                        "surface-bright": "#fbf9f5",
+                        "secondary-fixed": "#c7ebd4",
+                        "on-primary-fixed": "#241a00",
+                        "surface-container-highest": "#e4e2de",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#002113",
+                        "cream-bg": "#FDFBF7",
+                        "outline-variant": "#d0c5af",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#554300",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f2f0ed",
+                        "on-surface-variant": "#4d4635",
+                        "on-secondary-fixed-variant": "#2d4d3c",
+                        "inverse-surface": "#30312e",
+                        "on-error": "#ffffff",
+                        "charcoal-text": "#1F2937",
+                        "surface-dim": "#dbdad6",
+                        "on-primary-fixed-variant": "#574500",
+                        "on-tertiary-fixed-variant": "#8a1c10",
+                        "surface-variant": "#e4e2de",
+                        "on-tertiary-fixed": "#410100",
+                        "outline": "#7f7663",
+                        "secondary": "#456553",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "margin-desktop": "40px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Outfit"],
+                        "label-lg": ["Inter"],
+                        "headline-lg": ["Outfit"],
+                        "display-lg-mobile": ["Outfit"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "display-lg-mobile": ["36px", {"lineHeight": "42px", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-cream-bg text-on-surface font-body-md antialiased min-h-screen">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 flex flex-col p-4 bg-surface-container-lowest dark:bg-inverse-surface shadow-md">
+<div class="mb-8 px-4">
+<h1 class="font-headline-md text-headline-md text-forest-deep dark:text-secondary-fixed">Admin Panel</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-70">Mithila Makhana CMS</p>
+</div>
+<nav class="flex-grow space-y-2">
+<!-- Active: Dashboard -->
+<a class="flex items-center gap-3 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-lg px-4 py-3 Active: scale-[0.98] duration-200 transition-all" href="#">
+<span class="material-symbols-outlined active-nav-fill">dashboard</span>
+<span class="font-label-lg text-label-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-lg text-label-lg">Products</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="font-label-lg text-label-lg">Orders</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant px-4 py-3 hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">warehouse</span>
+<span class="font-label-lg text-label-lg">Inventory</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-4 flex items-center gap-3 px-4">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold">AU</div>
+<div>
+<p class="font-label-lg text-label-lg leading-none">Admin User</p>
+<p class="text-[10px] text-on-surface-variant">Super Admin</p>
+</div>
+<button class="ml-auto material-symbols-outlined text-on-surface-variant hover:text-error transition-colors">logout</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 p-8 min-h-screen flex flex-col">
+<!-- Header Section -->
+<header class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-forest-deep">Dashboard Overview</h2>
+<p class="text-on-surface-variant font-body-md">Welcome back! Here's what's happening today.</p>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-low p-1 rounded-lg border border-outline-variant/30">
+<button class="px-4 py-2 font-label-lg text-label-lg bg-surface-container-lowest shadow-sm rounded-md text-forest-deep">Today</button>
+<button class="px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high rounded-md transition-all">Weekly</button>
+<button class="px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high rounded-md transition-all">Monthly</button>
+<div class="h-6 w-[1px] bg-outline-variant mx-1"></div>
+<button class="p-2 flex items-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">calendar_today</span>
+</button>
+</div>
+</header>
+<!-- KPI Row -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<!-- Total Revenue -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_20px_rgba(44,76,59,0.05)] border border-outline-variant/20 hover:scale-[1.02] transition-transform duration-300">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-secondary-container rounded-lg">
+<span class="material-symbols-outlined text-forest-deep">payments</span>
+</div>
+<span class="text-forest-deep font-bold text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">trending_up</span> +12%
+                    </span>
+</div>
+<h3 class="text-on-surface-variant font-label-lg text-label-lg mb-1 uppercase tracking-wider">Total Revenue</h3>
+<p class="font-headline-md text-headline-md text-charcoal-text">₹24,500</p>
+</div>
+<!-- Orders Today -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_20px_rgba(44,76,59,0.05)] border border-outline-variant/20 hover:scale-[1.02] transition-transform duration-300">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-primary-container rounded-lg">
+<span class="material-symbols-outlined text-on-primary-container">shopping_cart</span>
+</div>
+<span class="text-forest-deep font-bold text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">trending_up</span> +5%
+                    </span>
+</div>
+<h3 class="text-on-surface-variant font-label-lg text-label-lg mb-1 uppercase tracking-wider">Orders Today</h3>
+<p class="font-headline-md text-headline-md text-charcoal-text">42</p>
+</div>
+<!-- New Customers -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_20px_rgba(44,76,59,0.05)] border border-outline-variant/20 hover:scale-[1.02] transition-transform duration-300">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-tertiary-container/30 rounded-lg">
+<span class="material-symbols-outlined text-tertiary">group</span>
+</div>
+<span class="text-tertiary font-bold text-sm">New</span>
+</div>
+<h3 class="text-on-surface-variant font-label-lg text-label-lg mb-1 uppercase tracking-wider">New Customers</h3>
+<p class="font-headline-md text-headline-md text-charcoal-text">15</p>
+</div>
+<!-- Low Stock -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_4px_20px_rgba(44,76,59,0.05)] border border-outline-variant/20 hover:scale-[1.02] transition-transform duration-300">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-error-container rounded-lg">
+<span class="material-symbols-outlined text-error">warning</span>
+</div>
+<span class="text-error font-bold text-sm">Urgent</span>
+</div>
+<h3 class="text-on-surface-variant font-label-lg text-label-lg mb-1 uppercase tracking-wider">Low Stock</h3>
+<p class="font-headline-md text-headline-md text-charcoal-text">3 items</p>
+</div>
+</section>
+<!-- Main Dashboard Content -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+<!-- Recent Orders Table -->
+<section class="lg:col-span-2 bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(44,76,59,0.05)] border border-outline-variant/20 overflow-hidden">
+<div class="px-6 py-4 border-b border-outline-variant/30 flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-forest-deep">Recent Orders</h3>
+<a class="text-primary font-label-lg text-label-lg hover:underline transition-all" href="#">View All</a>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low text-on-surface-variant font-label-lg text-label-lg">
+<tr>
+<th class="px-6 py-3">ID</th>
+<th class="px-6 py-3">Customer</th>
+<th class="px-6 py-3">Date</th>
+<th class="px-6 py-3">Amount</th>
+<th class="px-6 py-3">Status</th>
+<th class="px-6 py-3">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<tr class="hover:bg-cream-bg transition-colors">
+<td class="px-6 py-4 font-label-lg">#MM-1042</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-xs font-bold text-forest-deep">AK</div>
+<span>Ananya Kapoor</span>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">Oct 24, 2023</td>
+<td class="px-6 py-4 font-semibold">₹1,250</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed text-xs font-bold rounded-full">Shipped</span>
+</td>
+<td class="px-6 py-4">
+<button class="p-1 hover:bg-surface-container-high rounded transition-all">
+<span class="material-symbols-outlined text-on-surface-variant">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-cream-bg transition-colors">
+<td class="px-6 py-4 font-label-lg">#MM-1041</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-xs font-bold text-on-primary-container">RS</div>
+<span>Rahul Sharma</span>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">Oct 24, 2023</td>
+<td class="px-6 py-4 font-semibold">₹850</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed text-xs font-bold rounded-full">Pending</span>
+</td>
+<td class="px-6 py-4">
+<button class="p-1 hover:bg-surface-container-high rounded transition-all">
+<span class="material-symbols-outlined text-on-surface-variant">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-cream-bg transition-colors">
+<td class="px-6 py-4 font-label-lg">#MM-1040</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-xs font-bold text-on-surface-variant">VM</div>
+<span>Vikram Mehra</span>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">Oct 23, 2023</td>
+<td class="px-6 py-4 font-semibold">₹2,100</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed text-xs font-bold rounded-full">Shipped</span>
+</td>
+<td class="px-6 py-4">
+<button class="p-1 hover:bg-surface-container-high rounded transition-all">
+<span class="material-symbols-outlined text-on-surface-variant">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-cream-bg transition-colors">
+<td class="px-6 py-4 font-label-lg">#MM-1039</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-error-container flex items-center justify-center text-xs font-bold text-on-error-container">JD</div>
+<span>John Doe</span>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">Oct 23, 2023</td>
+<td class="px-6 py-4 font-semibold">₹450</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-error-container text-error text-xs font-bold rounded-full">Cancelled</span>
+</td>
+<td class="px-6 py-4">
+<button class="p-1 hover:bg-surface-container-high rounded transition-all">
+<span class="material-symbols-outlined text-on-surface-variant">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Sidebar: Top Selling Products -->
+<section class="bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(44,76,59,0.05)] border border-outline-variant/20 p-6">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-forest-deep">Top Selling</h3>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">more_horiz</span>
+</div>
+<div class="space-y-6">
+<div class="flex gap-4 items-center group">
+<div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden shrink-0 border border-outline-variant/20">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Close-up macro photography of high-quality premium raw white Foxnuts (Makhana) arranged elegantly on a hand-carved wooden bowl. The lighting is soft and natural, emphasizing the texture of the superfood against a clean, minimalist off-white background with subtle green leafy shadows. The overall aesthetic is earthy, premium, and sophisticated." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeQfXb4lWOcehwly3s17vrU2copdKx6YOoW5SClZjMXWhZt335uogl4IcxKMtDUmuUQeG6JjdWcka6uMGwxORtsGYQOffCidhE4W6OVxOqaYIRUPIH9csp0dLW_Pc511Yvt-Hikost_YNS4spDx6b0fylxzYtfBa_bC-8CjC1KTpjqwCnnF5Velup-L3qy44aox45zVLgChBffDD0DrVOLBiiXExqiU-Q3rw9uwlrLmC0P6AlK2wsycWJm7T2lmNr8Rc-DMHTKY3uT"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-label-lg text-label-lg text-forest-deep">Premium Raw Makhana</h4>
+<p class="text-xs text-on-surface-variant">1,240 units sold</p>
+<div class="w-full bg-surface-container h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-gold-accent h-full w-[85%] rounded-full"></div>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-forest-deep">₹12,400</p>
+</div>
+</div>
+<div class="flex gap-4 items-center group">
+<div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden shrink-0 border border-outline-variant/20">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A vibrant and appetizing presentation of roasted Foxnuts (Makhana) seasoned with spicy Peri Peri powder. The bowl is placed on a rustic stone texture surface with scattered spices like dried red chilies and peppercorns around it. High-contrast lighting highlights the textures and rich red color of the spice coating. Corporate-grade food photography with a focus on healthy snack appeal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJmE3J77c4EF4TU1q6aoZkdPqRhAFy1gXaO2uzJ8jgEW7amNzKBRrfNdp-eCrhKaCFr68B5ZsmvLiDWJSS4M0gNrv6Uo3q1mTI6cKdwZuLxIxvJ2dHbBsa4ziH1BShOoVwDdrRUGei97lP9JYTldMV2MplqZqqHQHktivO8FXzVk7gp3MoVOLbFkrjak8CgBhsL_JfKxpUpbU7XPSV3ZE04fZwVKNRHZVHjQfm5_j0F2oedq2t3Utwl4fHoLc3NVxVdwJs7aTBaiPp"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-label-lg text-label-lg text-forest-deep">Peri Peri Roasted</h4>
+<p class="text-xs text-on-surface-variant">980 units sold</p>
+<div class="w-full bg-surface-container h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-gold-accent h-full w-[65%] rounded-full"></div>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-forest-deep">₹8,820</p>
+</div>
+</div>
+<div class="flex gap-4 items-center group">
+<div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden shrink-0 border border-outline-variant/20">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A minimalist overhead shot of Honey Glazed Makhana snacks in a modern white ceramic plate. The foxnuts are glistening under warm studio lights, reflecting their sweet coating. The background features a subtle Mithila pattern etched in light grey. The scene is clean, organized, and breathes nutritional luxury. Earthy gold and forest green color palette elements are subtly present." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT0ZtJDtXPSZic7H4gZB-xZM3ks4JM0v1Us4zrKNSbqNRU-kbfKseVvrk8mwROY3EfMeysCvgyKRBnd6grZHTzl7UGLPMRnmK52xEff7IcJtsc9Ngzr5WfuGOTVLmdsIffqewT59bBVV62x5ZnhTS8Sm_5LRFqJqSBQf_Jvk7x8292-uWJNogVGvKB_J_AXVFg3FP3i8hC8prjPifxJxHMBB-5mOT99cqPBC_cpE9TvM8Byg2LNZ_uXp7I7Bl2bZXKhvuH-wjQjQVr"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-label-lg text-label-lg text-forest-deep">Honey Glazed</h4>
+<p class="text-xs text-on-surface-variant">720 units sold</p>
+<div class="w-full bg-surface-container h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-gold-accent h-full w-[45%] rounded-full"></div>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-forest-deep">₹6,480</p>
+</div>
+</div>
+</div>
+<div class="mt-8 p-4 bg-forest-deep rounded-lg text-primary-fixed relative overflow-hidden">
+<!-- Madhubani Accent Pattern Background (Abstract) -->
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<svg class="w-full h-full fill-current" viewbox="0 0 100 100">
+<path d="M0 0 L100 100 M100 0 L0 100 M50 0 L50 100 M0 50 L100 50" stroke="white" stroke-width="0.5"></path>
+</svg>
+</div>
+<p class="font-label-lg text-label-lg mb-2 relative z-10">Inventory Alert</p>
+<p class="text-sm opacity-80 mb-4 relative z-10">3 items are running below threshold. Restock recommended.</p>
+<button class="w-full bg-gold-accent text-forest-deep font-bold py-2 rounded-md hover:bg-primary-fixed transition-colors relative z-10">Manage Stock</button>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="mt-auto pt-12 pb-4 flex flex-col md:flex-row justify-between items-center text-on-surface-variant font-body-md opacity-60">
+<p>© 2024 Mithila Makhana. Preserving Heritage, Promoting Health.</p>
+<div class="flex gap-6 mt-4 md:mt-0">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Contact Us</a>
+</div>
+</footer>
+</main>
+<script>
+        // Micro-interaction for table rows
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.cursor = 'pointer';
+            });
+        });
+
+        // Simple filter button logic
+        const filterButtons = document.querySelectorAll('header .flex button');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => {
+                    b.classList.remove('bg-surface-container-lowest', 'shadow-sm', 'text-forest-deep');
+                    b.classList.add('text-on-surface-variant');
+                });
+                btn.classList.add('bg-surface-container-lowest', 'shadow-sm', 'text-forest-deep');
+                btn.classList.remove('text-on-surface-variant');
+            });
+        });
+    </script>
+</body></html>

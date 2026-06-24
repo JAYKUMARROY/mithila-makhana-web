@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mithila Makhana | Admin Order Management</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Outfit:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        /* Custom scrollbar for premium feel */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #fbf9f5; }
+        ::-webkit-scrollbar-thumb { background: #d0c5af; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #7f7663; }
+        
+        .madhubani-pattern {
+            background-image: radial-gradient(#D4AF37 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+            opacity: 0.05;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#efeeea",
+                    "tertiary": "#ab3425",
+                    "forest-deep": "#2C4C3B",
+                    "gold-accent": "#D4AF37",
+                    "tertiary-fixed-dim": "#ffb4a8",
+                    "secondary-container": "#c4e8d1",
+                    "on-primary-container": "#554300",
+                    "on-tertiary-container": "#871a0e",
+                    "primary-fixed-dim": "#e9c349",
+                    "on-surface-variant": "#4d4635",
+                    "outline-variant": "#d0c5af",
+                    "on-secondary-container": "#496a57",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-bright": "#fbf9f5",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#ff9685",
+                    "error": "#ba1a1a",
+                    "surface-container-high": "#eae8e4",
+                    "error-container": "#ffdad6",
+                    "primary-container": "#d4af37",
+                    "inverse-surface": "#30312e",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed": "#c7ebd4",
+                    "background": "#fbf9f5",
+                    "on-secondary-fixed": "#002113",
+                    "on-error": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#735c00",
+                    "outline": "#7f7663",
+                    "secondary": "#456553",
+                    "on-primary-fixed-variant": "#574500",
+                    "surface-container-highest": "#e4e2de",
+                    "inverse-on-surface": "#f2f0ed",
+                    "on-tertiary-fixed": "#410100",
+                    "vermillion-clay": "#E05A47",
+                    "surface-dim": "#dbdad6",
+                    "primary-fixed": "#ffe088",
+                    "on-surface": "#1b1c1a",
+                    "surface-variant": "#e4e2de",
+                    "on-secondary-fixed-variant": "#2d4d3c",
+                    "surface-container-low": "#f5f3ef",
+                    "surface": "#fbf9f5",
+                    "tertiary-fixed": "#ffdad4",
+                    "secondary-fixed-dim": "#abcfb8",
+                    "charcoal-text": "#1F2937",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#241a00",
+                    "on-background": "#1b1c1a",
+                    "primary": "#735c00",
+                    "cream-bg": "#FDFBF7",
+                    "on-tertiary-fixed-variant": "#8a1c10",
+                    "inverse-primary": "#e9c349"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "margin-desktop": "40px",
+                    "unit": "8px",
+                    "container-max": "1280px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Outfit"],
+                    "headline-lg": ["Outfit"],
+                    "label-sm": ["Inter"],
+                    "display-lg-mobile": ["Outfit"],
+                    "body-md": ["Inter"],
+                    "label-lg": ["Inter"],
+                    "display-lg": ["Outfit"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "42px", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-cream-bg font-body-md text-on-surface flex min-h-screen">
+<!-- SideNavBar Anchor -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 flex flex-col p-4 bg-surface-container-lowest shadow-md">
+<div class="mb-8 px-4">
+<h1 class="font-headline-md text-headline-md text-forest-deep">Admin Panel</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-70">Mithila Makhana CMS</p>
+</div>
+<nav class="flex flex-col gap-2">
+<!-- Dashboard Tab -->
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform" data-icon="dashboard">dashboard</span>
+<span class="font-label-lg text-label-lg">Dashboard</span>
+</a>
+<!-- Products Tab -->
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-lg text-label-lg">Products</span>
+</a>
+<!-- Orders Tab (ACTIVE) -->
+<a class="flex items-center gap-3 bg-secondary-container text-on-secondary-container rounded-lg px-4 py-3 shadow-sm active:scale-[0.98] transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="shopping_bag" style="font-variation-settings: 'FILL' 1;">shopping_bag</span>
+<span class="font-label-lg text-label-lg">Orders</span>
+</a>
+<!-- Inventory Tab -->
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform" data-icon="warehouse">warehouse</span>
+<span class="font-label-lg text-label-lg">Inventory</span>
+</a>
+</nav>
+<div class="mt-auto p-4 flex items-center gap-3 border-t border-outline-variant/30">
+<div class="w-10 h-10 rounded-full bg-forest-deep flex items-center justify-center text-primary-fixed overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a middle-aged South Asian business administrator in a clean-cut charcoal suit, smiling warmly against a blurred office background. The lighting is soft and natural, emphasizing a modern corporate yet authentic Mithila brand identity. High-resolution photography style with shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAX1lofrz0QZCGUihh3K0SsGprGclw2-Lxe-8k88IepNzkRfkILSrPrl5frn4qpVe0WFTSzoEG-BaRMsBQy61m7Z2MMjA7oclW4vnuA_aqWNaFmFvjQ-I-1DCR2byQztg6htACJLkcmjH9IcU7NukQpD0sPvIpkPt6E0flbtxosc234XwmDCtYnet_VIrFNsbwBrSvUmnLqCW8qe3eCds8kp-mQWZSTet4eRrgFwhLMH-n_N1RmP-27sshoJBRIRDhrB7ptXMpUC4Av"/>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-forest-deep leading-none">Admin User</p>
+<p class="text-[11px] text-on-surface-variant">Administrator</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-64 p-margin-desktop relative">
+<div class="madhubani-pattern absolute inset-0 pointer-events-none"></div>
+<div class="relative z-10 max-w-container-max mx-auto">
+<!-- Header Section -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-forest-deep mb-2">Order Management</h2>
+<p class="text-on-surface-variant font-body-md max-w-2xl">
+                        Monitor, filter, and manage all customer orders coming from the Mithila Makhana marketplace. Ensure timely fulfillment and track payment status.
+                    </p>
+</div>
+<div class="flex gap-4">
+<button class="bg-forest-deep text-white px-6 py-2.5 rounded-lg font-label-lg flex items-center gap-2 hover:opacity-90 transition-all active:scale-95 shadow-md">
+<span class="material-symbols-outlined text-[20px]" data-icon="download">download</span>
+                        Export CSV
+                    </button>
+</div>
+</header>
+<!-- Filters & Search Bento Card -->
+<div class="bg-surface-container-lowest rounded-xl p-6 mb-8 shadow-sm border border-outline-variant/10">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+<!-- Search -->
+<div class="md:col-span-5 relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/50" data-icon="search">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-lg focus:ring-2 focus:ring-gold-accent focus:border-gold-accent outline-none transition-all font-body-md" placeholder="Search by Order ID or Customer Name..." type="text"/>
+</div>
+<!-- Filter Status -->
+<div class="md:col-span-3 flex items-center gap-3">
+<span class="font-label-lg text-on-surface-variant">Status:</span>
+<select class="flex-1 py-3 px-4 bg-surface-container-low border border-outline-variant/30 rounded-lg focus:ring-2 focus:ring-gold-accent outline-none font-body-md appearance-none">
+<option>All Statuses</option>
+<option>Processing</option>
+<option>Shipped</option>
+<option>Delivered</option>
+</select>
+</div>
+<!-- Filter Date Range -->
+<div class="md:col-span-3 flex items-center gap-3">
+<span class="font-label-lg text-on-surface-variant">Payment:</span>
+<select class="flex-1 py-3 px-4 bg-surface-container-low border border-outline-variant/30 rounded-lg focus:ring-2 focus:ring-gold-accent outline-none font-body-md appearance-none">
+<option>All Payments</option>
+<option>Paid</option>
+<option>Pending</option>
+</select>
+</div>
+<!-- Clear -->
+<div class="md:col-span-1 flex justify-end">
+<button class="p-3 text-on-surface-variant hover:text-tertiary transition-colors" title="Clear Filters">
+<span class="material-symbols-outlined" data-icon="filter_list_off">filter_list_off</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Orders Table Container -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-outline-variant/10">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant/20">
+<th class="px-6 py-5 font-label-lg text-forest-deep">Order ID</th>
+<th class="px-6 py-5 font-label-lg text-forest-deep">Customer</th>
+<th class="px-6 py-5 font-label-lg text-forest-deep">Date</th>
+<th class="px-6 py-5 font-label-lg text-forest-deep">Payment</th>
+<th class="px-6 py-5 font-label-lg text-forest-deep">Shipping Status</th>
+<th class="px-6 py-5 font-label-lg text-forest-deep">Total</th>
+<th class="px-6 py-5 font-label-lg text-forest-deep text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<!-- Row 1 -->
+<tr class="hover:bg-cream-bg transition-colors group">
+<td class="px-6 py-4 font-label-lg text-forest-deep">#MM-2024-8812</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-xs">RK</div>
+<div>
+<p class="font-label-lg leading-tight">Rajesh Kumar</p>
+<p class="text-[11px] text-on-surface-variant">rajesh.k@example.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface-variant">Oct 24, 2024</td>
+<td class="px-6 py-4">
+<span class="bg-secondary-container/50 text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 w-fit">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Paid
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="bg-gold-accent/10 text-primary px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 w-fit">
+                                        Processing
+                                    </span>
+</td>
+<td class="px-6 py-4 font-label-lg text-forest-deep">₹1,250.00</td>
+<td class="px-6 py-4 text-right">
+<button class="text-on-surface-variant hover:text-forest-deep transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-cream-bg transition-colors group">
+<td class="px-6 py-4 font-label-lg text-forest-deep">#MM-2024-8811</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-tertiary-container/30 text-on-tertiary-container flex items-center justify-center font-bold text-xs">AS</div>
+<div>
+<p class="font-label-lg leading-tight">Anjali Sharma</p>
+<p class="text-[11px] text-on-surface-variant">anjali@web.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface-variant">Oct 23, 2024</td>
+<td class="px-6 py-4">
+<span class="bg-secondary-container/50 text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 w-fit">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Paid
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 w-fit">
+                                        Shipped
+                                    </span>
+</td>
+<td class="px-6 py-4 font-label-lg text-forest-deep">₹840.00</td>
+<td class="px-6 py-4 text-right">
+<button class="text-on-surface-variant hover:text-forest-deep transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-cream-bg transition-colors group">
+<td class="px-6 py-4 font-label-lg text-forest-deep">#MM-2024-8810</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-outline-variant text-on-surface-variant flex items-center justify-center font-bold text-xs">VM</div>
+<div>
+<p class="font-label-lg leading-tight">Vikram Mehra</p>
+<p class="text-[11px] text-on-surface-variant">vikram.m@gmail.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface-variant">Oct 23, 2024</td>
+<td class="px-6 py-4">
+<span class="bg-tertiary-container/20 text-tertiary px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 w-fit border border-tertiary/10">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Pending
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 w-fit">
+                                        Processing
+                                    </span>
+</td>
+<td class="px-6 py-4 font-label-lg text-forest-deep">₹2,100.00</td>
+<td class="px-6 py-4 text-right">
+<button class="text-on-surface-variant hover:text-forest-deep transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-cream-bg transition-colors group">
+<td class="px-6 py-4 font-label-lg text-forest-deep">#MM-2024-8809</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-forest-deep text-primary-fixed flex items-center justify-center font-bold text-xs">SM</div>
+<div>
+<p class="font-label-lg leading-tight">Sanya Mishra</p>
+<p class="text-[11px] text-on-surface-variant">sanya.m@mithila.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface-variant">Oct 22, 2024</td>
+<td class="px-6 py-4">
+<span class="bg-secondary-container/50 text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 w-fit">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Paid
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="bg-forest-deep text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 w-fit">
+                                        Delivered
+                                    </span>
+</td>
+<td class="px-6 py-4 font-label-lg text-forest-deep">₹450.00</td>
+<td class="px-6 py-4 text-right">
+<button class="text-on-surface-variant hover:text-forest-deep transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 bg-surface-container-low flex items-center justify-between">
+<p class="text-label-sm text-on-surface-variant">Showing 1 to 10 of 58 orders</p>
+<div class="flex gap-2">
+<button class="p-2 border border-outline-variant/30 rounded hover:bg-surface-container-high transition-colors disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="px-4 py-2 border border-gold-accent bg-gold-accent text-on-primary-container rounded font-label-lg">1</button>
+<button class="px-4 py-2 border border-outline-variant/30 rounded hover:bg-surface-container-high font-label-lg transition-colors">2</button>
+<button class="px-4 py-2 border border-outline-variant/30 rounded hover:bg-surface-container-high font-label-lg transition-colors">3</button>
+<button class="p-2 border border-outline-variant/30 rounded hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Footer Stats Anchor -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-12">
+<div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-gold-accent">
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Total Revenue</p>
+<p class="font-headline-md text-forest-deep">₹1,42,850</p>
+<p class="text-[11px] text-secondary mt-2 flex items-center gap-1 font-bold">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span> +12% this month
+                    </p>
+</div>
+<div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-secondary">
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Active Orders</p>
+<p class="font-headline-md text-forest-deep">34</p>
+<p class="text-[11px] text-on-surface-variant mt-2 font-medium">8 require immediate action</p>
+</div>
+<div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-tertiary">
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Pending Payments</p>
+<p class="font-headline-md text-forest-deep">12</p>
+<p class="text-[11px] text-tertiary mt-2 font-bold">Follow up required</p>
+</div>
+<div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-forest-deep">
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Success Rate</p>
+<p class="font-headline-md text-forest-deep">98.4%</p>
+<p class="text-[11px] text-on-surface-variant mt-2 font-medium">Last 30 days average</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Micro-interaction Scripts -->
+<script>
+        // Simple row hover effect enhancement
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            row.addEventListener('click', () => {
+                // In a real app, this would navigate to order details
+                console.log('Navigate to details for ' + row.cells[0].innerText);
+            });
+        });
+
+        // Search bar focus behavior
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('scale-[1.01]');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('scale-[1.01]');
+        });
+    </script>
+</body></html>

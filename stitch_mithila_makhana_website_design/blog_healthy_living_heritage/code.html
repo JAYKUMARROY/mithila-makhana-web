@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mithila Makhana | Blogs &amp; Heritage</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed-dim": "#abcfb8",
+                    "surface-dim": "#dbdad6",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed-variant": "#8a1c10",
+                    "on-primary-container": "#554300",
+                    "primary-container": "#d4af37",
+                    "background": "#fbf9f5",
+                    "on-secondary-fixed-variant": "#2d4d3c",
+                    "tertiary-fixed-dim": "#ffb4a8",
+                    "surface-container-highest": "#e4e2de",
+                    "on-background": "#1b1c1a",
+                    "gold-accent": "#D4AF37",
+                    "error-container": "#ffdad6",
+                    "secondary": "#456553",
+                    "outline-variant": "#d0c5af",
+                    "tertiary-container": "#ff9685",
+                    "primary": "#735c00",
+                    "on-tertiary": "#ffffff",
+                    "outline": "#7f7663",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#e9c349",
+                    "vermillion-clay": "#E05A47",
+                    "inverse-surface": "#30312e",
+                    "surface": "#fbf9f5",
+                    "on-primary-fixed-variant": "#574500",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed": "#002113",
+                    "on-surface": "#1b1c1a",
+                    "error": "#ba1a1a",
+                    "surface-variant": "#e4e2de",
+                    "secondary-container": "#c4e8d1",
+                    "on-error-container": "#93000a",
+                    "surface-tint": "#735c00",
+                    "cream-bg": "#FDFBF7",
+                    "tertiary": "#ab3425",
+                    "forest-deep": "#2C4C3B",
+                    "charcoal-text": "#1F2937",
+                    "secondary-fixed": "#c7ebd4",
+                    "surface-bright": "#fbf9f5",
+                    "on-surface-variant": "#4d4635",
+                    "surface-container-high": "#eae8e4",
+                    "primary-fixed": "#ffe088",
+                    "on-primary-fixed": "#241a00",
+                    "tertiary-fixed": "#ffdad4",
+                    "on-tertiary-container": "#871a0e",
+                    "surface-container": "#efeeea",
+                    "primary-fixed-dim": "#e9c349",
+                    "on-secondary-container": "#496a57",
+                    "surface-container-low": "#f5f3ef",
+                    "on-secondary": "#ffffff",
+                    "inverse-on-surface": "#f2f0ed",
+                    "on-tertiary-fixed": "#410100"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-max": "1280px",
+                    "margin-mobile": "16px",
+                    "unit": "8px",
+                    "gutter": "24px",
+                    "margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Outfit"],
+                    "label-lg": ["Inter"],
+                    "headline-md": ["Outfit"],
+                    "display-lg-mobile": ["Outfit"],
+                    "display-lg": ["Outfit"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "42px", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .madhubani-pattern {
+        background-color: #FDFBF7;
+        background-image: radial-gradient(#D4AF37 0.5px, transparent 0.5px);
+        background-size: 24px 24px;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;  
+        overflow: hidden;
+      }
+    </style>
+</head>
+<body class="bg-cream-bg font-body-md text-on-surface">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-cream-bg shadow-sm">
+<nav class="max-w-container-max mx-auto px-gutter py-4 flex justify-between items-center">
+<div class="font-headline-md text-headline-md font-bold text-forest-deep">Mithila Makhana</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-label-lg text-label-lg text-forest-deep hover:text-primary transition-colors" href="#">Shop</a>
+<a class="font-label-lg text-label-lg text-forest-deep hover:text-primary transition-colors" href="#">Story</a>
+<a class="font-label-lg text-label-lg text-primary border-b-2 border-primary pb-1" href="#">Blog</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-forest-deep">search</button>
+<button class="material-symbols-outlined text-forest-deep">shopping_cart</button>
+<button class="material-symbols-outlined text-forest-deep">person</button>
+</div>
+</nav>
+</header>
+<main class="pt-24 pb-20">
+<!-- Featured Article -->
+<section class="max-w-container-max mx-auto px-gutter mb-20">
+<div class="relative w-full h-[500px] md:h-[600px] rounded-xl overflow-hidden shadow-xl group">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A high-end cinematic photograph of a premium wooden bowl filled with pure white popped lotus seeds (makhana) placed on a rustic stone table. Soft morning sunlight filters through a window, illuminating the textures. The background shows a hint of a modern Mithila kitchen with earthy tones of deep forest green and cream. The aesthetic is clean, luxurious, and authentically organic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBYB3bhlLwwPF0hkK9aL7kGrgO0RRFSvey6nkIfPch4vgDLklUV_EMJf22v8OzSBwe0oySNplUyTCzjfIv1XUa80Zk-QADVknySxGGnGo_L-5oSjYdbUEdsLC1pbjjcO5-i6gDKscPyWEFukjSbFXcr0Q9eAjkWS-6HfBKRZdjxEFIFbP7CSdzbIkF9C3-BaX8_MLOFklej0pXURKnAIgKW8dbVSqVXAJwAedKkW7dkowFLNFffn4-0J5AtfwXv5yNg-uNgtz2ebVjX')">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-forest-deep/90 via-forest-deep/30 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8 md:p-12 w-full md:w-3/4 lg:w-1/2">
+<span class="inline-block px-3 py-1 bg-gold-accent text-white font-label-lg text-[12px] rounded-full mb-4">FEATURED HERITAGE</span>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-white mb-6 leading-tight">Makhana: The Superfood of the Future</h1>
+<p class="text-white/80 font-body-lg text-body-lg mb-8 line-clamp-2">Discover how this ancient seed from the ponds of Mithila is becoming the global standard for clean, plant-based nutrition.</p>
+<a class="inline-flex items-center gap-2 bg-white text-forest-deep px-8 py-3 rounded-lg font-label-lg hover:bg-gold-accent hover:text-white transition-all transform active:scale-95" href="#">
+                        Read the Full Story
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Category Filter -->
+<section class="max-w-container-max mx-auto px-gutter mb-12">
+<div class="flex flex-wrap gap-4 items-center justify-center border-b border-outline-variant pb-6">
+<button class="px-6 py-2 rounded-full bg-forest-deep text-white font-label-lg">All Posts</button>
+<button class="px-6 py-2 rounded-full text-forest-deep hover:bg-secondary-container transition-colors font-label-lg">Nutrition</button>
+<button class="px-6 py-2 rounded-full text-forest-deep hover:bg-secondary-container transition-colors font-label-lg">Recipes</button>
+<button class="px-6 py-2 rounded-full text-forest-deep hover:bg-secondary-container transition-colors font-label-lg">Heritage</button>
+</div>
+</section>
+<!-- Blog Grid -->
+<section class="max-w-container-max mx-auto px-gutter">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Card 1: Nutrition -->
+<article class="flex flex-col bg-white rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden hover:shadow-md transition-all group">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Close-up macro shot of makhana seeds highlighting their white texture and slight natural imperfections on a clean off-white background. The lighting is soft and professional, emphasizing the purity of the product. The composition is minimalist and modern, fitting for a nutritional science article." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBw3nMGdJV3lAszYfkIbf8ZOuQBhZpZnUe_h5qYKkHK9tAN9PMaA4X95_MheNiQsfPeJHyKa4FWA5LKBW2oxq20bMWiHuTMBAlMkeCWDGTh_XM9J9tyv2AGLvBdOBhzCWQ-xHEAKgs70dCZFuwMC_OAFU1Ykre0Wh7JrIXauoxOhm47RatGAQyiTwHNmYjyU8IU_qPO7cbEcKlN-BDNvM664KsBHtxmSl4oqNKn9Owqusle58qwAB4XmFZqWf__lVX_UoYAn4RqaZOT"/>
+<div class="absolute top-4 left-4">
+<span class="bg-forest-deep text-white px-3 py-1 rounded font-label-sm uppercase tracking-wider">Nutrition</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-headline-md text-forest-deep mb-3">5 Health Benefits You Didn't Know</h3>
+<p class="text-on-surface-variant font-body-md mb-6 line-clamp-3">From magnesium levels to protein-packed snacking, learn why Makhana is the ultimate choice for weight management and heart health.</p>
+<div class="mt-auto flex justify-between items-center">
+<span class="text-label-sm text-outline font-label-sm">5 Min Read</span>
+<a class="text-primary font-label-lg flex items-center gap-1 group-hover:gap-2 transition-all" href="#">
+                                Read More <span class="material-symbols-outlined text-[18px]">east</span>
+</a>
+</div>
+</div>
+</article>
+<!-- Card 2: Recipes -->
+<article class="flex flex-col bg-white rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden hover:shadow-md transition-all group">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A gourmet dish of roasted makhana seasoned with earthy turmeric and garden herbs, served in a handcrafted clay bowl. The scene is set on a light linen tablecloth with golden afternoon light. Background elements include fresh herbs and a hint of a copper vessel, creating a premium culinary atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8V4D8HJAxPQxL4zKalNGxLkQFyb7FNVCr4OcJeNXStkiiTL4KWJLfROM5IMqKRS8wtbj0xic0R_8d1viNyWs3tal6aDIJ5rN9OK03qE7wSW4uWLaEGRrjRLS5fHfQw5hZdKiaCZSD0WOdcrsN2F6svDLexPdWxjfsuQtMvtaxVBDTCI76r1ViyCGtWdW4WIamj35WvPgiB40nhCjhgRlH8p3K02oxlvjsCADuFhf2W3lEryJOd2ulwPr6_lfz-sQSO8zL9rOQde39"/>
+<div class="absolute top-4 left-4">
+<span class="bg-secondary text-white px-3 py-1 rounded font-label-sm uppercase tracking-wider">Recipes</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-headline-md text-forest-deep mb-3">Gourmet Roasted Makhana Three Ways</h3>
+<p class="text-on-surface-variant font-body-md mb-6 line-clamp-3">Elevate your snacking game with our exclusive recipes for Peri-Peri, Himalayan Pink Salt, and Caramelized gold variants.</p>
+<div class="mt-auto flex justify-between items-center">
+<span class="text-label-sm text-outline font-label-sm">8 Min Read</span>
+<a class="text-primary font-label-lg flex items-center gap-1 group-hover:gap-2 transition-all" href="#">
+                                Read More <span class="material-symbols-outlined text-[18px]">east</span>
+</a>
+</div>
+</div>
+</article>
+<!-- Card 3: Heritage -->
+<article class="flex flex-col bg-white rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden hover:shadow-md transition-all group">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A serene landscape of a lotus pond in Mithila during the golden hour. Local farmers are traditionally harvesting Makhana. The image captures the cultural heritage with authentic tools and the vast water surface reflecting the sunset colors of orange and gold. High-resolution photography with a documentary feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrLEYZ4G53saOg4k6MGo5STL-n24WeNYvnpdMkzcfijbOUxFCe5rC2kIxXPlETlzITZoZIPDlxfhiV-HlwT-QM-1RSw-V60WDH0VZEGI6OreAmAujg48hd5ZqJqSVIatwqMLDUfDNgQoSRSC4a6P3ANGXnvq9jUvnMP6tPs6-x5QWIzuo9EJP_TsY7lFmU3i774xnqqEZVuFxZMwcKqY0gi6ctAFxeuJb-UJrvllJ6vNIu_8lczpYuGMcSDgkEvVdQXXcfm5YjxFDG"/>
+<div class="absolute top-4 left-4">
+<span class="bg-gold-accent text-white px-3 py-1 rounded font-label-sm uppercase tracking-wider">Heritage</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-headline-md text-forest-deep mb-3">The Soul of Mithila: GI Tag Story</h3>
+<p class="text-on-surface-variant font-body-md mb-6 line-clamp-3">Understanding the significance of the Geographical Indication tag and how it protects the traditional harvesters of Bihar.</p>
+<div class="mt-auto flex justify-between items-center">
+<span class="text-label-sm text-outline font-label-sm">12 Min Read</span>
+<a class="text-primary font-label-lg flex items-center gap-1 group-hover:gap-2 transition-all" href="#">
+                                Read More <span class="material-symbols-outlined text-[18px]">east</span>
+</a>
+</div>
+</div>
+</article>
+<!-- Card 4: Heritage -->
+<article class="flex flex-col bg-white rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden hover:shadow-md transition-all group">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A beautiful close-up of Madhubani art depicting the lifecycle of a lotus plant. The art style is traditional yet the presentation is modern with a clean white frame. The colors are earthy—deep reds, forest greens, and blacks. This symbolizes the intersection of art and agriculture in Mithila." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIpK2dtbnx4CE4OuRxNkbBf5Lip0ollBX4v9t7lPCGq8siPI-WPI6aYQBMcgEZnYUxM20eUsy2ye3yPdJiMobOIGQ9DZd2abbIYqn3WpkL7Wiv7DWmiCfQGngLM4E2UqkFRItp757sUTXQkXKHSGcvowUWnnR7EhadUQPKhSyYwcposj4HVzYiKIxe82WLGENrWJwi-ODvLGJGGn4QW30rFfamnevTs03M-hB9_eatqFc7BnihXHtzFxPO9hnMlqcyCAwA7GyCQd_8"/>
+<div class="absolute top-4 left-4">
+<span class="bg-gold-accent text-white px-3 py-1 rounded font-label-sm uppercase tracking-wider">Heritage</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-headline-md text-forest-deep mb-3">Art and Agriculture: Madhubani Roots</h3>
+<p class="text-on-surface-variant font-body-md mb-6 line-clamp-3">Exploring the deep cultural connection between the traditional folk art of Bihar and the cultivation of Makhana seeds.</p>
+<div class="mt-auto flex justify-between items-center">
+<span class="text-label-sm text-outline font-label-sm">6 Min Read</span>
+<a class="text-primary font-label-lg flex items-center gap-1 group-hover:gap-2 transition-all" href="#">
+                                Read More <span class="material-symbols-outlined text-[18px]">east</span>
+</a>
+</div>
+</div>
+</article>
+<!-- Card 5: Nutrition -->
+<article class="flex flex-col bg-white rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden hover:shadow-md transition-all group">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="An athlete in high-performance gear sitting in a bright, modern minimalist gym, reaching for a packet of makhana. The setting is clean, bright, and emphasizes a healthy lifestyle. The lighting is crisp, highlighting the product as a premium energy source." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsSp7QghBl57jp6t09bQtMw9cJ4jlpX3UecxqXHWLdwjk5ZUS5JxGmVspHvEskLWaE5O4yLB_rnzJS2BXmXgPxZ2RvkLgqR5CPsxYfjjvihgW-eAp3g6c-JAu_OQJ5GCboyJB0XuWTdnlw42m2SBqMypTfi-97FLBMx_bfO53ylYA8hF0_i1Kz_L5a3HemWptsPrIjnXpx_8jl9S-6sGzLaw4d2OApl8dzH8Pca_uNlu74Qvyo01u7gRNEfSw04cYakxEG-r97rej4"/>
+<div class="absolute top-4 left-4">
+<span class="bg-forest-deep text-white px-3 py-1 rounded font-label-sm uppercase tracking-wider">Nutrition</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-headline-md text-forest-deep mb-3">Makhana as a Post-Workout Fuel</h3>
+<p class="text-on-surface-variant font-body-md mb-6 line-clamp-3">Why top fitness experts are swapping protein bars for traditional roasted seeds to aid muscle recovery and sustained energy.</p>
+<div class="mt-auto flex justify-between items-center">
+<span class="text-label-sm text-outline font-label-sm">4 Min Read</span>
+<a class="text-primary font-label-lg flex items-center gap-1 group-hover:gap-2 transition-all" href="#">
+                                Read More <span class="material-symbols-outlined text-[18px]">east</span>
+</a>
+</div>
+</div>
+</article>
+<!-- Card 6: Recipes -->
+<article class="flex flex-col bg-white rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden hover:shadow-md transition-all group">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A festive Indian dessert spread featuring Makhana Kheer served in delicate silver bowls. The background is a celebration of lights (diyas) and traditional silks, creating a warm, premium holiday mood. The texture of the creamy kheer and the whole makhanas floating on top is clearly visible." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMw5TdlKiU-DKX1yW2AKIUEfiuqzSZStxvCYCnyb9SSkhMogJk7NTeQGyyObMr1lLHKHKb3yymAEaSoORHSjvv3VO10_Ka8VEtGbfqaH4hx2f9eynwPYntOP5j417DnPsZOyxd9c31Cnk1wO1fKNbMSLpK1lXO2w0Q1WSvpOlOWYzTlZ3sVZF6q9HK9AS5fb9W3-s1ByjY2Lhh0WWbsXEdKbWY62hoOdo1xpiWamtCFCYlq00qwgNLeGLXReQRVJeyk82aioHUqIDv"/>
+<div class="absolute top-4 left-4">
+<span class="bg-secondary text-white px-3 py-1 rounded font-label-sm uppercase tracking-wider">Recipes</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-headline-md text-forest-deep mb-3">Festive Delights: Royal Makhana Kheer</h3>
+<p class="text-on-surface-variant font-body-md mb-6 line-clamp-3">A step-by-step guide to preparing the most authentic, creamy dessert from the kitchens of Darbhanga royalty.</p>
+<div class="mt-auto flex justify-between items-center">
+<span class="text-label-sm text-outline font-label-sm">10 Min Read</span>
+<a class="text-primary font-label-lg flex items-center gap-1 group-hover:gap-2 transition-all" href="#">
+                                Read More <span class="material-symbols-outlined text-[18px]">east</span>
+</a>
+</div>
+</div>
+</article>
+</div>
+<!-- Pagination -->
+<div class="flex justify-center mt-16 gap-2">
+<button class="w-10 h-10 rounded-lg border border-outline-variant flex items-center justify-center text-forest-deep hover:bg-forest-deep hover:text-white transition-all">1</button>
+<button class="w-10 h-10 rounded-lg border border-outline-variant flex items-center justify-center text-forest-deep hover:bg-forest-deep hover:text-white transition-all">2</button>
+<button class="w-10 h-10 rounded-lg border border-outline-variant flex items-center justify-center text-forest-deep hover:bg-forest-deep hover:text-white transition-all">3</button>
+<button class="w-10 h-10 rounded-lg border border-outline-variant flex items-center justify-center text-forest-deep hover:bg-forest-deep hover:text-white transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- Newsletter Section -->
+<section class="mt-24 bg-forest-deep py-20 relative overflow-hidden">
+<!-- Decorative Madhubani Pattern Overlay -->
+<div class="absolute inset-0 opacity-5 pointer-events-none madhubani-pattern"></div>
+<div class="max-w-container-max mx-auto px-gutter relative z-10 text-center">
+<h2 class="font-headline-lg text-headline-lg text-primary-fixed mb-4">Join the Healthy Community</h2>
+<p class="text-white/80 max-w-2xl mx-auto mb-10 font-body-lg text-body-lg">Get seasonal recipes, nutritional deep-dives, and exclusive heritage stories delivered directly to your inbox every month.</p>
+<form class="max-w-md mx-auto flex flex-col md:flex-row gap-4" onsubmit="event.preventDefault(); alert('Thank you for joining!');">
+<input class="flex-grow px-6 py-4 rounded-lg bg-white/10 border border-white/20 text-white placeholder:text-white/40 focus:ring-2 focus:ring-gold-accent focus:border-transparent outline-none transition-all" placeholder="Enter your email address" required="" type="email"/>
+<button class="bg-gold-accent text-forest-deep font-label-lg px-8 py-4 rounded-lg hover:bg-primary-fixed transition-all transform active:scale-95 shadow-lg" type="submit">
+                        Subscribe Now
+                    </button>
+</form>
+<p class="mt-6 text-white/40 text-label-sm">Respecting your privacy. Unsubscribe anytime.</p>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="w-full py-12 px-gutter mt-auto flex flex-col bg-forest-deep text-primary-fixed max-w-container-max mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/10 pb-12 mb-8">
+<div class="mb-8 md:mb-0">
+<div class="font-headline-lg text-headline-lg text-primary-fixed mb-2">Mithila Makhana</div>
+<p class="text-on-secondary-container/80 max-w-xs">Connecting the ancient heritage of Bihar with global wellness seekers.</p>
+</div>
+<div class="flex flex-wrap gap-8">
+<a class="text-body-md hover:text-primary-fixed transition-opacity" href="#">Privacy Policy</a>
+<a class="text-body-md hover:text-primary-fixed transition-opacity" href="#">Terms of Service</a>
+<a class="text-body-md hover:text-primary-fixed transition-opacity" href="#">Shipping Info</a>
+<a class="text-body-md hover:text-primary-fixed transition-opacity" href="#">Contact Us</a>
+</div>
+</div>
+<div class="flex flex-col md:flex-row justify-between items-center text-on-secondary-container/60 font-body-md text-label-sm">
+<span>© 2024 Mithila Makhana. Preserving Heritage, Promoting Health.</span>
+<div class="flex gap-6 mt-4 md:mt-0">
+<a class="hover:text-primary-fixed transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="hover:text-primary-fixed transition-colors" href="#"><span class="material-symbols-outlined">share</span></a>
+<a class="hover:text-primary-fixed transition-colors" href="#"><span class="material-symbols-outlined">mail</span></a>
+</div>
+</div>
+</footer>
+<!-- Mobile Navigation Shell -->
+<div class="md:hidden fixed bottom-0 left-0 w-full bg-cream-bg shadow-[0_-2px_10px_rgba(0,0,0,0.05)] z-50 flex justify-around items-center py-3">
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-label-sm">Shop</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="text-[10px] font-label-sm">Story</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">article</span>
+<span class="text-[10px] font-label-sm">Blog</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="text-[10px] font-label-sm">Cart</span>
+</button>
+</div>
+</body></html>

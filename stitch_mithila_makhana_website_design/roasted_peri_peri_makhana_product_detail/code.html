@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Roasted Peri Peri Makhana | Mithila Makhana</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Outfit:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#ffe088",
+                    "forest-deep": "#2C4C3B",
+                    "surface": "#fbf9f5",
+                    "primary-fixed-dim": "#e9c349",
+                    "tertiary-fixed": "#ffdad4",
+                    "on-primary": "#ffffff",
+                    "tertiary": "#ab3425",
+                    "tertiary-fixed-dim": "#ffb4a8",
+                    "vermillion-clay": "#E05A47",
+                    "on-secondary-container": "#496a57",
+                    "on-error-container": "#93000a",
+                    "on-surface": "#1b1c1a",
+                    "surface-container-high": "#eae8e4",
+                    "tertiary-container": "#ff9685",
+                    "on-background": "#1b1c1a",
+                    "on-tertiary-container": "#871a0e",
+                    "secondary-container": "#c4e8d1",
+                    "background": "#fbf9f5",
+                    "inverse-primary": "#e9c349",
+                    "secondary-fixed-dim": "#abcfb8",
+                    "surface-container-low": "#f5f3ef",
+                    "primary": "#735c00",
+                    "primary-container": "#d4af37",
+                    "surface-tint": "#735c00",
+                    "error-container": "#ffdad6",
+                    "gold-accent": "#D4AF37",
+                    "surface-container": "#efeeea",
+                    "surface-bright": "#fbf9f5",
+                    "secondary-fixed": "#c7ebd4",
+                    "on-primary-fixed": "#241a00",
+                    "surface-container-highest": "#e4e2de",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#002113",
+                    "cream-bg": "#FDFBF7",
+                    "outline-variant": "#d0c5af",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-container": "#554300",
+                    "on-secondary": "#ffffff",
+                    "inverse-on-surface": "#f2f0ed",
+                    "on-surface-variant": "#4d4635",
+                    "on-secondary-fixed-variant": "#2d4d3c",
+                    "inverse-surface": "#30312e",
+                    "on-error": "#ffffff",
+                    "charcoal-text": "#1F2937",
+                    "surface-dim": "#dbdad6",
+                    "on-primary-fixed-variant": "#574500",
+                    "on-tertiary-fixed-variant": "#8a1c10",
+                    "surface-variant": "#e4e2de",
+                    "on-tertiary-fixed": "#410100",
+                    "outline": "#7f7663",
+                    "secondary": "#456553",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "margin-desktop": "40px",
+                    "container-max": "1280px",
+                    "margin-mobile": "16px",
+                    "unit": "8px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Outfit"],
+                    "label-lg": ["Inter"],
+                    "headline-lg": ["Outfit"],
+                    "display-lg-mobile": ["Outfit"],
+                    "label-sm": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg": ["Outfit"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "42px", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #FDFBF7; /* cream-bg */
+            color: #1b1c1a; /* on-surface */
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .product-thumbnail.active {
+            border-color: #D4AF37; /* gold-accent */
+            box-shadow: 0 0 0 2px #D4AF37;
+        }
+        .tab-active {
+            border-bottom: 2px solid #735c00;
+            color: #735c00;
+        }
+        .madhubani-pattern {
+            background-image: radial-gradient(#D4AF37 0.5px, transparent 0.5px);
+            background-size: 16px 16px;
+            opacity: 0.1;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md antialiased">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 max-w-container-max mx-auto bg-cream-bg shadow-sm transition-all duration-300">
+<div class="flex items-center gap-8">
+<a class="font-headline-md text-headline-md font-bold text-forest-deep tracking-tight" href="#">Mithila Makhana</a>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-label-lg text-label-lg text-primary border-b-2 border-primary pb-1 hover:text-primary transition-colors duration-200" href="#">Shop</a>
+<a class="font-label-lg text-label-lg text-forest-deep hover:text-primary transition-colors duration-200" href="#">Story</a>
+<a class="font-label-lg text-label-lg text-forest-deep hover:text-primary transition-colors duration-200" href="#">Blog</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined text-forest-deep" data-icon="search">search</span>
+</button>
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors relative">
+<span class="material-symbols-outlined text-forest-deep" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute top-0 right-0 bg-vermillion-clay text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">2</span>
+</button>
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined text-forest-deep" data-icon="person">person</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-16 px-gutter max-w-container-max mx-auto">
+<!-- Breadcrumbs -->
+<nav class="mb-8 flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm">
+<a class="hover:text-primary transition-colors" href="#">Home</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Shop</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Roasted Snacks</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-forest-deep font-semibold">Peri Peri Makhana</span>
+</nav>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Left Column: Product Images -->
+<div class="lg:col-span-7 flex flex-col md:flex-row-reverse gap-4">
+<!-- Main Image -->
+<div class="relative flex-1 bg-surface-container-lowest rounded-xl overflow-hidden group">
+<div class="absolute top-4 left-4 z-10 flex flex-col gap-2">
+<span class="bg-gold-accent text-on-primary-fixed px-3 py-1 rounded-full text-[12px] font-bold flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[14px]" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span> GI TAGGED
+                        </span>
+<span class="bg-forest-deep text-white px-3 py-1 rounded-full text-[12px] font-bold flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[14px]" data-icon="eco" style="font-variation-settings: 'FILL' 1;">eco</span> ORGANIC
+                        </span>
+</div>
+<img class="w-full h-[600px] object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A premium close-up shot of Roasted Peri Peri Makhana in a minimalist ceramic bowl. The makhana are perfectly roasted with a vibrant orange-red spice coating. The background is a clean, off-white surface with soft natural lighting and a subtle Madhubani art pattern edge. High-end food photography, earthy tones, luxury health food aesthetic." id="main-product-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvbFL3VWk4FmglLwy6x37eY7tA4nPYUZ1BmRWU6FQS6kNEil0CdvP2mtktP9vIrcJOxFFGua8SK0fhei9-9Lq_wxLv7UvgEWRkjamtNfUDAqlVEX3uzGQvZy3d91CO-YTi5Q6YgOgof2f9bY4HIXW94jqLNpyAXcEM6HDkY5laUMtts06HVlercktxBUeI7w6XxAvutH1bAmj-JUfuq7qJ1HpPvGuzjB2dqnLRWEJXej3-8-dbYNlssaz_BZ3-MkdeZYWx1cctpEHx"/>
+<div class="absolute inset-0 bg-black/5 pointer-events-none"></div>
+</div>
+<!-- Thumbnails -->
+<div class="flex md:flex-col gap-3">
+<button class="product-thumbnail active w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border-2 border-transparent transition-all" onclick="changeImage(this, 'IMG_1')">
+<img class="w-full h-full object-cover" data-alt="Close up of Roasted Peri Peri Makhana pieces showing the texture and spice seasoning. Earthy gold and deep forest green color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDi12SsdAsZlmihk_slfaGjuVHs3qfVkZOm7x57zAVw3218ieErvGE_FSMdHIqI8d8ln4Em35Yy11WNm-bdqzpoq9WB4ycGPZocAUhpvo01-dcY3DlYogjsJaq05N-RiuFyKGnuuMRPt9oOkbeT2pJWNgPFa7_DB_-su2tUwNgVG31JG9y8y2b3UPJJThUe401mpn3UP-_tBm40X1wGT7y1ruLmoNysUNKz5-J7GO3bMb11IOxIBjFZFmfWjz_QzJSrKByiH4_TybpK"/>
+</button>
+<button class="product-thumbnail w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border-2 border-transparent transition-all" onclick="changeImage(this, 'IMG_2')">
+<img class="w-full h-full object-cover" data-alt="The packaging of Mithila Makhana Roasted Peri Peri variant, showcasing a modern minimalist bag with Madhubani inspired borders. Premium health food branding." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD50m5_kxFTdT-U71AdxWrP-GZVnYvXDdKaCyouOhUv9V5Unzb_QAJSDe8k1Xn1kfh7t9DPhAT6HI6A-FKG72En2r3UClWG9B52Cr-aJJhKL3YTe-I7TjC9Jvc04Q-FwVRangFtowPIkCv_gHBAVew9Hzwuzf5lw8Xca2QvuQXU4R1dyHgPY1a8g6MG8g6C5Niitvy-Ukp1ADSl3FGdbHJFgGHIHU9vvTU_dFFmAxjYx5CAHc_JLmbcX7EHz48U_Z4JbH8f2osWVxck"/>
+</button>
+<button class="product-thumbnail w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border-2 border-transparent transition-all" onclick="changeImage(this, 'IMG_3')">
+<img class="w-full h-full object-cover" data-alt="A lifestyle shot of a health-conscious person enjoying Makhana snacks in a bright, modern interior with warm sunlight and lush plants. Deep forest green accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhrDoSR9kggMO3Wd7wVPKMHFxUVZ9ujdZMoqRC_BaQskWabbz4Ui5WRSxfoX4ZWUxLK-Qo9KYaoz4D25Zzxa5V3VYRlwe8sgl6TnWGm2QkTqqEN1sQB76kiyl2vE8GT7O4tF5dPpoIx8hMuSXAdyUdbjhhLvoM3FFZa8CjtrGALNfces2tspg118RXiQIFmJlW9arncrcXPVPlrJ6PMX9y63vqGvUbgEqGRs3T7hGTfMQ76pWlQ0h2BChC_m2PNy9KN2t_Vh9PTFfV"/>
+</button>
+<button class="product-thumbnail w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border-2 border-transparent transition-all" onclick="changeImage(this, 'IMG_4')">
+<img class="w-full h-full object-cover" data-alt="Nutritional label and organic certification logos on the back of the Mithila Makhana Peri Peri package. Professional, clean typography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_uEuWHa7s5Ph-deMIZuRUbU7Z8MsPe8PBLvgGKbe-h_BST3eCAW_jKdyo0pes-mgk6dJxbY03DyIU9SehwjLFzCZz5GAI0SqE3vlgh62cUIMORQNIpz81wR57xuvhuDkVgKocmmvuqwhgWGfjlUip-DlwxDgZKZHrEAT1d86INkAftM4OOHVK87izv8MsFM10T9v6uX0dB8qZNB1LUB9T62Y2HOLkeL7Xwh3zittk3sBkG-aI38-vE7M1zR11KoSAcqQCe9Q5LGA7"/>
+</button>
+</div>
+</div>
+<!-- Right Column: Product Info -->
+<div class="lg:col-span-5 flex flex-col">
+<h1 class="font-headline-lg text-headline-lg text-forest-deep mb-2">Roasted Peri Peri Makhana</h1>
+<div class="flex items-center gap-4 mb-6">
+<div class="flex items-center gap-1 text-gold-accent">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="text-on-surface-variant font-label-lg text-label-lg">(124 reviews)</span>
+</div>
+<div class="mb-8">
+<span class="text-3xl font-bold text-forest-deep">₹149.00</span>
+<span class="ml-2 text-on-surface-variant line-through text-lg">₹199.00</span>
+<span class="ml-3 bg-vermillion-clay/10 text-vermillion-clay px-2 py-1 rounded text-sm font-bold">25% OFF</span>
+</div>
+<!-- Size Selection -->
+<div class="mb-6">
+<label class="block font-label-lg text-label-lg text-forest-deep mb-3 uppercase tracking-wider">Size Selection</label>
+<div class="flex gap-3">
+<button class="px-6 py-2 border-2 border-primary bg-primary/5 text-primary rounded-lg font-bold transition-all">100g</button>
+<button class="px-6 py-2 border-2 border-outline-variant hover:border-primary transition-all rounded-lg font-bold">250g</button>
+<button class="px-6 py-2 border-2 border-outline-variant hover:border-primary transition-all rounded-lg font-bold">500g</button>
+</div>
+</div>
+<!-- Quantity & Buttons -->
+<div class="flex flex-col gap-4 mb-8">
+<div class="flex items-center gap-4">
+<div class="flex items-center border border-outline-variant rounded-lg bg-white overflow-hidden">
+<button class="px-4 py-3 hover:bg-surface-container transition-colors" onclick="decrementQty()">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<input class="w-12 text-center border-none focus:ring-0 font-bold bg-transparent" id="qty-input" min="1" type="number" value="1"/>
+<button class="px-4 py-3 hover:bg-surface-container transition-colors" onclick="incrementQty()">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+<button class="flex-1 bg-forest-deep text-white font-bold py-3.5 rounded-lg hover:bg-forest-deep/90 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">shopping_bag</span>
+                            ADD TO CART
+                        </button>
+</div>
+<button class="w-full bg-gold-accent text-forest-deep font-bold py-3.5 rounded-lg hover:bg-gold-accent/90 active:scale-[0.98] transition-all uppercase tracking-widest shadow-md shadow-gold-accent/20">
+                        BUY IT NOW
+                    </button>
+</div>
+<!-- Trust Badges -->
+<div class="grid grid-cols-3 gap-4 border-t border-b border-surface-container py-6 mb-8">
+<div class="flex flex-col items-center text-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">local_shipping</span>
+<span class="text-[11px] font-bold text-on-surface-variant uppercase">Fast Shipping</span>
+</div>
+<div class="flex flex-col items-center text-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">nutrition</span>
+<span class="text-[11px] font-bold text-on-surface-variant uppercase">Zero Cholesterol</span>
+</div>
+<div class="flex flex-col items-center text-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">workspace_premium</span>
+<span class="text-[11px] font-bold text-on-surface-variant uppercase">FSSAI Certified</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Details Section -->
+<div class="mt-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+<div class="lg:col-span-7">
+<div class="flex gap-8 border-b border-surface-container mb-8">
+<button class="pb-4 tab-active font-bold text-lg">Description</button>
+<button class="pb-4 text-on-surface-variant hover:text-forest-deep transition-colors font-bold text-lg">How It's Made</button>
+<button class="pb-4 text-on-surface-variant hover:text-forest-deep transition-colors font-bold text-lg">Reviews</button>
+</div>
+<div class="space-y-6">
+<p class="text-body-lg font-body-lg text-charcoal-text leading-relaxed">
+                        Crunchy, spicy, and tangy, our Roasted Peri Peri Makhana is the ultimate guilt-free snack. Sourced directly from the fertile wetlands of Mithila, Bihar, these fox nuts are hand-picked, slow-roasted to perfection, and infused with a bold blend of African Peri Peri spices.
+                    </p>
+<p class="text-on-surface-variant leading-relaxed">
+                        We avoid frying, ensuring that every bite retains the natural health benefits of Makhana. Rich in antioxidants and minerals, this snack is designed for those who refuse to compromise on flavor or health. Perfect for evening tea, post-workout fuel, or late-night cravings.
+                    </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+<div class="bg-surface-container-low p-6 rounded-xl flex items-start gap-4">
+<span class="material-symbols-outlined text-vermillion-clay bg-white p-3 rounded-full shadow-sm">local_fire_department</span>
+<div>
+<h4 class="font-bold text-forest-deep">Bold Heat</h4>
+<p class="text-sm text-on-surface-variant">Authentic Peri Peri spice blend with a citrusy kick.</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl flex items-start gap-4">
+<span class="material-symbols-outlined text-primary bg-white p-3 rounded-full shadow-sm">health_metrics</span>
+<div>
+<h4 class="font-bold text-forest-deep">Nutrient Dense</h4>
+<p class="text-sm text-on-surface-variant">Low glycemic index, rich in calcium and iron.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Nutritional Info Bento Card -->
+<div class="lg:col-span-5 bg-forest-deep text-white p-8 rounded-2xl relative overflow-hidden">
+<div class="madhubani-pattern absolute inset-0 pointer-events-none"></div>
+<h3 class="font-headline-md text-headline-md mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">menu_book</span>
+                    Nutritional Info
+                </h3>
+<div class="space-y-4 relative z-10">
+<div class="flex justify-between border-b border-white/10 pb-3">
+<span class="opacity-80">Serving Size</span>
+<span class="font-bold">100g</span>
+</div>
+<div class="flex justify-between border-b border-white/10 pb-3">
+<span class="opacity-80">Protein</span>
+<span class="font-bold text-primary-fixed">9g</span>
+</div>
+<div class="flex justify-between border-b border-white/10 pb-3">
+<span class="opacity-80">Calories</span>
+<span class="font-bold">347 kcal</span>
+</div>
+<div class="flex justify-between border-b border-white/10 pb-3">
+<span class="opacity-80">Total Carbohydrate</span>
+<span class="font-bold">77g</span>
+</div>
+<div class="flex justify-between border-b border-white/10 pb-3">
+<span class="opacity-80">Dietary Fiber</span>
+<span class="font-bold">0.6g</span>
+</div>
+<div class="flex justify-between border-b border-white/10 pb-3">
+<span class="opacity-80">Fat</span>
+<span class="font-bold">0.1g</span>
+</div>
+</div>
+<div class="mt-8 p-4 bg-white/5 rounded-lg border border-white/10">
+<p class="text-xs italic opacity-70">
+                        * Percent Daily Values are based on a 2,000 calorie diet. Your daily values may be higher or lower depending on your calorie needs.
+                    </p>
+</div>
+</div>
+</div>
+</main>
+<!-- Related Products -->
+<section class="bg-surface-container-low py-16 px-gutter">
+<div class="max-w-container-max mx-auto">
+<h2 class="font-headline-lg text-headline-lg text-forest-deep mb-10 text-center">You May Also Like</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<!-- Related Item 1 -->
+<div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all group">
+<div class="h-48 overflow-hidden rounded-t-xl bg-surface">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Roasted Pudina Makhana in a light mint green packaging, minimalist design, earthy tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5NsmIhYKjk-ZGv9B71AHhbeFYXMybFG322TGEXveSVmc8qM7dC_8Pjx278F8uojckxKXd1svq6FlwzC-lqBAJ2ZF8Yk8yfmq0TMMSULq4kG7tjNMuAcaRmJkz0n1uaGt86fZqySePsyTNL04tKiP12cBZ-JJtEax1Sn7VaHURRZxdT1PTPhNNemeUDoMgfb2YM6E3ma9RWijKNzLz-opLXbCjgAd0vqJctK4P9U8uPItV1nSBBe3JMk4gUC-hZBZDWekDPegIrURU"/>
+</div>
+<div class="p-4">
+<h4 class="font-bold text-forest-deep mb-1">Pudina Punch Makhana</h4>
+<p class="text-primary font-bold">₹139.00</p>
+</div>
+</div>
+<!-- Related Item 2 -->
+<div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all group">
+<div class="h-48 overflow-hidden rounded-t-xl bg-surface">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Classic Salted Makhana in cream packaging, showcasing a healthy natural snack vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV-bMRTBgJabJkiyrmQvYn-LYkG8l7WIeQiqUUsE94dKHCnneZCtojtGnDg__G5VozY4owqSSzfCnZxvwlDkqQ5jLR_6vmzdrwpZb-9JvgczCVUHb79ymx5n0JEFTIszkNcR7ENN7Z-0WRtU-WBny5lb8YdxWmHf0qKaK6aNdQL4bFKkrgT0bOF_orXt0MxBWNPyV7xb9qol5pOH-W7qzG0iTHyMirilgRFBKUPJjk8Hi2RcqQIIRoc242g6Wf79Qv-1ksCogIq09u"/>
+</div>
+<div class="p-4">
+<h4 class="font-bold text-forest-deep mb-1">Himalayan Salted</h4>
+<p class="text-primary font-bold">₹129.00</p>
+</div>
+</div>
+<!-- Related Item 3 -->
+<div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all group">
+<div class="h-48 overflow-hidden rounded-t-xl bg-surface">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Cheesy Garlic Makhana in warm yellow and white packaging, modern clean e-commerce style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5sBFTZjtpyMc_JJ5lEdhNhpifqjuUW6Wn2pmZXP77SKtN_kk7BqOE96cYA3_nUMQnWTlmbZBrhe1zLeBQ7GMQeIjTBGZ0LyywA4NnA9xz9dnsWFDkbuws_hqJcIwppilCNVOR-SRo4HvQ9ejfFZMa4SU_2B64lhsQy4UG90r8eTj4ojaHDMDoNlXG4qBYlNfTjKMCODt2IfTgncz48ERW4Lwe-21KPZx4Pg6OZJXaqaKll97h2ej-I2Nz1Dz8-zfLn9e9u9JVR61a"/>
+</div>
+<div class="p-4">
+<h4 class="font-bold text-forest-deep mb-1">Cheesy Garlic</h4>
+<p class="text-primary font-bold">₹159.00</p>
+</div>
+</div>
+<!-- Related Item 4 -->
+<div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all group">
+<div class="h-48 overflow-hidden rounded-t-xl bg-surface">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Tangy Tomato Makhana in vibrant red and white packaging, clean studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUjL56xN5StBssG4_hVUvK_0lBv8nh9-4pZpPMRQdWxYd1SjC6XSBOdbOaZn47oIoAimPEe5P0totR967mmkSdGuwxnV26VLTQhvOMOing-fyAdZya-qddjcKIIuh3wYicaUsUQ0_jVms-5K_0qVPeufLomgyEUkWqeziAfJlxSKe0SohEbskG33FmIkXv5Drg5xqiZ0yInAV42UdGcM_RXDG_sco2nbTmUWRSGPULDmXYuwvmFtOPs13zU1txY5bPedLiSjQvHnEG"/>
+</div>
+<div class="p-4">
+<h4 class="font-bold text-forest-deep mb-1">Tangy Tomato</h4>
+<p class="text-primary font-bold">₹149.00</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full py-12 px-gutter mt-auto flex flex-col md:flex-row justify-between max-w-container-max mx-auto bg-forest-deep">
+<div class="mb-8 md:mb-0">
+<h2 class="font-headline-lg text-headline-lg text-primary-fixed mb-4">Mithila Makhana</h2>
+<p class="text-primary-fixed-dim/80 max-w-sm mb-6">Preserving heritage, promoting health through the finest authentic makhana from the heart of Mithila.</p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full border border-primary-fixed/30 flex items-center justify-center text-primary-fixed hover:bg-primary-fixed hover:text-forest-deep transition-all" href="#">
+<span class="material-symbols-outlined text-xl">face_nod</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-primary-fixed/30 flex items-center justify-center text-primary-fixed hover:bg-primary-fixed hover:text-forest-deep transition-all" href="#">
+<span class="material-symbols-outlined text-xl">camera</span>
+</a>
+</div>
+</div>
+<div class="flex flex-wrap gap-12">
+<div>
+<h4 class="text-white font-bold mb-4 uppercase text-sm tracking-widest">Shop</h4>
+<ul class="space-y-2 text-surface-variant font-body-md text-body-md">
+<li><a class="hover:text-primary-fixed transition-colors" href="#">Roasted Snacks</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="#">Classic Pops</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="#">Gift Boxes</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="#">Combo Packs</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-white font-bold mb-4 uppercase text-sm tracking-widest">Support</h4>
+<ul class="space-y-2 text-surface-variant font-body-md text-body-md">
+<li><a class="hover:text-primary-fixed transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="#">Terms of Service</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="#">Shipping Info</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="#">Contact Us</a></li>
+</ul>
+</div>
+</div>
+<div class="w-full border-t border-white/10 mt-12 pt-8 text-center text-on-secondary-container/80 text-sm">
+            © 2024 Mithila Makhana. Preserving Heritage, Promoting Health.
+        </div>
+</footer>
+<script>
+        function changeImage(el, imgId) {
+            // In a real app, this would switch the src to the imgId mapping
+            // For now we simulate the UI behavior
+            document.querySelectorAll('.product-thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            el.classList.add('active');
+            
+            // Add a quick fade effect
+            const mainImg = document.getElementById('main-product-image');
+            mainImg.style.opacity = '0.5';
+            setTimeout(() => {
+                mainImg.style.opacity = '1';
+            }, 100);
+        }
+
+        function incrementQty() {
+            const input = document.getElementById('qty-input');
+            input.value = parseInt(input.value) + 1;
+        }
+
+        function decrementQty() {
+            const input = document.getElementById('qty-input');
+            if (parseInt(input.value) > 1) {
+                input.value = parseInt(input.value) - 1;
+            }
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('py-2', 'shadow-md');
+                header.classList.remove('py-4', 'shadow-sm');
+            } else {
+                header.classList.add('py-4', 'shadow-sm');
+                header.classList.remove('py-2', 'shadow-md');
+            }
+        });
+    </script>
+</body></html>

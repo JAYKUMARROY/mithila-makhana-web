@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login - Mithila Makhana | Authentic Heritage Superfood</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-primary-fixed": "#241a00",
+                "outline-variant": "#d0c5af",
+                "tertiary": "#ab3425",
+                "tertiary-fixed-dim": "#ffb4a8",
+                "error-container": "#ffdad6",
+                "primary-fixed": "#ffe088",
+                "on-background": "#1b1c1a",
+                "inverse-primary": "#e9c349",
+                "on-tertiary-container": "#871a0e",
+                "on-tertiary": "#ffffff",
+                "on-tertiary-fixed-variant": "#8a1c10",
+                "surface-bright": "#fbf9f5",
+                "forest-deep": "#2C4C3B",
+                "on-error": "#ffffff",
+                "surface-tint": "#735c00",
+                "tertiary-container": "#ff9685",
+                "surface-dim": "#dbdad6",
+                "on-secondary-fixed": "#002113",
+                "surface-container-lowest": "#ffffff",
+                "surface-container-high": "#eae8e4",
+                "secondary-fixed": "#c7ebd4",
+                "on-secondary": "#ffffff",
+                "inverse-surface": "#30312e",
+                "outline": "#7f7663",
+                "on-secondary-fixed-variant": "#2d4d3c",
+                "on-surface-variant": "#4d4635",
+                "surface-container-highest": "#e4e2de",
+                "primary": "#735c00",
+                "background": "#fbf9f5",
+                "on-primary-fixed-variant": "#574500",
+                "tertiary-fixed": "#ffdad4",
+                "on-surface": "#1b1c1a",
+                "on-primary-container": "#554300",
+                "vermillion-clay": "#E05A47",
+                "cream-bg": "#FDFBF7",
+                "surface-variant": "#e4e2de",
+                "secondary-container": "#c4e8d1",
+                "inverse-on-surface": "#f2f0ed",
+                "error": "#ba1a1a",
+                "on-primary": "#ffffff",
+                "charcoal-text": "#1F2937",
+                "gold-accent": "#D4AF37",
+                "surface-container": "#efeeea",
+                "secondary-fixed-dim": "#abcfb8",
+                "on-secondary-container": "#496a57",
+                "surface-container-low": "#f5f3ef",
+                "on-tertiary-fixed": "#410100",
+                "on-error-container": "#93000a",
+                "primary-fixed-dim": "#e9c349",
+                "surface": "#fbf9f5",
+                "secondary": "#456553",
+                "primary-container": "#d4af37"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "margin-mobile": "16px",
+                "unit": "8px",
+                "gutter": "24px",
+                "margin-desktop": "40px",
+                "container-max": "1280px"
+            },
+            "fontFamily": {
+                "headline-lg": ["Outfit"],
+                "body-lg": ["Inter"],
+                "body-md": ["Inter"],
+                "display-lg": ["Outfit"],
+                "label-lg": ["Inter"],
+                "headline-md": ["Outfit"],
+                "display-lg-mobile": ["Outfit"],
+                "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "display-lg-mobile": ["36px", {"lineHeight": "42px", "fontWeight": "700"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .madhubani-pattern {
+            background-image: radial-gradient(#D4AF37 0.5px, transparent 0.5px);
+            background-size: 16px 16px;
+            opacity: 0.1;
+        }
+        .form-transition {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+        }
+        .auth-container {
+            min-height: calc(100vh - 80px - 200px); /* Adjust based on Nav/Footer heights */
+        }
+    </style>
+</head>
+<body class="bg-cream-bg text-on-surface font-body-md selection:bg-gold-accent/30">
+<!-- TopNavBar -->
+<header class="bg-cream-bg dark:bg-surface-container-lowest w-full top-0 shadow-sm dark:shadow-none sticky z-50">
+<div class="flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md font-bold text-forest-deep dark:text-secondary-fixed">
+                Mithila Makhana
+            </div>
+<nav class="hidden md:flex items-center space-x-8">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 font-label-lg uppercase tracking-wider" href="#">Shop</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 font-label-lg uppercase tracking-wider" href="#">Story</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 font-label-lg uppercase tracking-wider" href="#">Blog</a>
+</nav>
+<div class="flex items-center space-x-6">
+<button class="active:scale-95 transition-transform text-forest-deep">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="active:scale-95 transition-transform text-forest-deep">
+<span class="material-symbols-outlined">shopping_cart</span>
+</button>
+<button class="active:scale-95 transition-transform text-forest-deep border-b-2 border-primary pb-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+</button>
+</div>
+</div>
+</header>
+<main class="auth-container flex items-center justify-center py-16 px-4 relative overflow-hidden">
+<!-- Background Pattern -->
+<div class="absolute inset-0 madhubani-pattern pointer-events-none"></div>
+<!-- Auth Card Container -->
+<div class="max-w-5xl w-full bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[600px] z-10">
+<!-- Left Side: Visual/Heritage -->
+<div class="hidden md:block w-1/2 relative bg-forest-deep overflow-hidden">
+<div class="absolute inset-0 opacity-40 mix-blend-overlay">
+<div class="absolute inset-0 bg-gradient-to-t from-forest-deep via-transparent to-transparent z-10"></div>
+<img class="w-full h-full object-cover" data-alt="A cinematic, high-quality photograph of premium white Makhana (Fox Nuts) scattered artistically on a traditional Mithila hand-woven textile. The lighting is warm and golden, reminiscent of a Bihar sunset, highlighting the porous texture of the makhana. In the background, a subtle, out-of-focus Madhubani painting adds a touch of ancient heritage. The overall mood is luxurious, authentic, and deeply rooted in Indian tradition, using a palette of deep greens and earthy golds." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWBVJx2MdA2fS_DSyPkiRYLhSIXaNTQcHc0mhePDzPt_3KeAZznUyLF31C7qyccIM1Q4Wv4zlPbOSAKYMqdDWA1PI3M7Wt4T9lCGNNdo7V1DWWDTVQEKZbqHaqXMTP_eJKpc8rQib0h9iAKko-fLdvbgvfKvkQeNtAcqzxXMtAbyzaUiQ7oUejdlzlNbeVdud6_EQgbZ9wfFKaaUdJmPrSxI4iJrSgEVK4CXDDeAvnPmkM7CI_QgGHjkLVXU_mbazHOBg24mJBQ_fu"/>
+</div>
+<div class="absolute inset-0 flex flex-col justify-end p-12 z-20">
+<h2 class="font-display-lg text-display-lg text-white mb-4">Taste the Heritage</h2>
+<p class="font-body-lg text-body-lg text-secondary-fixed max-w-sm">
+                        Experience the nutritional richness of Mithila's finest GI-tagged superfood, delivered from the heart of Bihar to your doorstep.
+                    </p>
+<div class="mt-8 flex items-center gap-2">
+<div class="w-12 h-px bg-gold-accent"></div>
+<span class="font-label-sm text-gold-accent tracking-[0.2em] uppercase">Mithila Makhana Store</span>
+</div>
+</div>
+</div>
+<!-- Right Side: Forms -->
+<div class="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center bg-white relative">
+<!-- Login Form -->
+<div class="form-transition opacity-100 translate-x-0" id="login-section">
+<div class="mb-10">
+<h1 class="font-headline-lg text-headline-lg text-forest-deep mb-2">Welcome Back</h1>
+<p class="font-body-md text-on-surface-variant">Sign in to access your curated collection of heritage snacks.</p>
+</div>
+<form class="space-y-6" onsubmit="event.preventDefault();">
+<div>
+<label class="block font-label-lg text-on-surface-variant mb-2" for="email">Email Address</label>
+<input class="w-full px-4 py-3 bg-cream-bg border-0 border-b-2 border-outline-variant focus:border-gold-accent focus:ring-0 transition-colors text-charcoal-text placeholder:text-outline font-body-md" id="email" placeholder="Enter your email" type="email"/>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="block font-label-lg text-on-surface-variant" for="password">Password</label>
+<a class="text-label-sm text-primary hover:text-gold-accent transition-colors" href="#">Forgot Password?</a>
+</div>
+<input class="w-full px-4 py-3 bg-cream-bg border-0 border-b-2 border-outline-variant focus:border-gold-accent focus:ring-0 transition-colors text-charcoal-text placeholder:text-outline font-body-md" id="password" placeholder="••••••••" type="password"/>
+</div>
+<button class="w-full py-4 bg-gold-accent text-on-primary-fixed font-headline-md rounded-lg shadow-sm hover:bg-gold-accent/90 hover:-translate-y-0.5 active:scale-95 transition-all duration-200">
+                            Sign In
+                        </button>
+</form>
+<!-- Divider -->
+<div class="relative my-8">
+<div class="absolute inset-0 flex items-center"><div class="w-full border-t border-outline-variant"></div></div>
+<div class="relative flex justify-center text-label-sm uppercase tracking-widest"><span class="bg-white px-4 text-outline">Or continue with</span></div>
+</div>
+<!-- Social Login -->
+<div class="grid grid-cols-1 gap-4">
+<button class="flex items-center justify-center gap-3 px-4 py-3 border border-outline-variant rounded-lg hover:bg-cream-bg transition-colors active:scale-[0.98]">
+<svg class="w-5 h-5" viewbox="0 0 24 24">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+<span class="font-label-lg text-on-surface-variant">Google Account</span>
+</button>
+</div>
+<p class="mt-8 text-center font-body-md text-on-surface-variant">
+                        Don't have an account? 
+                        <button class="text-forest-deep font-bold hover:text-gold-accent underline underline-offset-4 transition-colors" onclick="toggleAuth()">Sign Up</button>
+</p>
+</div>
+<!-- Signup Section (Initially hidden) -->
+<div class="form-transition opacity-0 translate-x-12 absolute inset-0 p-8 md:p-12 lg:p-16 flex flex-col justify-center hidden" id="signup-section">
+<div class="mb-10">
+<h1 class="font-headline-lg text-headline-lg text-forest-deep mb-2">Create Account</h1>
+<p class="font-body-md text-on-surface-variant">Join our community of makhana connoisseurs today.</p>
+</div>
+<form class="space-y-4" onsubmit="event.preventDefault();">
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block font-label-lg text-on-surface-variant mb-1" for="fname">First Name</label>
+<input class="w-full px-4 py-2 bg-cream-bg border-0 border-b-2 border-outline-variant focus:border-gold-accent focus:ring-0 transition-colors text-charcoal-text font-body-md" id="fname" type="text"/>
+</div>
+<div>
+<label class="block font-label-lg text-on-surface-variant mb-1" for="lname">Last Name</label>
+<input class="w-full px-4 py-2 bg-cream-bg border-0 border-b-2 border-outline-variant focus:border-gold-accent focus:ring-0 transition-colors text-charcoal-text font-body-md" id="lname" type="text"/>
+</div>
+</div>
+<div>
+<label class="block font-label-lg text-on-surface-variant mb-1" for="reg-email">Email Address</label>
+<input class="w-full px-4 py-2 bg-cream-bg border-0 border-b-2 border-outline-variant focus:border-gold-accent focus:ring-0 transition-colors text-charcoal-text font-body-md" id="reg-email" type="email"/>
+</div>
+<div>
+<label class="block font-label-lg text-on-surface-variant mb-1" for="reg-password">Password</label>
+<input class="w-full px-4 py-2 bg-cream-bg border-0 border-b-2 border-outline-variant focus:border-gold-accent focus:ring-0 transition-colors text-charcoal-text font-body-md" id="reg-password" type="password"/>
+</div>
+<div class="flex items-center gap-2 pt-2">
+<input class="rounded border-outline-variant text-forest-deep focus:ring-forest-deep" id="terms" type="checkbox"/>
+<label class="text-label-sm text-on-surface-variant" for="terms">I agree to the <a class="text-primary underline" href="#">Terms &amp; Conditions</a></label>
+</div>
+<button class="w-full py-4 bg-forest-deep text-white font-headline-md rounded-lg shadow-sm hover:bg-forest-deep/90 active:scale-95 transition-all duration-200">
+                            Create Account
+                        </button>
+</form>
+<p class="mt-8 text-center font-body-md text-on-surface-variant">
+                        Already have an account? 
+                        <button class="text-forest-deep font-bold hover:text-gold-accent underline underline-offset-4 transition-colors" onclick="toggleAuth()">Sign In</button>
+</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-forest-deep dark:bg-surface-container-lowest w-full mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop py-12 w-full max-w-container-max mx-auto">
+<div class="flex flex-col items-center md:items-start mb-8 md:mb-0">
+<div class="font-headline-sm text-headline-sm text-gold-accent dark:text-primary-fixed mb-4">
+                    Mithila Makhana
+                </div>
+<p class="text-secondary-fixed dark:text-outline-variant font-body-md text-center md:text-left max-w-xs opacity-70">
+                    Sustainable snacking from the ponds of Bihar, preserving heritage one puff at a time.
+                </p>
+</div>
+<div class="flex flex-wrap justify-center gap-8 mb-8 md:mb-0">
+<a class="text-secondary-fixed dark:text-outline-variant hover:text-white transition-colors font-body-md" href="#">Privacy Policy</a>
+<a class="text-secondary-fixed dark:text-outline-variant hover:text-white transition-colors font-body-md" href="#">Terms of Service</a>
+<a class="text-secondary-fixed dark:text-outline-variant hover:text-white transition-colors font-body-md" href="#">Shipping Info</a>
+<a class="text-secondary-fixed dark:text-outline-variant hover:text-white transition-colors font-body-md" href="#">Contact Us</a>
+</div>
+<div class="flex space-x-4">
+<div class="w-10 h-10 rounded-full border border-gold-accent/30 flex items-center justify-center text-gold-accent hover:bg-gold-accent hover:text-forest-deep transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">public</span>
+</div>
+<div class="w-10 h-10 rounded-full border border-gold-accent/30 flex items-center justify-center text-gold-accent hover:bg-gold-accent hover:text-forest-deep transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">mail</span>
+</div>
+</div>
+</div>
+<div class="border-t border-white/10 w-full py-6 text-center">
+<p class="text-secondary-fixed opacity-50 text-label-sm">
+                © 2024 Mithila Makhana. Preserving Heritage, Promoting Health.
+            </p>
+</div>
+</footer>
+<script>
+        function toggleAuth() {
+            const loginSection = document.getElementById('login-section');
+            const signupSection = document.getElementById('signup-section');
+
+            if (signupSection.classList.contains('hidden')) {
+                // To Signup
+                loginSection.classList.add('opacity-0', '-translate-x-12');
+                setTimeout(() => {
+                    loginSection.classList.add('hidden');
+                    signupSection.classList.remove('hidden');
+                    setTimeout(() => {
+                        signupSection.classList.remove('opacity-0', 'translate-x-12');
+                        signupSection.classList.add('opacity-100', 'translate-x-0');
+                    }, 50);
+                }, 400);
+            } else {
+                // To Login
+                signupSection.classList.add('opacity-0', 'translate-x-12');
+                setTimeout(() => {
+                    signupSection.classList.add('hidden');
+                    loginSection.classList.remove('hidden');
+                    setTimeout(() => {
+                        loginSection.classList.remove('opacity-0', '-translate-x-12');
+                        loginSection.classList.add('opacity-100', 'translate-x-0');
+                    }, 50);
+                }, 400);
+            }
+        }
+    </script>
+</body></html>

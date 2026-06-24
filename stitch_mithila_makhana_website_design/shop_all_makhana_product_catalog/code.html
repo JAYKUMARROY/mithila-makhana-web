@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mithila Makhana | Premium Superfoods</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#efeeea",
+                    "tertiary": "#ab3425",
+                    "forest-deep": "#2C4C3B",
+                    "gold-accent": "#D4AF37",
+                    "tertiary-fixed-dim": "#ffb4a8",
+                    "secondary-container": "#c4e8d1",
+                    "on-primary-container": "#554300",
+                    "on-tertiary-container": "#871a0e",
+                    "primary-fixed-dim": "#e9c349",
+                    "on-surface-variant": "#4d4635",
+                    "outline-variant": "#d0c5af",
+                    "on-secondary-container": "#496a57",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-bright": "#fbf9f5",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#ff9685",
+                    "error": "#ba1a1a",
+                    "surface-container-high": "#eae8e4",
+                    "error-container": "#ffdad6",
+                    "primary-container": "#d4af37",
+                    "inverse-surface": "#30312e",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed": "#c7ebd4",
+                    "background": "#fbf9f5",
+                    "on-secondary-fixed": "#002113",
+                    "on-error": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#735c00",
+                    "outline": "#7f7663",
+                    "secondary": "#456553",
+                    "on-primary-fixed-variant": "#574500",
+                    "surface-container-highest": "#e4e2de",
+                    "inverse-on-surface": "#f2f0ed",
+                    "on-tertiary-fixed": "#410100",
+                    "vermillion-clay": "#E05A47",
+                    "surface-dim": "#dbdad6",
+                    "primary-fixed": "#ffe088",
+                    "on-surface": "#1b1c1a",
+                    "surface-variant": "#e4e2de",
+                    "on-secondary-fixed-variant": "#2d4d3c",
+                    "surface-container-low": "#f5f3ef",
+                    "surface": "#fbf9f5",
+                    "tertiary-fixed": "#ffdad4",
+                    "secondary-fixed-dim": "#abcfb8",
+                    "charcoal-text": "#1F2937",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#241a00",
+                    "on-background": "#1b1c1a",
+                    "primary": "#735c00",
+                    "cream-bg": "#FDFBF7",
+                    "on-tertiary-fixed-variant": "#8a1c10",
+                    "inverse-primary": "#e9c349"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "margin-desktop": "40px",
+                    "unit": "8px",
+                    "container-max": "1280px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Outfit"],
+                    "headline-lg": ["Outfit"],
+                    "label-sm": ["Inter"],
+                    "display-lg-mobile": ["Outfit"],
+                    "body-md": ["Inter"],
+                    "label-lg": ["Inter"],
+                    "display-lg": ["Outfit"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "42px", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .product-card-hover:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 20px 25px -5px rgba(44, 76, 59, 0.08);
+        }
+        .mithila-pattern {
+            background-image: radial-gradient(#D4AF37 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+            opacity: 0.1;
+        }
+    </style>
+</head>
+<body class="bg-cream-bg text-on-surface font-body-md selection:bg-gold-accent selection:text-white">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-cream-bg shadow-sm flex justify-between items-center px-6 md:px-gutter py-4 max-w-full mx-auto">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold text-forest-deep">Mithila Makhana</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-label-lg text-label-lg text-primary border-b-2 border-primary pb-1 hover:text-primary transition-colors duration-200" href="#">Shop</a>
+<a class="font-label-lg text-label-lg text-forest-deep hover:text-primary transition-colors duration-200" href="#">Story</a>
+<a class="font-label-lg text-label-lg text-forest-deep hover:text-primary transition-colors duration-200" href="#">Blog</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:text-primary transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 hover:text-primary transition-colors active:scale-95 duration-150 relative">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute top-0 right-0 bg-tertiary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">2</span>
+</button>
+<button class="p-2 hover:text-primary transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined">person</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-20 max-w-container-max mx-auto px-6 md:px-gutter">
+<!-- Hero Title Section -->
+<div class="relative mb-12 py-10">
+<div class="absolute inset-0 mithila-pattern rounded-xl"></div>
+<div class="relative z-10 text-center md:text-left">
+<h1 class="font-headline-lg text-headline-lg text-forest-deep mb-2">Heritage Superfoods</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Discover the nutritional power of authentic Gorgon Nuts from the heart of Mithila. Sourced sustainably, processed with tradition.</p>
+</div>
+</div>
+<div class="flex flex-col lg:flex-row gap-10">
+<!-- Sidebar Filters -->
+<aside class="w-full lg:w-64 space-y-8">
+<div>
+<h3 class="font-label-lg text-label-lg text-forest-deep uppercase tracking-wider mb-4">Category</h3>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-body-md text-on-surface-variant group-hover:text-forest-deep transition-colors">Raw Makhana</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-body-md text-on-surface-variant group-hover:text-forest-deep transition-colors">Roasted Snacks</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-body-md text-on-surface-variant group-hover:text-forest-deep transition-colors">Flavored Delights</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-body-md text-on-surface-variant group-hover:text-forest-deep transition-colors">Premium Gift Boxes</span>
+</label>
+</div>
+</div>
+<div class="pt-6 border-t border-surface-container-highest">
+<h3 class="font-label-lg text-label-lg text-forest-deep uppercase tracking-wider mb-4">Flavor Profile</h3>
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-1.5 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary hover:text-primary transition-all">Spicy</button>
+<button class="px-3 py-1.5 rounded-full bg-secondary-container text-on-secondary-container border border-secondary-container text-label-sm font-label-sm">Sweet</button>
+<button class="px-3 py-1.5 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary hover:text-primary transition-all">Salted</button>
+<button class="px-3 py-1.5 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary hover:text-primary transition-all">Zesty</button>
+</div>
+</div>
+<div class="pt-6 border-t border-surface-container-highest">
+<h3 class="font-label-lg text-label-lg text-forest-deep uppercase tracking-wider mb-4">Price Range</h3>
+<input class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" max="2000" min="0" step="100" type="range"/>
+<div class="flex justify-between mt-2 font-label-sm text-on-surface-variant">
+<span>₹0</span>
+<span>₹2,000+</span>
+</div>
+</div>
+<!-- Featured Badge Highlight -->
+<div class="p-4 bg-secondary-container rounded-xl border border-secondary-fixed">
+<div class="flex items-center gap-2 mb-2 text-forest-deep">
+<span class="material-symbols-outlined">verified</span>
+<span class="font-label-lg text-label-lg">GI Tagged Authenticity</span>
+</div>
+<p class="text-label-sm font-label-sm text-on-secondary-container/80">Every pack of our Makhana carries the Geographical Indication tag, ensuring it originates truly from the Mithila region.</p>
+</div>
+</aside>
+<!-- Product Grid -->
+<section class="flex-1">
+<div class="flex justify-between items-center mb-8">
+<span class="font-label-lg text-label-lg text-on-surface-variant">Showing 24 products</span>
+<div class="flex items-center gap-2">
+<span class="font-label-lg text-label-lg text-forest-deep">Sort by:</span>
+<select class="bg-transparent border-none font-label-lg text-label-lg text-primary focus:ring-0 cursor-pointer">
+<option>Best Selling</option>
+<option>Newest Arrivals</option>
+<option>Price: Low to High</option>
+<option>Price: High to Low</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+<!-- Product Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm product-card-hover transition-all duration-300 flex flex-col group">
+<div class="relative aspect-square bg-[#F3F4F6] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A professional studio product shot of raw white Phool Makhana popping against a minimalist off-white background. The lighting is soft and directional, highlighting the organic texture and puffy shape of the lotus seeds. The aesthetic is clean, premium, and earthy, emphasizing the natural purity of the superfood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmV50U8l36gnxxtNDLj3M1QeGWhcKxn7JxA0eTTgDsI2eGkQEiW3PwOMd2BIoMVl1etwtRPbEZZBZsGYQYBe2vOC-qsUDJuxjd_fzKATj4glEzXQflDlC3u_V6beniSmZFyUAjXfaB1-31YZjAFvknJm5_XesMXfBo73Wu8hGGAt7nYe5nWlYJMjGghi3XaZA1Dsg5LBUY0ENiekCxvUFnPIQVz--Z5NdSg28RZ89nLHx7lH_MzaKEM8UUbpA_Np5v_z6YryXfWZHh"/>
+<div class="absolute top-3 left-3 flex flex-col gap-2">
+<span class="bg-gold-accent text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                                    GI Tagged
+                                </span>
+<span class="bg-forest-deep text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">Organic</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-headline-md text-forest-deep mb-1">Raw Phool Makhana</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-4">Grade A Large Variety - 250g</p>
+<div class="mt-auto flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-charcoal-text">₹299</span>
+<button class="bg-forest-deep text-white px-4 py-2 rounded-lg font-label-lg text-label-lg hover:bg-opacity-90 active:scale-95 transition-all">Add to Cart</button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm product-card-hover transition-all duration-300 flex flex-col group">
+<div class="relative aspect-square bg-[#F3F4F6] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Close up of roasted Peri Peri flavored makhana snacks in a modern ceramic bowl. The makhana are dusted with a vibrant reddish-orange spice blend. Warm, inviting sunlight filters through a window, casting soft shadows. The overall mood is appetizing, healthy, and high-end, featuring a sophisticated deep forest green and gold palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-Skk3pgVfD5nP0CTfOT9eSwgE8BUmayXz88eJJS0wFlIroel_YjBO_ZWb8sZIDetn58piyzVyjczLwkRt6gbxE_oWsqqx_R8xu3Ix1VRkkvz4hQWwAmLZ-wio1gjXNHP2q0uH6Y57TWLK6RrCCDnnT9CakR6WzGN2xcUTNHNpEZkEvHN8TUe6kDyzhq_om1FEhtchdAHbD18dPKU_vI2mJiJVRUVBvhTHhz4hOCLtuNh_BAhMVBgCcBXcrraTZR46BxleNFh3TyDl"/>
+<div class="absolute top-3 left-3 flex flex-col gap-2">
+<span class="bg-vermillion-clay text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">Best Seller</span>
+<span class="bg-gold-accent text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">Organic</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-headline-md text-forest-deep mb-1">Roasted Peri Peri</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-4">Spicy & Tangy - 100g</p>
+<div class="mt-auto flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-charcoal-text">₹149</span>
+<button class="bg-forest-deep text-white px-4 py-2 rounded-lg font-label-lg text-label-lg hover:bg-opacity-90 active:scale-95 transition-all">Add to Cart</button>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm product-card-hover transition-all duration-300 flex flex-col group">
+<div class="relative aspect-square bg-[#F3F4F6] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Glistening caramel-coated makhana seeds arranged artfully on a dark stone slab. The caramel has a rich amber glow, looking crunchy and sweet. Subtle golden light highlights the textures. The setting is luxurious and minimalist, using a deep charcoal and earthy gold color scheme to convey a premium snacking experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBM4GfKlLF_f76uDG_wr0vIJ2Xxh1BG86GpnsANdMQxC5BsbRGHG5KYIWy2hurCEdrhe5IfC4k27EUUZFxgGc1k3v01ns9JL2jujWifah6Hx0jFbNaMkTVVoBcJGpduPcYwONQBJhATBqJI3XEitUosL9s6_mNPa_SCU7gIoSTE8g9y4_MiCHkeluQVKRwfXzqnMv1CsNGhtSlqiWVySl14RVCarjJ11KIRNtsOj02zjKLhj3GcgKKcSTk87s__F3e6SVJxzWLao0GW"/>
+<div class="absolute top-3 left-3 flex flex-col gap-2">
+<span class="bg-forest-deep text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">New Arrival</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-headline-md text-forest-deep mb-1">Caramel Crunch</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-4">Gourmet Sweetness - 150g</p>
+<div class="mt-auto flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-charcoal-text">₹199</span>
+<button class="bg-forest-deep text-white px-4 py-2 rounded-lg font-label-lg text-label-lg hover:bg-opacity-90 active:scale-95 transition-all">Add to Cart</button>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm product-card-hover transition-all duration-300 flex flex-col group">
+<div class="relative aspect-square bg-[#F3F4F6] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Lightly roasted makhana seasoned with Himalayan pink salt, scattered across a textured linen cloth. A small block of pink salt sits nearby. The lighting is bright and natural, creating a high-key, fresh, and healthy aesthetic. The palette is dominated by whites, light greys, and soft pink accents, fitting a modern minimalist health-conscious lifestyle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8XAyU9BBc3XrI99b1OwXpHwd2fXQVRMSizrWT4Kg6FX6ILXkZC8Gvs0gxOyftzexbmlhEdfbnV0wSEjNXfUI5JAvL0oHJrONZDZvUmukOwq2baMLft6u52VnWOjqx0yQtChk9Whh_18rrdhdjToxM0xugAG61PbS4ZP94rxH0OjnA6Zw7p6zHnd2lDIeOFOYVMIOZQoQNKeuz0yIXZGmu0R3JEqfN5193JjYuPVQUoTK4l_gAo3byIexiTVx4LMiC98bThi6M62eC"/>
+<div class="absolute top-3 left-3 flex flex-col gap-2">
+<span class="bg-gold-accent text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                                    GI Tagged
+                                </span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-headline-md text-forest-deep mb-1">Himalayan Salted</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-4">Roasted in Olive Oil - 100g</p>
+<div class="mt-auto flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-charcoal-text">₹129</span>
+<button class="bg-forest-deep text-white px-4 py-2 rounded-lg font-label-lg text-label-lg hover:bg-opacity-90 active:scale-95 transition-all">Add to Cart</button>
+</div>
+</div>
+</div>
+<!-- Product Card 5 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm product-card-hover transition-all duration-300 flex flex-col group">
+<div class="relative aspect-square bg-[#F3F4F6] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A luxury gift hamper box featuring various flavors of Mithila Makhana. The box is elegant, in a deep forest green with gold foil traditional Madhubani geometric patterns. The contents are beautifully arranged with silk ribbons. Premium lighting creates a celebratory and high-end feel, suitable for corporate or heritage-themed gifts." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMq0L20JVXF_Hh8a_mV00i88Vv9d78FbWqD9RchjrGco1GpVxVVkRYZkhTSTyX8_XmAG8qhTOclvl_NaE4kvqWZKBx3PfQWUZHhfiFZn3zCWMhJdRj5CbPd5IQT2CV6lbQMSoA1D8rMdg06yxsPXkFfNXCmmNB_uVK478T1Qk10Ur5t2hrRLKqojezpvSU-9R-tdWzXN0BWVF0b8xdFHA0dhAox3vvt1lmzw85gAlMWszDG67N1U5ZB18RZW24iG6I6SmdAzv4k-dV"/>
+<div class="absolute top-3 left-3 flex flex-col gap-2">
+<span class="bg-tertiary text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">Heritage Choice</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-headline-md text-forest-deep mb-1">Heritage Gift Box</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-4">Curated 4-Pack Selection</p>
+<div class="mt-auto flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-charcoal-text">₹899</span>
+<button class="bg-forest-deep text-white px-4 py-2 rounded-lg font-label-lg text-label-lg hover:bg-opacity-90 active:scale-95 transition-all">Add to Cart</button>
+</div>
+</div>
+</div>
+<!-- Product Card 6 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm product-card-hover transition-all duration-300 flex flex-col group">
+<div class="relative aspect-square bg-[#F3F4F6] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Makhana seasoned with aromatic Indian spices like turmeric, cumin, and black pepper. The seeds have a beautiful golden hue. The composition is dynamic, with spices artfully spilled around the seeds. The style is rustic-modern, with a clean off-white background and premium forest green accents in the props." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBl9Che_cbL2aFWLbEtSNMAhLYaUkzE-CYM-p65fsYSg3Oiqt9QUpsIH63ehpnZqZHaIBFn2aDJep2oZfacuDkGHthr0HmMUhV-HNykkNJbcEcJFR81HMaDO41Dvsjo-uxeawkbkCBD7VCJzDsmdb0iJWmRHQrwFtWz0FYrl9qunpf_dx7UMTgXjO-UobONBzO-DqzT3dKaOgaPHeZmBU7-gJgtY_1s-ATQt6fX0BqUXdJErg__5M5UU-BOU8OFkGfL_idlvxy_GhWW"/>
+<div class="absolute top-3 left-3 flex flex-col gap-2">
+<span class="bg-forest-deep text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">Organic</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-headline-md text-forest-deep mb-1">Masala Magic</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-4">Indian Spiced - 100g</p>
+<div class="mt-auto flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-charcoal-text">₹139</span>
+<button class="bg-forest-deep text-white px-4 py-2 rounded-lg font-label-lg text-label-lg hover:bg-opacity-90 active:scale-95 transition-all">Add to Cart</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="mt-16 flex justify-center items-center gap-4">
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:border-primary hover:text-primary transition-all disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 rounded-full bg-primary text-white font-label-lg text-label-lg flex items-center justify-center">1</button>
+<button class="w-10 h-10 rounded-full border border-outline-variant font-label-lg text-label-lg flex items-center justify-center hover:border-primary hover:text-primary transition-all">2</button>
+<button class="w-10 h-10 rounded-full border border-outline-variant font-label-lg text-label-lg flex items-center justify-center hover:border-primary hover:text-primary transition-all">3</button>
+</div>
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:border-primary hover:text-primary transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-forest-deep text-primary-fixed w-full py-12 px-6 md:px-gutter mt-auto flex flex-col md:flex-row justify-between max-w-full mx-auto">
+<div class="mb-10 md:mb-0 max-w-xs">
+<span class="font-headline-lg text-headline-lg text-primary-fixed mb-4 block">Mithila Makhana</span>
+<p class="font-body-md text-body-md text-on-secondary-container/80 mb-6">Preserving the 5000-year-old heritage of the Mithila region through artisanal superfoods.</p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full border border-primary-fixed/30 flex items-center justify-center hover:bg-primary-fixed hover:text-forest-deep transition-all" href="#">
+<span class="material-symbols-outlined text-sm">public</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-primary-fixed/30 flex items-center justify-center hover:bg-primary-fixed hover:text-forest-deep transition-all" href="#">
+<span class="material-symbols-outlined text-sm">mail</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-primary-fixed/30 flex items-center justify-center hover:bg-primary-fixed hover:text-forest-deep transition-all" href="#">
+<span class="material-symbols-outlined text-sm">share</span>
+</a>
+</div>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-8 md:gap-16">
+<div class="flex flex-col gap-3">
+<span class="font-label-lg text-label-lg text-gold-accent uppercase tracking-widest mb-2">Explore</span>
+<a class="font-body-md text-body-md text-on-secondary-container/80 hover:text-primary-fixed transition-opacity" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-secondary-container/80 hover:text-primary-fixed transition-opacity" href="#">Terms of Service</a>
+</div>
+<div class="flex flex-col gap-3">
+<span class="font-label-lg text-label-lg text-gold-accent uppercase tracking-widest mb-2">Company</span>
+<a class="font-body-md text-body-md text-on-secondary-container/80 hover:text-primary-fixed transition-opacity" href="#">Shipping Info</a>
+<a class="font-body-md text-body-md text-on-secondary-container/80 hover:text-primary-fixed transition-opacity" href="#">Contact Us</a>
+</div>
+<div class="flex flex-col gap-4 col-span-2 sm:col-span-1">
+<span class="font-label-lg text-label-lg text-gold-accent uppercase tracking-widest mb-2">Newsletter</span>
+<div class="flex flex-col gap-2">
+<input class="bg-forest-deep border border-primary-fixed/30 rounded-lg px-4 py-2 text-primary-fixed focus:ring-1 focus:ring-gold-accent placeholder:text-primary-fixed/50" placeholder="Your Email" type="email"/>
+<button class="bg-gold-accent text-forest-deep font-label-lg text-label-lg py-2 rounded-lg hover:opacity-90 transition-opacity">Join Circle</button>
+</div>
+</div>
+</div>
+<div class="w-full mt-12 pt-8 border-t border-primary-fixed/10 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-body-md text-body-md text-on-secondary-container/60 text-center md:text-left">© 2024 Mithila Makhana. Preserving Heritage, Promoting Health.</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-gold-accent">eco</span>
+<span class="text-label-sm font-label-sm text-on-secondary-container/80 uppercase">Sustainably Harvested</span>
+</div>
+</div>
+</footer>
+<!-- FAB (Suppressed on Listing pages per mandate, but adding a "Scroll to top" micro-interaction instead) -->
+<button class="fixed bottom-8 right-8 w-12 h-12 bg-gold-accent text-forest-deep rounded-full shadow-lg flex items-center justify-center transform translate-y-24 transition-all duration-300 hover:scale-110 active:scale-95 z-40" id="scrollTop">
+<span class="material-symbols-outlined">arrow_upward</span>
+</button>
+<script>
+        // Scroll to top button visibility logic
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                scrollTopBtn.classList.remove('translate-y-24');
+                scrollTopBtn.classList.add('translate-y-0');
+            } else {
+                scrollTopBtn.classList.add('translate-y-24');
+                scrollTopBtn.classList.remove('translate-y-0');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Simple cart counter interaction
+        document.querySelectorAll('button').forEach(btn => {
+            if (btn.innerText === 'Add to Cart') {
+                btn.addEventListener('click', function() {
+                    const originalText = this.innerText;
+                    this.innerText = 'Added!';
+                    this.classList.remove('bg-forest-deep');
+                    this.classList.add('bg-primary');
+                    setTimeout(() => {
+                        this.innerText = originalText;
+                        this.classList.remove('bg-primary');
+                        this.classList.add('bg-forest-deep');
+                    }, 2000);
+                });
+            }
+        });
+    </script>
+</body></html>

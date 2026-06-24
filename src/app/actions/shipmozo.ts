@@ -14,8 +14,8 @@ export async function checkPincodeServiceability(deliveryPincode: string) {
         'private-key': SHIPMOZO_PRIVATE_KEY
       },
       body: JSON.stringify({
-        pickup_pincode: 141211, // using a mock warehouse pincode or default
-        delivery_pincode: Number(deliveryPincode)
+        pickup_pincode: "141211", // using a mock warehouse pincode or default
+        delivery_pincode: String(deliveryPincode)
       })
     });
 

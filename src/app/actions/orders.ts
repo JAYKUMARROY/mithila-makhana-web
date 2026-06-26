@@ -246,7 +246,7 @@ export async function updateOrderStatus(id: string, status: string) {
   const { error, supabase } = await requireAdmin()
   if (error) return { error }
 
-  const validStatuses = ['PENDING', 'CONFIRMED', 'SHIPPED', 'DELIVERED', 'CANCELLED']
+  const validStatuses = ['PENDING', 'PROCESSING', 'CONFIRMED', 'SHIPPED', 'DELIVERED', 'CANCELLED']
   if (!validStatuses.includes(status)) return { error: 'Invalid status' }
 
   const updateData: any = { status }

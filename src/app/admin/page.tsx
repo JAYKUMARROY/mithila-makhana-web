@@ -146,10 +146,15 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
   orders?.forEach(o => {
     if (o.status !== 'CANCELLED') {
       o.order_items?.forEach((item: any) => {
-        if (productsWithSales[item.product_id]) {
-          productsWithSales[item.product_id].quantitySold += item.quantity;
-          productsWithSales[item.product_id].revenue += (item.quantity * item.price_at_time);
+        if (!productsWithSales[item.product_id]) {
+          productsWithSales[item.product_id] = { 
+            product: { id: item.product_id, name: 'Unknown Product', image_url: null }, 
+            quantitySold: 0, 
+            revenue: 0 
+          };
         }
+        productsWithSales[item.product_id].quantitySold += (item.quantity || 1);
+        productsWithSales[item.product_id].revenue += ((item.quantity || 1) * (item.price_at_time || item.price || 0));
       });
     }
   });
@@ -319,7 +324,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
                         </span>
                       </td>
                       <td className="px-8 py-5 text-right">
-                        <Link href={`/admin/orders/${order.id}`} className="inline-flex items-center justify-center w-10 h-10 bg-white border border-outline-variant/40 rounded-xl text-forest-deep hover:text-primary-custom hover:border-primary-custom/40 hover:bg-primary-container/10 transition-all shadow-sm">
+                        <Link href="/admin/orders" className="inline-flex items-center justify-center w-10 h-10 bg-white border border-outline-variant/40 rounded-xl text-forest-deep hover:text-primary-custom hover:border-primary-custom/40 hover:bg-primary-container/10 transition-all shadow-sm" title="View in Order Management">
                           <Eye className="w-4 h-4" />
                         </Link>
                       </td>

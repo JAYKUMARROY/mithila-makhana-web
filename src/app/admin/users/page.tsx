@@ -110,6 +110,7 @@ export default function UsersPage() {
                 <th className="px-8 py-5">User Identity</th>
                 <th className="px-8 py-5">Contact Info</th>
                 <th className="px-8 py-5 text-center">Engagement</th>
+                <th className="px-8 py-5 text-center">Referrals</th>
                 <th className="px-8 py-5">Registered On</th>
                 <th className="px-8 py-5 text-center">Account Status</th>
                 <th className="px-8 py-5 text-right">Security Actions</th>
@@ -118,7 +119,7 @@ export default function UsersPage() {
             <tbody className="divide-y divide-outline-variant/10 text-sm">
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="px-8 py-20 text-center">
+                  <td colSpan={7} className="px-8 py-20 text-center">
                     <div className="flex flex-col items-center justify-center text-on-surface-variant">
                       <RefreshCw className="w-8 h-8 animate-spin mb-4 text-primary-custom opacity-50" />
                       <p className="font-label-md">Loading customer directory...</p>
@@ -127,7 +128,7 @@ export default function UsersPage() {
                 </tr>
               ) : filteredUsers.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-8 py-20 text-center">
+                  <td colSpan={7} className="px-8 py-20 text-center">
                     <div className="flex flex-col items-center justify-center text-on-surface-variant opacity-60">
                       <UsersIcon className="w-16 h-16 mb-4 opacity-50 text-outline-variant" />
                       <p className="font-label-lg text-lg mb-1">No users found</p>
@@ -178,6 +179,12 @@ export default function UsersPage() {
                         <div className="inline-flex flex-col items-center">
                           <span className="text-xl font-headline-lg text-primary-custom leading-none">{purchasedCount}</span>
                           <span className="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider mt-1">Items Bought</span>
+                        </div>
+                      </td>
+                      <td className="px-8 py-5 text-center">
+                        <div className="inline-flex flex-col items-center">
+                          <span className="text-xl font-headline-lg text-emerald-600 leading-none">{u.referrals?.length || 0}</span>
+                          <span className="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider mt-1">Invites</span>
                         </div>
                       </td>
                       <td className="px-8 py-5">

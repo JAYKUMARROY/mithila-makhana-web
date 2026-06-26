@@ -14,7 +14,8 @@ export async function getAllUsers() {
       orders (
         status,
         order_items ( quantity )
-      )
+      ),
+      referrals:referral_ledger!referrer_id ( id, status, reward_credited )
     `)
     .order('created_at', { ascending: false })
 

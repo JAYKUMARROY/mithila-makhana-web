@@ -252,10 +252,7 @@ export async function updateOrderStatus(id: string, status: string) {
   const updateData: any = { status }
   const now = new Date().toISOString()
   if (status === 'CONFIRMED') updateData.confirmed_at = now
-  if (status === 'SHIPPED') {
-    updateData.shipped_at = now
-    updateData.awb_number = 'TEST-AWB-123456' // Temporary mock AWB for testing
-  }
+  if (status === 'SHIPPED') updateData.shipped_at = now
   if (status === 'DELIVERED') updateData.delivered_at = now
 
   const { error: updateError } = await supabase.from('orders').update(updateData).eq('id', id)

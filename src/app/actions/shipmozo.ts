@@ -153,17 +153,6 @@ export async function calculateShippingRate(params: {
 }
 
 export async function fetchShipmozoTracking(awb_number: string) {
-  if (awb_number.startsWith('TEST-AWB')) {
-    return {
-      success: true,
-      data: [
-        { status: "Shipment Picked Up", location: "Warehouse, Delhi", date: new Date(Date.now() - 86400000 * 2).toLocaleString() },
-        { status: "In Transit to Destination", location: "Transit Hub, Haryana", date: new Date(Date.now() - 86400000).toLocaleString() },
-        { status: "Out for Delivery", location: "Local Courier Facility", date: new Date().toLocaleString() }
-      ]
-    };
-  }
-
   try {
     const res = await fetch(`${BASE_URL}/track-order?awb_number=${awb_number}`, {
       method: 'GET',

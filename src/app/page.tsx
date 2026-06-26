@@ -1,167 +1,271 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Verified, Leaf, ShieldCheck, Tractor, Star, ArrowRight } from 'lucide-react'
+import { Verified, Leaf, ShieldCheck, Tractor, Star, ArrowRight, Play, ChevronRight, Award, Heart, Sparkles } from 'lucide-react'
 import { WhyChooseUs } from '@/components/why-choose-us'
 import { ContactUs } from '@/components/contact-us'
-import { FadeInUp, FadeInRight, StaggerContainer, StaggerItem, ParallaxImage } from '@/components/animations'
+import { FadeInUp, FadeInRight } from '@/components/animations'
 import { getProducts } from '@/app/actions/products'
 import { AddToCartButton } from '@/components/add-to-cart-button'
 import { NewsletterForm } from '@/components/newsletter-form'
 
 export default async function Home() {
   const products = await getProducts();
-  const bestsellers = products.slice(0, 4);
+  const activeProducts = products.filter((p: any) => p.is_active !== false);
+  const bestsellers = activeProducts.slice(0, 4);
 
   return (
-    <>
-      {/* Hero Section */}
-      <header className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 flex items-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
+    <div className="bg-cream-bg selection:bg-gold-accent/30">
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-15px); }
+        }
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+      `}} />
+
+      {/* 1. Light, Airy Premium Hero Section */}
+      <header className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden">
+        {/* Soft, vibrant gradients instead of dark mode */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-gold-accent/20 blur-[120px]"></div>
+          <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-primary-custom/10 blur-[150px]"></div>
           <div 
-            className="w-full h-full opacity-40 bg-cover bg-center" 
+            className="absolute inset-0 opacity-[0.03] bg-cover bg-center mix-blend-multiply" 
             style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuD9rASEdnlmhEYkpwtHZKMklvMcIdtan0dHwTEJyzJ73g8YUT-h5exETsDXTxHSO2Y4eNZaK9OeheB5FXy8BSGNWvt0HHMZ4mjkTkwRSoJuiiOkt2jC6dwRNaHLFT9EiVtCPngWIBKREEifOKPVuRl1mhhgtVR2fahniaS6qt90hyIKCeQvwTZRXiQKYr-a5XAFDKDn8akT3Xyaj9HUpMFsloT30BaWW3S0Sh2N7UWFEAOAJLcr4siVShzqeozHvdAn5XKJReMDdEaq')" }}
           ></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-cream-bg via-cream-bg/90 to-transparent"></div>
         </div>
-        <div className="relative z-10 max-w-[1280px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <FadeInUp delay={0.2} className="space-y-8">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-secondary-container text-on-secondary-container font-label-lg text-label-lg uppercase tracking-wider">
-              Heritage Superfood
-            </span>
-            <h1 className="font-display-lg text-display-lg text-forest-deep leading-tight">
-              PREMIUM MITHILA MAKHANA - <span className="text-gold-accent">Direct from the farms of Bihar</span> to your home.
-            </h1>
-            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
-              Experience the crunch of tradition. Our hand-picked gorgon nuts are naturally processed and GI-tagged for the ultimate health-conscious snack.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link href="/shop">
-                <button className="bg-gold-accent text-forest-deep font-label-lg text-label-lg px-8 py-4 rounded-lg shadow-lg hover:bg-primary-container transition-all active:scale-95 duration-150">
-                  SHOP THE COLLECTION
-                </button>
-              </Link>
-              <Link href="/about">
-                <button className="border-2 border-forest-deep text-forest-deep font-label-lg text-label-lg px-8 py-4 rounded-lg hover:bg-forest-deep hover:text-white transition-all active:scale-95 duration-150">
-                  LEARN OUR STORY
-                </button>
-              </Link>
+
+        <div className="relative z-10 max-w-[1280px] mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          
+          {/* Hero Content */}
+          <FadeInUp delay={0.2} className="lg:col-span-6 xl:col-span-7">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-outline-variant/30 shadow-sm mb-8">
+                <Sparkles className="w-4 h-4 text-gold-accent" />
+                <span className="text-forest-deep text-xs font-bold tracking-widest uppercase">The Heritage Superfood</span>
+              </div>
+              
+              <h1 className="font-display-lg text-5xl md:text-7xl text-forest-deep leading-[1.1] tracking-tight mb-6">
+                Premium Mithila Makhana. <br/>
+                <span className="text-primary-custom">Direct from Farms.</span>
+              </h1>
+              
+              <p className="font-body-lg text-lg md:text-xl text-on-surface-variant mb-10 leading-relaxed">
+                Experience the crunch of tradition. Our hand-picked gorgon nuts are naturally processed and GI-tagged for the ultimate health-conscious lifestyle.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link href="/shop" className="w-full sm:w-auto">
+                  <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-gold-accent to-yellow-400 text-forest-deep font-bold px-8 py-4 rounded-xl shadow-[0_10px_20px_rgba(255,193,7,0.3)] hover:shadow-[0_15px_30px_rgba(255,193,7,0.4)] transition-all hover:-translate-y-1 active:scale-95 duration-300">
+                    SHOP THE COLLECTION <ArrowRight className="w-5 h-5" />
+                  </button>
+                </Link>
+                <Link href="/about" className="w-full sm:w-auto">
+                  <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white text-forest-deep border border-outline-variant/30 font-bold px-8 py-4 rounded-xl shadow-sm hover:shadow-md transition-all hover:-translate-y-1 active:scale-95 duration-300">
+                    <Play className="w-5 h-5 text-primary-custom" /> OUR STORY
+                  </button>
+                </Link>
+              </div>
+              
+              {/* Micro-stats */}
+              <div className="mt-12 pt-8 border-t border-outline-variant/20 flex flex-wrap items-center gap-8 text-forest-deep">
+                <div>
+                  <p className="text-3xl font-display-sm font-bold mb-1">10k+</p>
+                  <p className="text-xs uppercase tracking-wider text-on-surface-variant font-bold">Happy Customers</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-display-sm font-bold mb-1">4.9/5</p>
+                  <p className="text-xs uppercase tracking-wider text-on-surface-variant font-bold flex items-center gap-1"><Star className="w-3 h-3 text-gold-accent fill-gold-accent"/> Reviews</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-display-sm font-bold mb-1">GI</p>
+                  <p className="text-xs uppercase tracking-wider text-on-surface-variant font-bold flex items-center gap-1">Certified Origin</p>
+                </div>
+              </div>
             </div>
           </FadeInUp>
-          <FadeInRight delay={0.4} className="relative hidden md:block">
-            <div className="w-full h-[500px] relative">
-              <div className="absolute inset-0 bg-white/40 backdrop-blur-sm rounded-3xl border border-white/50 shadow-2xl rotate-3 transition-transform duration-500 hover:rotate-6 hover:scale-105"></div>
-              <div className="absolute inset-0 rounded-3xl shadow-xl -rotate-2 transform hover:rotate-0 transition-transform duration-500 overflow-hidden">
+
+          {/* Hero Imagery (Framed to fix sharp edges) */}
+          <FadeInRight delay={0.4} className="lg:col-span-6 xl:col-span-5 relative hidden lg:block">
+            <div className="relative w-full h-[550px] animate-float">
+              {/* Decorative Glass Backing */}
+              <div className="absolute inset-0 bg-white/40 backdrop-blur-md rounded-[2.5rem] border border-white shadow-2xl rotate-6 transition-transform duration-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-tr from-primary-container/40 to-transparent rounded-[2.5rem] -rotate-3 transition-transform duration-500"></div>
+              
+              {/* The Image Container (Hides sharp edges) */}
+              <div className="absolute inset-0 rounded-[2.5rem] shadow-xl overflow-hidden bg-white border-4 border-white">
                 <Image 
                   fill
                   className="object-cover" 
-                  alt="Raw Phool Makhana" 
+                  alt="Premium Raw Phool Makhana Packaging" 
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuDN53Vn9-tQcGTZsT1BQUEvXq00UZed4OvXAL6XOcWrefPSnsI23COrFx3CgyczguKDQqsvFSjSMxzdGMqsghey-jr7MPiDJXGkjFJcK_154sZWW6ethjPMO5ajkjQUkOvyN5NAmbNtOC97befiK1nGQPm02Oxk5D-GBZnKAls_Zyg632aYcP3MOlfwPMHYy_HanDtkLLnWb6eUoAH8JlA_-2N-SE3jQ-3z0OGHpnYgjcebULGLnV0Ij8Yl1NXLY6dLH-KzS3X4xnLA"
+                  priority
                 />
               </div>
-            </div>
-            <div className="absolute -bottom-6 -left-6 bg-forest-deep text-white p-6 rounded-2xl shadow-xl">
-              <span className="font-display-lg text-headline-lg block">100%</span>
-              <span className="font-label-sm text-label-sm uppercase tracking-widest">Natural & Organic</span>
+              
+              {/* Floating Badge */}
+              <div className="absolute -bottom-6 -left-6 z-20 bg-white border border-outline-variant/20 p-4 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.1)]">
+                <div className="flex items-center gap-3">
+                  <div className="bg-primary-container rounded-full p-2 text-primary-custom"><Verified className="w-5 h-5"/></div>
+                  <div>
+                    <p className="text-forest-deep font-bold text-sm">100% Authentic</p>
+                    <p className="text-on-surface-variant font-bold text-[10px] uppercase tracking-widest">GI Tagged Origin</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </FadeInRight>
         </div>
       </header>
 
-      {/* Trust Badges */}
-      <section className="py-12 bg-surface-container-low border-y border-outline-variant/30">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <StaggerContainer className="flex flex-wrap justify-center md:justify-between items-center gap-8">
-            <StaggerItem className="flex items-center gap-4 group">
-              <div className="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                <Verified className="text-primary-custom w-8 h-8" />
+      {/* 2. Bento Box Trust Badges (Light Theme) */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="max-w-[1280px] mx-auto px-6 relative z-10">
+          <div className="text-center mb-16 max-w-2xl mx-auto">
+            <h2 className="font-display-lg text-4xl md:text-5xl text-forest-deep mb-4">Why Mithila Makhana?</h2>
+            <p className="text-on-surface-variant text-lg">We don't just sell snacks; we deliver centuries of tradition, packed with unparalleled nutrition.</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px]">
+            {/* Large Card 1 */}
+            <div className="md:col-span-2 bg-white rounded-3xl p-8 border border-outline-variant/30 shadow-sm hover:shadow-xl transition-all duration-500 group overflow-hidden relative flex flex-col justify-between">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-gold-accent/10 rounded-full blur-[80px] group-hover:scale-150 transition-transform duration-700"></div>
+              <div className="relative z-10">
+                <div className="w-14 h-14 bg-forest-deep text-white rounded-2xl flex items-center justify-center shadow-md mb-6 group-hover:-translate-y-2 transition-transform duration-500">
+                  <Award className="w-7 h-7" />
+                </div>
               </div>
-              <div>
-                <h4 className="font-headline-md text-label-lg text-forest-deep">GI Tagged</h4>
-                <p className="font-label-sm text-label-sm text-on-surface-variant">Authentic Mithila Origin</p>
+              <div className="relative z-10">
+                <h3 className="text-2xl md:text-3xl font-bold text-forest-deep mb-2">GI Tagged Authenticity</h3>
+                <p className="text-on-surface-variant max-w-md">Our Makhana is exclusively sourced from the certified wetlands of Mithila, ensuring you get the authentic, world-renowned quality.</p>
               </div>
-            </StaggerItem>
-            <StaggerItem className="flex items-center gap-4 group">
-              <div className="w-16 h-16 rounded-full bg-secondary-fixed flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                <Leaf className="text-secondary-custom w-8 h-8" />
+            </div>
+            
+            {/* Small Card 1 */}
+            <div className="bg-white border border-outline-variant/30 rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 group overflow-hidden relative flex flex-col justify-between">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-secondary-container/30 rounded-full blur-[40px] group-hover:scale-150 transition-transform duration-700"></div>
+              <div className="relative z-10">
+                <div className="w-14 h-14 bg-secondary-container text-secondary-custom rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:-translate-y-2 transition-transform duration-500">
+                  <Leaf className="w-7 h-7" />
+                </div>
               </div>
-              <div>
-                <h4 className="font-headline-md text-label-lg text-forest-deep">100% Organic</h4>
-                <p className="font-label-sm text-label-sm text-on-surface-variant">No Pesticides or Additives</p>
+              <div className="relative z-10">
+                <h3 className="text-xl font-bold text-forest-deep mb-2">100% Organic</h3>
+                <p className="text-on-surface-variant text-sm">Grown naturally without harmful pesticides or synthetic fertilizers.</p>
               </div>
-            </StaggerItem>
-            <StaggerItem className="flex items-center gap-4 group">
-              <div className="w-16 h-16 rounded-full bg-tertiary-fixed flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                <ShieldCheck className="text-tertiary w-8 h-8" />
+            </div>
+            
+            {/* Small Card 2 */}
+            <div className="bg-white border border-outline-variant/30 rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 group overflow-hidden relative flex flex-col justify-between">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary-container/30 rounded-full blur-[40px] group-hover:scale-150 transition-transform duration-700"></div>
+              <div className="relative z-10">
+                <div className="w-14 h-14 bg-primary-container text-primary-custom rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:-translate-y-2 transition-transform duration-500">
+                  <ShieldCheck className="w-7 h-7" />
+                </div>
               </div>
-              <div>
-                <h4 className="font-headline-md text-label-lg text-forest-deep">FSSAI Certified</h4>
-                <p className="font-label-sm text-label-sm text-on-surface-variant">Highest Quality Standards</p>
+              <div className="relative z-10">
+                <h3 className="text-xl font-bold text-forest-deep mb-2">FSSAI Certified</h3>
+                <p className="text-on-surface-variant text-sm">Processed under the strictest hygiene and quality control standards.</p>
               </div>
-            </StaggerItem>
-            <StaggerItem className="flex items-center gap-4 group">
-              <div className="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                <Tractor className="text-primary-custom w-8 h-8" />
+            </div>
+            
+            {/* Large Card 2 */}
+            <div className="md:col-span-2 bg-gradient-to-br from-forest-deep to-[#0A2F1D] rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 group overflow-hidden relative text-white flex flex-col justify-between">
+              <div className="absolute top-0 left-0 w-64 h-64 bg-primary-custom/20 rounded-full blur-[80px] group-hover:scale-150 transition-transform duration-700"></div>
+              <div className="relative z-10">
+                <div className="w-14 h-14 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-2xl flex items-center justify-center shadow-md mb-6 group-hover:-translate-y-2 transition-transform duration-500">
+                  <Tractor className="w-7 h-7" />
+                </div>
               </div>
-              <div>
-                <h4 className="font-headline-md text-label-lg text-forest-deep">Direct from Farms</h4>
-                <p className="font-label-sm text-label-sm text-on-surface-variant">Supporting Local Farmers</p>
+              <div className="relative z-10">
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">Empowering Local Farmers</h3>
+                <p className="text-white/80 max-w-md">By buying direct, we eliminate middlemen, ensuring our farmers receive fair compensation for their incredibly hard work.</p>
               </div>
-            </StaggerItem>
-          </StaggerContainer>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Bestsellers Section */}
-      <section className="py-24 bg-cream-bg">
+      {/* 3. Elevated Bestsellers Carousel */}
+      <section className="py-24 bg-white relative">
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-outline-variant/30 to-transparent"></div>
         <div className="max-w-[1280px] mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
             <div className="max-w-xl">
-              <h2 className="font-headline-lg text-headline-lg text-forest-deep mb-4">Our Bestsellers</h2>
-              <p className="font-body-md text-body-md text-on-surface-variant">The perfect combination of health and flavor. Discover our most loved Makhana varieties crafted with artisanal care.</p>
+              <h2 className="font-display-lg text-4xl md:text-5xl text-forest-deep mb-4">Trending Collections</h2>
+              <p className="font-body-md text-lg text-on-surface-variant">The perfect combination of health and flavor. Discover our most loved Makhana varieties.</p>
             </div>
-            <Link className="text-gold-accent font-label-lg text-label-lg flex items-center gap-2 hover:underline" href="/shop">
-              View All Products <ArrowRight className="w-4 h-4" />
+            <Link className="group inline-flex items-center gap-2 text-primary-custom font-bold text-lg hover:text-forest-deep transition-colors" href="/shop">
+              Explore Menu <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
+          
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {bestsellers.map((product, idx) => {
               let meta: any = {};
               try { meta = JSON.parse(product.description || '{}') } catch(e) {}
+              let parsedSizes = [{ size: '250g', price: product.price, discountedPrice: null }];
+              if (meta.sizes?.length > 0) {
+                parsedSizes = typeof meta.sizes[0] === 'string'
+                  ? meta.sizes.map((s: string) => ({ size: s, price: product.price, discountedPrice: meta.discountedPrice || null }))
+                  : meta.sizes;
+              }
+              const largestSizeObj = parsedSizes.reduce((prev: any, current: any) => {
+                const prevWeight = parseInt(prev.size.replace(/\D/g, '')) || 0;
+                const currWeight = parseInt(current.size.replace(/\D/g, '')) || 0;
+                return (prevWeight > currWeight) ? prev : current;
+              }, parsedSizes[0]);
+
               const category = meta.category || 'Premium Makhana';
-              const discountedPrice = meta.discountedPrice || (meta.sizes?.[0]?.discountedPrice) || null;
-              const effectivePrice = discountedPrice || product.price;
+              const effectivePrice = largestSizeObj.discountedPrice || largestSizeObj.price;
+              const originalPrice = largestSizeObj.price;
               
               return (
-                <div key={product.id} className="group bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 p-4 border border-outline-variant/20 flex flex-col">
-                  <Link href={`/shop/${product.slug}`} className="relative overflow-hidden rounded-lg aspect-square bg-[#F3F4F6] mb-4 block">
-                    <div className="absolute top-3 left-3 z-10">
-                      {idx === 0 && (
-                        <span className="bg-gold-accent text-forest-deep font-label-sm text-label-sm px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
-                          <Star className="w-3 h-3" /> GI Tagged
-                        </span>
-                      )}
-                      {idx === 1 && (
-                        <span className="bg-vermillion-clay text-white font-label-sm text-label-sm px-3 py-1 rounded-full shadow-sm">Popular</span>
-                      )}
-                    </div>
+                <div key={product.id} className="group bg-white rounded-3xl p-5 border border-outline-variant/20 hover:border-primary-custom/30 shadow-sm hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-500 flex flex-col relative">
+                  <div className="absolute top-8 left-8 z-20 flex flex-col gap-2">
+                    {idx === 0 && (
+                      <span className="bg-gradient-to-r from-gold-accent to-yellow-400 text-forest-deep font-bold text-xs px-3 py-1.5 rounded-full shadow-md flex items-center gap-1">
+                        <Star className="w-3 h-3" /> BESTSELLER
+                      </span>
+                    )}
+                    {largestSizeObj.discountedPrice && (
+                      <span className="bg-vermillion-clay text-white font-bold text-xs px-3 py-1.5 rounded-full shadow-md w-fit">
+                        SALE
+                      </span>
+                    )}
+                  </div>
+                  
+                  <Link href={`/shop/${product.slug}`} className="relative h-64 rounded-2xl bg-surface-container-low mb-6 overflow-hidden block">
                     <Image 
                       fill 
-                      className="object-cover group-hover:scale-110 transition-transform duration-500" 
-                      alt={`${product.name} - ${category} from Mithila`} 
+                      className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out" 
+                      alt={product.name} 
                       src={product.image_url || 'https://via.placeholder.com/300'} 
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </Link>
-                  <Link href={`/shop/${product.slug}`}>
-                    <h3 className="font-headline-md text-headline-md text-forest-deep text-lg mb-1 line-clamp-1">{product.name}</h3>
-                    <p className="text-on-surface-variant font-label-sm text-label-sm mb-4">{category}</p>
-                  </Link>
-                  <div className="mt-auto flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                      <span className="text-forest-deep font-bold text-lg">₹{effectivePrice}</span>
-                      {discountedPrice && <span className="text-on-surface-variant text-sm line-through">₹{product.price}</span>}
+                  
+                  <div className="flex-grow flex flex-col">
+                    <Link href={`/shop/${product.slug}`} className="block mb-4">
+                      <p className="text-primary-custom font-bold text-xs tracking-widest uppercase mb-1">{category}</p>
+                      <h3 className="font-display-sm text-xl text-forest-deep font-bold line-clamp-2 group-hover:text-primary-custom transition-colors">{product.name}</h3>
+                    </Link>
+                    
+                    <div className="mt-auto flex justify-between items-end">
+                      <div className="flex flex-col">
+                        <span className="text-on-surface-variant text-xs mb-1">Starting at</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-forest-deep font-display-sm font-bold text-2xl">₹{effectivePrice}</span>
+                          {largestSizeObj.discountedPrice && <span className="text-on-surface-variant text-sm line-through">₹{originalPrice}</span>}
+                        </div>
+                      </div>
+                      <div className="relative z-20">
+                        <AddToCartButton product={product} price={effectivePrice} size={largestSizeObj.size} />
+                      </div>
                     </div>
-                    <AddToCartButton product={product} price={effectivePrice} />
                   </div>
                 </div>
               )
@@ -170,61 +274,72 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Our Story Section */}
-      <section className="py-24 bg-forest-deep text-white overflow-hidden">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="relative">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-4">
-                  <div className="relative w-full h-64 rounded-xl shadow-lg border-2 border-white/10 overflow-hidden">
-                    <Image fill className="object-cover" alt="Farmers harvesting Makhana from lotus ponds in Mithila, Bihar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCW6rnIjlQmYHGDDUAUwkOIrtOTwUtMQui4Be6SwmiNABQX0QBLi6J3FiNZR3hyiwAPIZw3xQJL8zRkEkf-nOkzHF4AJiWKKVrpD_nU8tzf5H8V8A510InvQ1NuzwarxraOcVZ9SRrld68v5hlpmxHuD3XsWL05gbvJ7_SwVLeTmUWu_eXb4i_lb4lhNJMiQxKw3bIWSYLE7U-ZY9h_j7v0ZslrpL8H0GUqYFFdMVfCwK8yPa5nsivI74h4hawFJpEX3-u3UPWZPmn7" />
-                  </div>
-                  <div className="relative w-full h-48 rounded-xl shadow-lg border-2 border-white/10 overflow-hidden">
-                    <Image fill className="object-cover" alt="Raw Makhana seeds freshly collected from Bihar wetlands" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAA2BCUcjSp6NuD7ywcs7K1Zp1eVJnG4NyimorDT63XVD1skBCmgDqQ9n3w2ITzCqge2NnCfi4DXLmR5jnRw_HFQbaOu0hzFteIYv4a5GTQM35OGnx3g4342iwLnhLML1cppOmY567gBDceOGmV9bGXhzrinNQ0D5vwPMyVJWwcG9GbUQhjUuZnLIDsVc_KmFLQMLrHJU7HzuxJEdiWgiFgZPSioBY2UXFM_E0LutUX0SRKRQOZBh4cgfP_FhGcVs7ghxleJjKZ0kGk" />
-                  </div>
+      {/* 4. Cinematic "Our Story" Section */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="max-w-[1280px] mx-auto px-6 relative z-10">
+          <div className="bg-forest-deep rounded-[3rem] p-10 md:p-16 lg:p-20 shadow-2xl relative overflow-hidden">
+            {/* Subtle background texture inside the card */}
+            <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'#ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }}></div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center relative z-10">
+              
+              {/* Content block */}
+              <div className="space-y-8 order-2 lg:order-1">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+                  <Heart className="w-4 h-4 text-vermillion-clay" />
+                  <span className="text-white/90 text-xs font-bold tracking-widest uppercase">Rooted in Tradition</span>
                 </div>
-                <div className="pt-12">
-                  <div className="relative w-full h-80 rounded-xl shadow-lg border-2 border-white/10 overflow-hidden">
-                    <Image fill className="object-cover" alt="Traditional slow-roasting process of Makhana in Bihar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOt2FW7M01JhU-FjSFyRIPrdBzMOVTBY0MY2YiIFDV2TnxD3qf7WYrOq2CCjPd2NR42kNj3sqQw5Croe4kU3hWqSH6t3fPKSpTFk2gsaRd8Jo54fPPSvyCWF0ZyTR6tIDyyhJvfF9Cv_OU4r8i3PZWEnO7J46KEnxgsOOmdNjLCt0PppZThyfDvNH2u3Bn6Qlu6WYj7HhGdSyBiM0IkWCd3smkTajz45n8Obzvs_EJgxtab--svhl73jw4brMMGq8PxMpd9nA5rvJN" />
-                  </div>
-                </div>
+                
+                <h2 className="font-display-lg text-4xl md:text-5xl lg:text-6xl text-white leading-[1.1]">
+                  The Legacy of <br/>
+                  <span className="text-gold-accent italic font-serif">Mithila's White Gold</span>
+                </h2>
+                
+                <div className="w-20 h-1 bg-gradient-to-r from-gold-accent to-transparent"></div>
+                
+                <p className="font-body-md text-lg text-white/80 leading-relaxed">
+                  For centuries, the pristine waters of Mithila have nurtured the Gorgon Nut, known locally as Makhana. Our journey begins in the heart of Bihar, where farmers meticulously harvest these seeds from the depths of lotus ponds, following age-old techniques.
+                </p>
+                
+                <p className="font-body-md text-lg text-white/80 leading-relaxed">
+                  Every pack of Mithila Makhana represents a story of resilience, purity, and the vibrant culture of Madhubani.
+                </p>
+                
+                <Link href="/about" className="inline-block mt-4">
+                  <button className="flex items-center gap-3 bg-white text-forest-deep font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:bg-cream-bg transition-all hover:-translate-y-1 active:scale-95">
+                    READ OUR FULL STORY <ChevronRight className="w-5 h-5" />
+                  </button>
+                </Link>
               </div>
-              <div className="absolute -z-10 -bottom-10 -left-10 w-40 h-40 border-8 border-gold-accent/20 rounded-full"></div>
-            </div>
-            <div className="space-y-8">
-              <span className="text-gold-accent font-label-lg text-label-lg uppercase tracking-widest border-b border-gold-accent/50 pb-2">Rooted in Tradition</span>
-              <h2 className="font-display-lg text-headline-lg text-primary-fixed leading-tight">The Legacy of Mithila's White Gold</h2>
-              <p className="font-body-md text-body-md text-white/80 leading-relaxed">
-                For centuries, the pristine waters of Mithila have nurtured the Gorgon Nut, known locally as Makhana. Our journey begins in the heart of Bihar, where farmers meticulously harvest these seeds from the depths of lotus ponds, following age-old techniques passed down through generations.
-              </p>
-              <p className="font-body-md text-body-md text-white/80 leading-relaxed">
-                We are committed to preserving this heritage while ensuring sustainable practices and fair trade for our farming communities. Every pack of Mithila Makhana represents a story of resilience, purity, and the vibrant culture of Madhubani.
-              </p>
-              <Link className="inline-flex items-center gap-3 text-gold-accent font-label-lg text-label-lg hover:gap-5 transition-all group" href="/about">
-                Read Our Full Story <ArrowRight className="w-5 h-5 transition-transform" />
-              </Link>
+
+              {/* Masonry Image Layout */}
+              <div className="relative h-[500px] w-full hidden md:block order-1 lg:order-2">
+                {/* Main large image */}
+                <div className="absolute top-0 right-0 w-2/3 h-2/3 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-4 border-white/10 z-10 hover:z-30 transition-all duration-500 hover:scale-105">
+                  <Image fill className="object-cover" alt="Farmers harvesting Makhana" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCW6rnIjlQmYHGDDUAUwkOIrtOTwUtMQui4Be6SwmiNABQX0QBLi6J3FiNZR3hyiwAPIZw3xQJL8zRkEkf-nOkzHF4AJiWKKVrpD_nU8tzf5H8V8A510InvQ1NuzwarxraOcVZ9SRrld68v5hlpmxHuD3XsWL05gbvJ7_SwVLeTmUWu_eXb4i_lb4lhNJMiQxKw3bIWSYLE7U-ZY9h_j7v0ZslrpL8H0GUqYFFdMVfCwK8yPa5nsivI74h4hawFJpEX3-u3UPWZPmn7" />
+                </div>
+                
+                {/* Bottom left floating image */}
+                <div className="absolute bottom-0 left-0 w-3/5 h-2/5 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-4 border-white/10 z-20 hover:z-30 transition-all duration-500 hover:scale-105">
+                  <Image fill className="object-cover" alt="Traditional slow-roasting process" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOt2FW7M01JhU-FjSFyRIPrdBzMOVTBY0MY2YiIFDV2TnxD3qf7WYrOq2CCjPd2NR42kNj3sqQw5Croe4kU3hWqSH6t3fPKSpTFk2gsaRd8Jo54fPPSvyCWF0ZyTR6tIDyyhJvfF9Cv_OU4r8i3PZWEnO7J46KEnxgsOOmdNjLCt0PppZThyfDvNH2u3Bn6Qlu6WYj7HhGdSyBiM0IkWCd3smkTajz45n8Obzvs_EJgxtab--svhl73jw4brMMGq8PxMpd9nA5rvJN" />
+                </div>
+                
+                {/* Gold accent circle */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-4 border-gold-accent/30 z-0"></div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Why Choose Us */}
+      {/* 5. Why Choose Us */}
       <WhyChooseUs />
 
-      {/* Contact Us */}
-      <ContactUs />
+      {/* 6. Contact Us */}
+      <div className="bg-cream-bg">
+        <ContactUs />
+      </div>
 
-      {/* Newsletter / CTA */}
-      <section className="py-20 relative overflow-hidden bg-cream-bg">
-        <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-          <h2 className="font-headline-lg text-headline-lg text-forest-deep mb-6">Join Our Healthy Community</h2>
-          <p className="font-body-md text-body-md text-on-surface-variant mb-10">Subscribe to receive exclusive offers, authentic Bihar recipes, and health tips delivered to your inbox.</p>
-          <NewsletterForm />
-        </div>
-        <div className="absolute top-0 right-0 w-64 h-64 bg-secondary-container/20 rounded-full blur-3xl -z-10"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary-container/20 rounded-full blur-3xl -z-10"></div>
-      </section>
-    </>
+    </div>
   )
 }

@@ -1,7 +1,7 @@
 "use client"
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { Package, Truck, CheckCircle2, ChevronRight, Download, Eye } from 'lucide-react'
+import { Package, Truck, CheckCircle2, ChevronRight, Download, Eye, FileText } from 'lucide-react'
 import { getUserOrders } from '@/app/actions/orders'
 import { useCart } from '@/components/cart-context'
 
@@ -73,13 +73,13 @@ export default function OrderHistory() {
                     <p className="font-label-lg text-forest-deep">#{order.id.split('-')[0].toUpperCase()}</p>
                   </div>
                 </div>
-                <div className="flex gap-3 mt-2 md:mt-0">
-                  <Link href={`/order-history/${order.id}`} className="px-4 py-2 bg-white border border-outline-variant/50 rounded-lg text-forest-deep font-label-sm text-sm hover:bg-surface-container-low transition-colors flex items-center gap-2">
-                    <Eye className="w-4 h-4" /> View Details
+                <div className="flex flex-wrap gap-2 md:gap-3 mt-4 md:mt-0 justify-end w-full md:w-auto">
+                  <Link href={`/order-history/${order.id}`} className="px-4 py-2 bg-white border border-outline-variant/50 rounded-lg text-forest-deep font-label-sm text-sm hover:bg-surface-container-low transition-colors flex items-center gap-2 shadow-sm">
+                    <Eye className="w-4 h-4" /> Details
                   </Link>
-                  <button className="px-4 py-2 bg-white border border-outline-variant/50 rounded-lg text-forest-deep font-label-sm text-sm hover:bg-surface-container-low transition-colors flex items-center gap-2">
-                    <Download className="w-4 h-4" /> Invoice
-                  </button>
+                  <a href={`/tax-invoice/${order.id}`} target="_blank" className="px-4 py-2 bg-forest-deep border border-forest-deep rounded-lg text-white font-label-sm text-sm hover:bg-forest-deep/90 transition-colors flex items-center gap-2 shadow-sm">
+                    <FileText className="w-4 h-4" /> Tax Invoice
+                  </a>
                 </div>
               </div>
 
@@ -100,7 +100,7 @@ export default function OrderHistory() {
                   ) : (
                     <div className="flex items-center gap-2 text-on-surface-variant">
                       <Package className="w-6 h-6" />
-                      <span className="font-headline-md text-lg">Processing</span>
+                      <span className="font-headline-md text-lg">{order.status || 'Processing'}</span>
                     </div>
                   )}
                 </div>
@@ -114,7 +114,7 @@ export default function OrderHistory() {
                       </div>
                       <div className="flex-1">
                         <Link href="/shop" className="font-label-lg text-forest-deep text-lg hover:text-primary-custom transition-colors block mb-1">
-                          {item.product?.name}
+                          {item.product?.name} {item.size && `(${item.size})`}
                         </Link>
                         <p className="text-on-surface-variant font-body-md">Qty: {item.quantity}</p>
                       </div>

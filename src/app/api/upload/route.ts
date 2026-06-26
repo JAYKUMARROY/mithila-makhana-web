@@ -1,8 +1,22 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+
 export async function POST(request: Request) {
   try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const adminEmails = process.env.ADMIN_EMAILS ? process.env.ADMIN_EMAILS.split(',').map(e => e.trim()) : [];
+    if (!adminEmails.includes(user.email || '')) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
     const formData = await request.formData();
     const file = formData.get('file') as File;
     
@@ -10,7 +24,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    const supabase = await createClient();
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      return NextResponse.json({ error: "Only image files (JPEG, PNG, WebP, GIF) are allowed" }, { status: 400 });
+    }
+
+    if (file.size > MAX_SIZE) {
+      return NextResponse.json({ error: "File size must be under 5MB" }, { status: 400 });
+    }
     
     const fileExt = file.name.split('.').pop();
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;

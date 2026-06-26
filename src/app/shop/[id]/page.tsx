@@ -20,7 +20,12 @@ export default function ProductDetail() {
   const [allProducts, setAllProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeImg, setActiveImg] = useState("");
+  const [imgLoading, setImgLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState<string>("");
+
+  useEffect(() => {
+    setImgLoading(true);
+  }, [activeImg]);
   
   const [pincode, setPincode] = useState('');
   const [pinLoading, setPinLoading] = useState(false);
@@ -48,13 +53,26 @@ export default function ProductDetail() {
     });
   }, [params.id]);
 
-  if (loading) return <div className="pt-32 pb-24 min-h-[500px] flex items-center justify-center"><div className="animate-pulse space-y-4 w-full max-w-[1280px] mx-auto px-6"><div className="h-8 bg-surface-container rounded w-1/3"></div><div className="grid grid-cols-1 lg:grid-cols-2 gap-8"><div className="h-[400px] bg-surface-container rounded-xl"></div><div className="space-y-4"><div className="h-6 bg-surface-container rounded w-2/3"></div><div className="h-10 bg-surface-container rounded w-1/4"></div><div className="h-12 bg-surface-container rounded"></div></div></div></div></div>;
+  if (loading) return (
+    <div className="pt-32 pb-24 min-h-[500px] flex items-start justify-center max-w-[1280px] mx-auto px-6">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 animate-pulse">
+        <div className="lg:col-span-7 h-[400px] md:h-[600px] bg-surface-container-low rounded-[32px]"></div>
+        <div className="lg:col-span-5 space-y-6 pt-4">
+          <div className="h-10 bg-surface-container-low rounded-lg w-3/4"></div>
+          <div className="h-12 bg-surface-container-low rounded-lg w-1/3"></div>
+          <div className="h-8 bg-surface-container-low rounded-lg w-1/2"></div>
+          <div className="h-14 bg-surface-container-low rounded-lg w-full mt-12"></div>
+          <div className="h-14 bg-surface-container-low rounded-lg w-full"></div>
+        </div>
+      </div>
+    </div>
+  );
   if (!product) return <div className="pt-32 pb-24 min-h-[500px] flex items-center justify-center text-forest-deep text-xl">Product not found.</div>;
 
   let meta: any = {};
   try { meta = JSON.parse(product.description || '{}') } catch (e) {}
   
-  let parsedSizes = [{ size: '250g', price: product.price, discountedPrice: null }];
+  let parsedSizes: any[] = [{ size: '250g', price: product.price, discountedPrice: null }];
   if (meta.sizes?.length > 0) {
     parsedSizes = typeof meta.sizes[0] === 'string'
       ? meta.sizes.map((s: string) => ({ size: s, price: product.price, discountedPrice: meta.discountedPrice || null }))
@@ -67,7 +85,7 @@ export default function ProductDetail() {
   const currentPrice = currentSizeObj.price;
   const currentDiscount = currentSizeObj.discountedPrice;
   const nutrition = meta.nutrition || { calories: '347 kcal', protein: '9.7g', carbohydrate: '76.9g', fat: '0.1g' };
-  const images = [product.image_url].filter(Boolean);
+  const images = meta.images?.length > 0 ? meta.images : [product.image_url].filter(Boolean);
   const relatedProducts = allProducts.filter((p: any) => p.id !== product.id).slice(0, 4);
 
   const handleAddToCart = () => {
@@ -77,12 +95,9 @@ export default function ProductDetail() {
 
   const handleBuyNow = () => {
     addToCart({ product, quantity: qty, size: selectedSize || undefined, price_at_time: currentDiscount || currentPrice });
-    router.push('/shop');
-    // Open cart after navigation
-    setTimeout(() => {
-      const event = new CustomEvent('open-cart');
-      window.dispatchEvent(event);
-    }, 100);
+    // Open cart drawer for checkout
+    const event = new CustomEvent('open-cart');
+    window.dispatchEvent(event);
   };
 
   return (
@@ -97,19 +112,26 @@ export default function ProductDetail() {
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          <FadeInRight delay={0.1} className="lg:col-span-7 flex flex-col md:flex-row-reverse gap-4">
-            <div className="relative flex-1 bg-surface-container-lowest rounded-xl overflow-hidden group">
+          <FadeInRight delay={0.1} className="lg:col-span-7 flex flex-col md:flex-row-reverse gap-4 items-start">
+            <div className="relative w-full h-[400px] md:h-[600px] flex-1 bg-surface-container-lowest rounded-[32px] overflow-hidden group shadow-sm border border-outline-variant/10 shrink-0">
               <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
                 <span className="bg-gold-accent text-on-primary-fixed px-3 py-1 rounded-full text-[12px] font-bold flex items-center gap-1 shadow-sm"><Verified className="w-4 h-4" /> GI TAGGED</span>
                 <span className="bg-forest-deep text-white px-3 py-1 rounded-full text-[12px] font-bold flex items-center gap-1 shadow-sm"><Leaf className="w-4 h-4" /> ORGANIC</span>
               </div>
-              <div className="relative w-full h-[600px]">
-                <Image fill className="object-cover transition-transform duration-500 group-hover:scale-110" alt={`${product.name} - ${category} product photo`} src={activeImg || product.image_url} sizes="(max-width: 768px) 100vw, 60vw" priority />
-              </div>
+              {imgLoading && <div className="absolute inset-0 bg-surface-container-low animate-pulse z-20"></div>}
+              <Image 
+                fill 
+                className={`object-cover transition-all duration-500 group-hover:scale-110 ${imgLoading ? 'opacity-0 scale-95' : 'opacity-100 scale-100'} rounded-[32px]`} 
+                alt={`${product.name} - ${category} product photo`} 
+                src={activeImg || product.image_url} 
+                sizes="(max-width: 768px) 100vw, 60vw" 
+                priority 
+                onLoad={() => setImgLoading(false)}
+              />
             </div>
             {images.length > 1 && (
               <div className="flex md:flex-col gap-3">
-                {images.map((img, i) => (
+                {images.map((img: string, i: number) => (
                   <button key={i} className={`w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border-2 transition-all hover:scale-105 relative ${activeImg === img ? 'border-primary-custom shadow-md' : 'border-transparent'}`} onClick={() => setActiveImg(img)}>
                     <Image fill className="object-cover" alt={`${product.name} view ${i + 1}`} src={img} sizes="96px" />
                   </button>
@@ -169,7 +191,7 @@ export default function ProductDetail() {
                   if (pincode.length !== 6) return;
                   setPinLoading(true);
                   const res = await checkPincodeServiceability(pincode);
-                  setPinSuccess(res.success && res.serviceable);
+                  setPinSuccess(!!(res.success && res.serviceable));
                   setPinMessage(res.success && res.serviceable ? `Available! Estimated Delivery: ${res.estimatedDelivery}` : res.message || 'Not available for this pincode.');
                   setPinLoading(false);
                 }} className="flex gap-2">

@@ -7,13 +7,19 @@ import { redirect } from 'next/navigation'
 export async function login(formData: FormData) {
   const supabase = await createClient()
 
-  const email = formData.get('email') as string
+  const identifier = formData.get('identifier') as string
   const password = formData.get('password') as string
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  })
+  let credentials: any = { password };
+  
+  // If it looks like a phone number (10 digits), use Supabase phone auth
+  if (/^\d{10}$/.test(identifier)) {
+    credentials.phone = `+91${identifier}`;
+  } else {
+    credentials.email = identifier;
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword(credentials)
 
   if (error) {
     return { error: error.message }
@@ -62,21 +68,44 @@ export async function adminLogin(formData: FormData) {
 export async function signup(formData: FormData) {
   const supabase = await createClient()
 
-  const email = formData.get('email') as string
+  const identifier = formData.get('identifier') as string
   const password = formData.get('password') as string
   const name = formData.get('name') as string
 
-  const { data, error } = await supabase.auth.signUp({
-    email,
+  let credentials: any = {
     password,
     options: {
       data: {
         full_name: name,
       }
     }
-  })
+  };
+
+  let email = '';
+  let phone = '';
+
+  if (/^\d{10}$/.test(identifier)) {
+    phone = `+91${identifier}`;
+    credentials.phone = phone;
+  } else {
+    email = identifier;
+    credentials.email = email;
+  }
+
+  // Check for duplicate phone
+  if (phone) {
+    const { data: existingPhone } = await supabase.from('profiles').select('id').eq('phone', phone).maybeSingle();
+    if (existingPhone) {
+      return { error: 'An account with this mobile number already exists.' };
+    }
+  }
+
+  const { data, error } = await supabase.auth.signUp(credentials)
 
   if (error) {
+    if (error.message.includes('already registered')) {
+      return { error: 'An account with this email address already exists.' };
+    }
     return { error: error.message }
   }
 
@@ -86,7 +115,8 @@ export async function signup(formData: FormData) {
       { 
         id: data.user.id, 
         name: name, 
-        email: email,
+        email: email || null,
+        phone: phone || null,
         status: 'ACTIVE'
       }
     ], { onConflict: 'id' });

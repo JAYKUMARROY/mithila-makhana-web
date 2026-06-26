@@ -72,9 +72,12 @@ export default function OrderDetails({ params }: { params: Promise<{ id: string 
               <Calendar className="w-4 h-4" /> Placed on {formattedDate.split(',')[0]}
             </p>
           </div>
-          <div className="flex gap-3">
-            <a href={`/invoice/${order.id}`} target="_blank" className="px-4 py-2 bg-white border border-outline-variant/50 rounded-lg text-forest-deep font-label-sm hover:bg-surface-container-low transition-colors flex items-center gap-2 shadow-sm">
-              <Download className="w-4 h-4" /> Download Invoice
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a href={`/invoice/${order.id}`} target="_blank" className="px-4 py-2 bg-white border border-outline-variant/50 rounded-lg text-forest-deep font-label-sm hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2 shadow-sm">
+              <Download className="w-4 h-4" /> Shipping Label
+            </a>
+            <a href={`/tax-invoice/${order.id}`} target="_blank" className="px-4 py-2 bg-forest-deep border border-forest-deep rounded-lg text-white font-label-sm hover:bg-forest-deep/90 transition-colors flex items-center justify-center gap-2 shadow-sm">
+              <Download className="w-4 h-4" /> Tax Invoice
             </a>
           </div>
         </header>
@@ -110,9 +113,17 @@ export default function OrderDetails({ params }: { params: Promise<{ id: string 
 
             {/* Tracking Timeline */}
             <div className="bg-white rounded-2xl shadow-sm border border-outline-variant/30 overflow-hidden p-6 md:p-8">
-              <h3 className="font-headline-md text-forest-deep text-xl mb-8 flex items-center gap-2">
-                <Truck className="w-5 h-5 text-gold-accent" /> Tracking History
-              </h3>
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                <h3 className="font-headline-md text-forest-deep text-xl flex items-center gap-2">
+                  <Truck className="w-5 h-5 text-gold-accent" /> Tracking History
+                </h3>
+                {order.awb_number && (
+                  <div className="bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant/30">
+                    <p className="text-xs text-on-surface-variant font-bold uppercase tracking-wider mb-1">AWB / Tracking Number</p>
+                    <p className="font-mono font-bold text-primary-custom">{order.awb_number}</p>
+                  </div>
+                )}
+              </div>
               <div className="relative border-l-2 border-primary-custom/30 ml-4 space-y-8">
                 {timeline.map((event, index) => (
                   <div key={index} className="relative pl-8">

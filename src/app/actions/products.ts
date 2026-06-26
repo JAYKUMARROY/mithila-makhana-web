@@ -83,9 +83,43 @@ export async function updateProduct(id: string, updates: any) {
   return { data }
 }
 
+export async function deleteStorageImage(imageUrl: string) {
+  const { error, supabase } = await requireAdmin()
+  if (error) return { error }
+
+  try {
+    const parts = imageUrl.split('/product-images/');
+    if (parts.length === 2) {
+      const fileName = parts[1];
+      await supabase.storage.from('product-images').remove([fileName]);
+    }
+  } catch(e) {
+    console.error('Failed to delete image:', e);
+  }
+  return { success: true }
+}
+
 export async function deleteProduct(id: string) {
   const { error, supabase } = await requireAdmin()
   if (error) return { error }
+
+  const { data: product } = await supabase.from('products').select('*').eq('id', id).single();
+  
+  if (product) {
+    let images: string[] = [];
+    if (product.image_url) images.push(product.image_url);
+    try {
+      const meta = JSON.parse(product.description || '{}');
+      if (meta.images) {
+        images = [...images, ...meta.images];
+      }
+    } catch(e) {}
+    
+    const uniqueImages = Array.from(new Set(images));
+    for (const img of uniqueImages) {
+      await deleteStorageImage(img);
+    }
+  }
 
   const { error: dbError } = await supabase.from('products').delete().eq('id', id)
   if (dbError) return { error: dbError.message }

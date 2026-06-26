@@ -6,6 +6,8 @@ export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isEmailSignup, setIsEmailSignup] = useState(true);
+  const [isEmailLogin, setIsEmailLogin] = useState(true);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,9 +26,6 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
     const formData = new FormData(e.currentTarget);
-    const fname = formData.get('fname') as string;
-    const lname = formData.get('lname') as string;
-    formData.append('name', `${fname} ${lname}`.trim());
     const res = await signup(formData);
     if (res?.error) {
       setError(res.error);
@@ -40,7 +39,7 @@ export default function LoginPage() {
       <div className="absolute inset-0 pointer-events-none opacity-10" style={{ backgroundImage: 'radial-gradient(#D4AF37 0.5px, transparent 0.5px)', backgroundSize: '16px 16px' }}></div>
       
       {/* Auth Card Container */}
-      <div className="max-w-5xl w-full bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[600px] z-10 relative">
+      <div className="max-w-5xl w-full bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[700px] z-10 relative">
         {/* Left Side: Visual/Heritage */}
         <div className="hidden md:block w-1/2 relative bg-forest-deep overflow-hidden">
           <div className="absolute inset-0 opacity-40 mix-blend-overlay">
@@ -63,7 +62,7 @@ export default function LoginPage() {
         <div className="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center bg-white relative overflow-hidden">
           
           {/* Login Form */}
-          <div className={`transition-all duration-500 absolute inset-0 p-8 md:p-12 lg:p-16 flex flex-col justify-center bg-white ${isLogin ? 'opacity-100 translate-x-0 z-10' : 'opacity-0 -translate-x-12 z-0 pointer-events-none'}`}>
+          <div className={`transition-all duration-500 absolute inset-0 p-8 md:p-12 lg:p-16 flex flex-col justify-center bg-white overflow-y-auto custom-scrollbar ${isLogin ? 'opacity-100 translate-x-0 z-10' : 'opacity-0 -translate-x-12 z-0 pointer-events-none'}`}>
             <div className="mb-8">
               <h1 className="font-headline-lg text-headline-lg text-forest-deep mb-2">Welcome Back</h1>
               <p className="font-body-md text-on-surface-variant">Sign in to access your curated collection of heritage snacks.</p>
@@ -77,8 +76,22 @@ export default function LoginPage() {
 
             <form className="space-y-6" onSubmit={handleLogin}>
               <div>
-                <label className="block font-label-lg text-on-surface-variant mb-2" htmlFor="email">Email Address</label>
-                <input name="email" required className="w-full px-4 py-3 bg-cream-bg border-0 border-b-2 border-outline-variant focus:border-gold-accent focus:ring-0 transition-colors text-charcoal-text placeholder:text-outline font-body-md outline-none" id="email" placeholder="Enter your email" type="email" />
+                {isEmailLogin ? (
+                  <>
+                    <label className="block font-label-lg text-on-surface-variant mb-2" htmlFor="login-email">Email Address</label>
+                    <input name="identifier" required className="w-full px-4 py-3 bg-cream-bg border-0 border-b-2 border-outline-variant focus:border-gold-accent focus:ring-0 transition-colors text-charcoal-text placeholder:text-outline font-body-md outline-none" id="login-email" placeholder="Enter your email" type="email" />
+                  </>
+                ) : (
+                  <>
+                    <label className="block font-label-lg text-on-surface-variant mb-2" htmlFor="login-phone">Mobile Number</label>
+                    <input name="identifier" required pattern="\d{10}" title="Enter a valid 10-digit mobile number" className="w-full px-4 py-3 bg-cream-bg border-0 border-b-2 border-outline-variant focus:border-gold-accent focus:ring-0 transition-colors text-charcoal-text placeholder:text-outline font-body-md outline-none" id="login-phone" placeholder="10-digit number" type="text" />
+                  </>
+                )}
+                <div className="flex justify-end mt-2">
+                  <button type="button" onClick={() => setIsEmailLogin(!isEmailLogin)} className="text-sm font-label-lg text-primary-custom hover:text-gold-accent transition-colors">
+                    {isEmailLogin ? 'Use mobile number instead' : 'Use email address instead'}
+                  </button>
+                </div>
               </div>
               <div>
                 <div className="flex justify-between items-center mb-2">
@@ -118,7 +131,7 @@ export default function LoginPage() {
           </div>
 
           {/* Signup Section */}
-          <div className={`transition-all duration-500 absolute inset-0 p-8 md:p-12 lg:p-16 flex flex-col justify-center bg-white ${!isLogin ? 'opacity-100 translate-x-0 z-10' : 'opacity-0 translate-x-12 z-0 pointer-events-none'}`}>
+          <div className={`transition-all duration-500 absolute inset-0 p-8 md:p-12 lg:p-16 flex flex-col justify-center bg-white overflow-y-auto custom-scrollbar ${!isLogin ? 'opacity-100 translate-x-0 z-10' : 'opacity-0 translate-x-12 z-0 pointer-events-none'}`}>
             <div className="mb-8">
               <h1 className="font-headline-lg text-headline-lg text-forest-deep mb-2">Create Account</h1>
               <p className="font-body-md text-on-surface-variant">Join our community of makhana connoisseurs today.</p>
@@ -131,19 +144,28 @@ export default function LoginPage() {
             )}
 
             <form className="space-y-4" onSubmit={handleSignup}>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block font-label-lg text-on-surface-variant mb-1" htmlFor="fname">First Name</label>
-                  <input name="fname" required className="w-full px-4 py-2 bg-cream-bg border-0 border-b-2 border-outline-variant focus:border-gold-accent focus:ring-0 transition-colors text-charcoal-text font-body-md outline-none" id="fname" type="text" />
-                </div>
-                <div>
-                  <label className="block font-label-lg text-on-surface-variant mb-1" htmlFor="lname">Last Name</label>
-                  <input name="lname" required className="w-full px-4 py-2 bg-cream-bg border-0 border-b-2 border-outline-variant focus:border-gold-accent focus:ring-0 transition-colors text-charcoal-text font-body-md outline-none" id="lname" type="text" />
-                </div>
-              </div>
               <div>
-                <label className="block font-label-lg text-on-surface-variant mb-1" htmlFor="reg-email">Email Address</label>
-                <input name="email" required className="w-full px-4 py-2 bg-cream-bg border-0 border-b-2 border-outline-variant focus:border-gold-accent focus:ring-0 transition-colors text-charcoal-text font-body-md outline-none" id="reg-email" type="email" />
+                <label className="block font-label-lg text-on-surface-variant mb-1" htmlFor="name">Full Name</label>
+                <input name="name" required className="w-full px-4 py-2 bg-cream-bg border-0 border-b-2 border-outline-variant focus:border-gold-accent focus:ring-0 transition-colors text-charcoal-text font-body-md outline-none" id="name" type="text" />
+              </div>
+              
+              <div>
+                {isEmailSignup ? (
+                  <>
+                    <label className="block font-label-lg text-on-surface-variant mb-1" htmlFor="reg-email">Email Address</label>
+                    <input name="identifier" required className="w-full px-4 py-2 bg-cream-bg border-0 border-b-2 border-outline-variant focus:border-gold-accent focus:ring-0 transition-colors text-charcoal-text font-body-md outline-none" id="reg-email" placeholder="Enter your email" type="email" />
+                  </>
+                ) : (
+                  <>
+                    <label className="block font-label-lg text-on-surface-variant mb-1" htmlFor="reg-phone">Mobile Number</label>
+                    <input name="identifier" required pattern="\d{10}" title="Enter a valid 10-digit mobile number" className="w-full px-4 py-2 bg-cream-bg border-0 border-b-2 border-outline-variant focus:border-gold-accent focus:ring-0 transition-colors text-charcoal-text font-body-md outline-none" id="reg-phone" placeholder="10-digit number" type="text" />
+                  </>
+                )}
+                <div className="flex justify-end mt-2">
+                  <button type="button" onClick={() => setIsEmailSignup(!isEmailSignup)} className="text-sm font-label-lg text-primary-custom hover:text-gold-accent transition-colors">
+                    {isEmailSignup ? 'Use mobile number instead' : 'Use email address instead'}
+                  </button>
+                </div>
               </div>
               <div>
                 <label className="block font-label-lg text-on-surface-variant mb-1" htmlFor="reg-password">Password</label>

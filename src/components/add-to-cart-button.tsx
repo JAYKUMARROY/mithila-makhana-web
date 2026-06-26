@@ -4,7 +4,7 @@ import { ShoppingCart } from 'lucide-react';
 import { useCart } from './cart-context';
 import { useToast } from './toast';
 
-export function AddToCartButton({ product, price }: { product: any, price: number }) {
+export function AddToCartButton({ product, price, size }: { product: any, price: number, size?: string }) {
   const { addToCart } = useCart();
   const { showToast } = useToast();
 
@@ -14,7 +14,8 @@ export function AddToCartButton({ product, price }: { product: any, price: numbe
     addToCart({
       product,
       quantity: 1,
-      price_at_time: price
+      price_at_time: price,
+      size: size
     });
     showToast(`${product.name} added to cart!`);
   };

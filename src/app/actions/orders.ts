@@ -100,11 +100,15 @@ export async function createOrder(orderData: {
     product_id: item.product_id,
     quantity: item.quantity,
     price: item.price_at_time,
-    price_at_time: item.price_at_time
+    price_at_time: item.price_at_time,
+    size: item.size || null
   }))
 
   const { error: itemsError } = await supabase.from('order_items').insert(itemsToInsert)
-  if (itemsError) return { error: itemsError.message }
+  if (itemsError) {
+    await supabase.from('orders').delete().eq('id', order.id)
+    return { error: itemsError.message }
+  }
 
   // Create payment record
   const { error: paymentError } = await supabase.from('payments').insert({
@@ -120,73 +124,75 @@ export async function createOrder(orderData: {
     console.error('Failed to create payment record:', paymentError.message)
   }
 
-  // Push to Shipmozo API
-  try {
-    let totalWeight = 0;
-    const shipmozoItems = enrichedItems.map(item => {
-      let weight = 300; // default
-      if (item.size === '50g') weight = 100;
-      if (item.size === '100g') weight = 150;
-      if (item.size === '200g' || item.size === '250g') weight = 300;
-      if (item.size === '500g') weight = 600;
-      totalWeight += (weight * item.quantity);
-      
-      return {
-        name: item.name,
-        sku_number: item.product_id.substring(0, 8),
-        quantity: item.quantity,
-        discount: "",
-        hsn: "",
-        unit_price: item.price_at_time,
-        product_category: "Food"
+  // Push to Shipmozo API only if Prepaid
+  if (!isCOD) {
+    try {
+      let totalWeight = 0;
+      const shipmozoItems = enrichedItems.map(item => {
+        let weight = 300; // default
+        if (item.size === '50g') weight = 100;
+        if (item.size === '100g') weight = 150;
+        if (item.size === '200g' || item.size === '250g') weight = 300;
+        if (item.size === '500g') weight = 600;
+        totalWeight += (weight * item.quantity);
+        
+        return {
+          name: item.name,
+          sku_number: item.product_id.substring(0, 8),
+          quantity: item.quantity,
+          discount: "",
+          hsn: "",
+          unit_price: item.price_at_time,
+          product_category: "Food"
+        };
+      });
+
+      const shipmozoData = {
+        order_id: order.id.toString(),
+        order_date: new Date().toISOString().split('T')[0],
+        order_type: "ESSENTIALS",
+        consignee_name: orderData.shipping_address.name,
+        consignee_phone: Number(orderData.shipping_address.phone.replace(/\D/g,'')) || 9999999999,
+        consignee_alternate_phone: "",
+        consignee_email: user.email || "",
+        consignee_address_line_one: orderData.shipping_address.address,
+        consignee_address_line_two: "",
+        consignee_pin_code: Number(orderData.shipping_address.zip || orderData.shipping_address.pincode),
+        consignee_city: orderData.shipping_address.city,
+        consignee_state: orderData.shipping_address.state || "Delhi",
+        product_detail: shipmozoItems,
+        payment_type: "PREPAID",
+        cod_amount: "",
+        weight: totalWeight || 500,
+        length: 20,
+        width: 15,
+        height: 10,
+        warehouse_id: "",
+        gst_ewaybill_number: "",
+        gstin_number: ""
       };
-    });
 
-    const shipmozoData = {
-      order_id: order.id.toString(),
-      order_date: new Date().toISOString().split('T')[0],
-      order_type: "ESSENTIALS",
-      consignee_name: orderData.shipping_address.name,
-      consignee_phone: Number(orderData.shipping_address.phone.replace(/\\D/g,'')) || 9999999999,
-      consignee_alternate_phone: "",
-      consignee_email: user.email || "",
-      consignee_address_line_one: orderData.shipping_address.address,
-      consignee_address_line_two: "",
-      consignee_pin_code: Number(orderData.shipping_address.zip || orderData.shipping_address.pincode),
-      consignee_city: orderData.shipping_address.city,
-      consignee_state: orderData.shipping_address.state || "Delhi",
-      product_detail: shipmozoItems,
-      payment_type: isCOD ? "COD" : "PREPAID",
-      cod_amount: isCOD ? orderData.total_amount.toString() : "",
-      weight: totalWeight || 500,
-      length: 20,
-      width: 15,
-      height: 10,
-      warehouse_id: "",
-      gst_ewaybill_number: "",
-      gstin_number: ""
-    };
+      const smRes = await fetch('https://shipping-api.com/app/api/v1/push-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'public-key': process.env.SHIPMOZO_PUBLIC_KEY || '',
+          'private-key': process.env.SHIPMOZO_PRIVATE_KEY || ''
+        },
+        body: JSON.stringify(shipmozoData)
+      });
 
-    const smRes = await fetch('https://shipping-api.com/app/api/v1/push-order', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'public-key': 'CyL9fkjPZGwxhSQBEZng',
-        'private-key': 'GnpuEJKC9S73eWMUPTsY'
-      },
-      body: JSON.stringify(shipmozoData)
-    });
-
-    const smData = await smRes.json();
-    if (smData.result === "1") {
-      await supabase.from('orders').update({
-        shipmozo_order_id: smData.data?.reference_id
-      }).eq('id', order.id);
-    } else {
-      console.error("Shipmozo Push Error:", smData.message);
+      const smData = await smRes.json();
+      if (smData.result === "1") {
+        await supabase.from('orders').update({
+          shipmozo_order_id: smData.data?.reference_id
+        }).eq('id', order.id);
+      } else {
+        console.error("Shipmozo Push Error:", smData.message);
+      }
+    } catch (err) {
+      console.error("Shipmozo Exception:", err);
     }
-  } catch (err) {
-    console.error("Shipmozo Exception:", err);
   }
 
   revalidatePath('/order-history')
@@ -256,4 +262,108 @@ export async function updateOrderStatus(id: string, status: string) {
   revalidatePath('/admin/orders')
   revalidatePath('/order-history')
   return { success: true }
+}
+
+export async function pushOrderToShipmozo(orderId: string) {
+  const { error, supabase, user } = await requireAdmin()
+  if (error) return { error }
+
+  const { data: order, error: orderError } = await supabase
+    .from('orders')
+    .select(`*, order_items (*, product:products (name, id)), profile:profiles (email)`)
+    .eq('id', orderId)
+    .single()
+
+  if (orderError || !order) return { error: 'Order not found' }
+  if (order.shipmozo_order_id) return { error: 'Already pushed to Shipmozo' }
+
+  // Check payment method from payments table
+  const { data: payment } = await supabase.from('payments').select('payment_method').eq('order_id', orderId).single();
+  const isCOD = payment?.payment_method === 'COD';
+
+  try {
+    let totalWeight = 0;
+    const shipmozoItems = order.order_items.map((item: any) => {
+      let weight = 300; // default
+      if (item.size === '50g') weight = 100;
+      if (item.size === '100g') weight = 150;
+      if (item.size === '200g' || item.size === '250g') weight = 300;
+      if (item.size === '500g') weight = 600;
+      totalWeight += (weight * item.quantity);
+      
+      return {
+        name: item.product?.name || 'Makhana Product',
+        sku_number: item.product_id.substring(0, 8),
+        quantity: item.quantity,
+        discount: "",
+        hsn: "",
+        unit_price: item.price_at_time,
+        product_category: "Food"
+      };
+    });
+
+    const shipmozoData = {
+      order_id: order.id.toString(),
+      order_date: new Date(order.created_at).toISOString().split('T')[0],
+      order_type: "ESSENTIALS",
+      consignee_name: order.shipping_address.name,
+      consignee_phone: Number(order.shipping_address.phone.replace(/\D/g,'')) || 9999999999,
+      consignee_alternate_phone: "",
+      consignee_email: order.profile?.email || "",
+      consignee_address_line_one: order.shipping_address.address,
+      consignee_address_line_two: "",
+      consignee_pin_code: Number(order.shipping_address.zip || order.shipping_address.pincode),
+      consignee_city: order.shipping_address.city,
+      consignee_state: order.shipping_address.state || "Delhi",
+      product_detail: shipmozoItems,
+      payment_type: isCOD ? "COD" : "PREPAID",
+      cod_amount: isCOD ? order.total_amount.toString() : "",
+      weight: totalWeight || 500,
+      length: 20,
+      width: 15,
+      height: 10,
+      warehouse_id: "",
+      gst_ewaybill_number: "",
+      gstin_number: ""
+    };
+
+    const smRes = await fetch('https://shipping-api.com/app/api/v1/push-order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'public-key': process.env.SHIPMOZO_PUBLIC_KEY || '',
+        'private-key': process.env.SHIPMOZO_PRIVATE_KEY || ''
+      },
+      body: JSON.stringify(shipmozoData)
+    });
+
+    const smData = await smRes.json();
+    if (smData.result === "1") {
+      await supabase.from('orders').update({
+        shipmozo_order_id: smData.data?.reference_id
+      }).eq('id', order.id);
+      revalidatePath('/admin/orders');
+      return { success: true };
+    } else {
+      return { error: smData.message || 'Failed to push to Shipmozo' };
+    }
+  } catch (err: any) {
+    return { error: err.message };
+  }
+}
+
+export async function markLabelsAsPrinted(orderIds: string[]) {
+  if (!orderIds || orderIds.length === 0) return { success: true };
+  const { error, supabase } = await requireAdmin();
+  if (error) return { success: false, message: error };
+  
+  const { error: updateError } = await supabase
+    .from('orders')
+    .update({ label_printed: true })
+    .in('id', orderIds);
+    
+  if (updateError) return { success: false, message: updateError.message };
+  
+  revalidatePath('/admin/shipments');
+  return { success: true };
 }

@@ -33,7 +33,7 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
           </div>
           <h2 className="text-2xl font-headline-md text-forest-deep mb-2">Invoice Not Ready</h2>
           <p className="text-on-surface-variant font-body-md mb-8">
-            The shipping label/invoice for order #{order.id.split('-')[0].toUpperCase()} has not been generated yet. A courier needs to be assigned first.
+            The shipping label/invoice for order #{order.id.replace(/-/g, '').substring(0, 10).toUpperCase()} has not been generated yet. A courier needs to be assigned first.
           </p>
           <Link href={isAdmin ? '/admin/orders' : '/order-history'} className="inline-block bg-forest-deep text-white px-6 py-3 rounded-lg font-bold hover:opacity-90 transition-opacity">
             Go Back

@@ -253,7 +253,7 @@ export default function OrderManagement() {
                         <div>
                           <p className="font-headline-md text-base text-forest-deep mb-0.5">{order.profile?.name || 'Guest User'}</p>
                           <p className="text-[10px] font-mono text-on-surface-variant/70 bg-surface-container-low px-1.5 py-0.5 rounded inline-block border border-outline-variant/20">
-                            #{order.id.split('-')[0].toUpperCase()}
+                            #{order.id.replace(/-/g, '').substring(0, 10).toUpperCase()}
                           </p>
                         </div>
                       </div>

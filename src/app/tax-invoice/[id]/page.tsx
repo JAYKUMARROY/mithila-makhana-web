@@ -56,7 +56,7 @@ export default function TaxInvoicePage({ params }: { params: Promise<{ id: strin
         </div>
         <div className="text-right">
           <h2 className="font-headline-lg text-3xl font-bold text-gold-accent mb-2">TAX INVOICE</h2>
-          <p className="font-label-lg"><strong>Invoice No:</strong> {order.id.split('-')[0].toUpperCase()}</p>
+          <p className="font-label-lg"><strong>Invoice No:</strong> {order.id.replace(/-/g, '').substring(0, 10).toUpperCase()}</p>
           <p className="font-label-lg"><strong>Invoice Date:</strong> {invoiceDate}</p>
           <p className="font-label-lg"><strong>Payment Status:</strong> {order.payment_status}</p>
         </div>
@@ -81,7 +81,7 @@ export default function TaxInvoicePage({ params }: { params: Promise<{ id: strin
         <div className="text-right">
           <h3 className="font-bold text-forest-deep border-b border-outline-variant/30 pb-2 mb-3">Order Details:</h3>
           <div className="text-sm space-y-1">
-            <p><strong>Order ID:</strong> {order.id}</p>
+            <p><strong>Order ID:</strong> {order.id.replace(/-/g, '').substring(0, 10).toUpperCase()}</p>
             <p><strong>Order Date:</strong> {invoiceDate}</p>
             {order.awb_number && <p><strong>AWB No:</strong> {order.awb_number}</p>}
           </div>

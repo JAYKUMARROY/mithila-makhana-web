@@ -82,7 +82,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
   }
   
   // Fetch real data
-  const { data: allOrders } = await supabase.from('orders').select('*, profile:profiles(name, email), order_items(*)').order('created_at', { ascending: false });
+  const { data: allOrders } = await supabase.from('orders').select('*, profile:profiles(name, email), order_items(*, product:products(name, image_url))').order('created_at', { ascending: false });
   const { data: products } = await supabase.from('products').select('*, product_variants(*)');
   
   // Filter orders by date
@@ -285,7 +285,6 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
                   <th className="px-8 py-5">Customer</th>
                   <th className="px-8 py-5 text-right">Amount</th>
                   <th className="px-8 py-5 text-center">Status</th>
-                  <th className="px-8 py-5 text-right">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-outline-variant/10 text-sm">
@@ -303,8 +302,8 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
                     <tr key={order.id} className="hover:bg-surface-container-lowest transition-colors group">
                       <td className="px-8 py-5">
                         <div className="flex flex-col">
-                          <span className="font-bold text-forest-deep text-base">#{order.id.toString().slice(-4)}</span>
-                          <span className="text-xs text-on-surface-variant/70">{date}</span>
+                          <span className="font-bold text-forest-deep text-xs font-mono">{order.id.replace(/-/g, '').substring(0, 10).toUpperCase()}</span>
+                          <span className="text-[10px] text-on-surface-variant/70 mt-0.5">{date}</span>
                         </div>
                       </td>
                       <td className="px-8 py-5">
@@ -323,17 +322,12 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
                           <span className={`w-1.5 h-1.5 rounded-full ${dotColor}`}></span> {order.status}
                         </span>
                       </td>
-                      <td className="px-8 py-5 text-right">
-                        <Link href="/admin/orders" className="inline-flex items-center justify-center w-10 h-10 bg-white border border-outline-variant/40 rounded-xl text-forest-deep hover:text-primary-custom hover:border-primary-custom/40 hover:bg-primary-container/10 transition-all shadow-sm" title="View in Order Management">
-                          <Eye className="w-4 h-4" />
-                        </Link>
-                      </td>
                     </tr>
                   )
                 })}
                 {recentOrders.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="px-8 py-16 text-center">
+                    <td colSpan={4} className="px-8 py-16 text-center">
                       <div className="flex flex-col items-center justify-center text-on-surface-variant/60">
                         <ShoppingCart className="w-16 h-16 mb-4 opacity-30" />
                         <p className="font-headline-md text-lg text-forest-deep mb-1">No Orders Found</p>

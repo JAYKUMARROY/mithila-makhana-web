@@ -71,7 +71,7 @@ export default function OrderHistory() {
                   </div>
                   <div>
                     <p className="text-on-surface-variant font-label-sm uppercase tracking-wider text-[11px] mb-1">Order ID</p>
-                    <p className="font-label-lg text-forest-deep">#{order.id.split('-')[0].toUpperCase()}</p>
+                    <p className="font-label-lg text-forest-deep text-sm font-mono break-all max-w-[200px]">#{order.id.replace(/-/g, '').substring(0, 10).toUpperCase()}</p>
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-2 md:gap-3 mt-4 md:mt-0 justify-end w-full md:w-auto">

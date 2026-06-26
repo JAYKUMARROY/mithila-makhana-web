@@ -115,7 +115,7 @@ export default function OrderDetails({ params }: { params: Promise<{ id: string 
 
         <header className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <h1 className="font-display-lg text-3xl md:text-4xl text-forest-deep mb-2">Order #{order.id.split('-')[0].toUpperCase()}</h1>
+            <h1 className="font-display-lg text-3xl md:text-4xl text-forest-deep mb-2">Order #{order.id.replace(/-/g, '').substring(0, 10).toUpperCase()}</h1>
             <p className="font-body-md text-on-surface-variant flex items-center gap-2">
               <Calendar className="w-4 h-4" /> Placed on {formattedDate.split(',')[0]}
             </p>

@@ -351,7 +351,7 @@ export default function ShipmentsManagement() {
                           <Package className="w-5 h-5" />
                         </div>
                         <div>
-                          <p className="font-headline-md text-forest-deep text-base">#{order.id.split('-')[0].toUpperCase()}</p>
+                          <p className="font-headline-md text-forest-deep text-base font-mono">#{order.id.replace(/-/g, '').substring(0, 10).toUpperCase()}</p>
                           <div className={`mt-1 inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide border ${
                             order.status === 'SHIPPED' ? 'bg-secondary-fixed/50 text-on-secondary-fixed border-secondary-fixed' :
                             'bg-surface-container text-on-surface-variant border-outline-variant/30'

@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { User, Mail, MapPin, Phone, Shield, Save } from 'lucide-react'
+import { User, Mail, MapPin, Phone, Shield, Save, Wallet, Gift, ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 import { getProfile, updateProfile } from '@/app/actions/profile'
 import { useRouter } from 'next/navigation'
 
@@ -12,7 +13,8 @@ export default function ProfilePage() {
     name: '',
     email: '',
     phone: '',
-    addresses: [] as any[]
+    addresses: [] as any[],
+    wallet_balance: 0
   })
   
   const [addressModalOpen, setAddressModalOpen] = useState(false)
@@ -27,7 +29,8 @@ export default function ProfilePage() {
           name: res.name || '',
           email: res.email || '',
           phone: res.phone || '',
-          addresses: res.addresses || []
+          addresses: res.addresses || [],
+          wallet_balance: res.wallet_balance || 0
         });
         setLoading(false);
       }
@@ -116,19 +119,45 @@ export default function ProfilePage() {
               </div>
             </div>
 
+            {/* Wallet & Rewards */}
+            <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-outline-variant/30 p-6 overflow-hidden relative group">
+              <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                <Wallet className="w-32 h-32" />
+              </div>
+              <div className="relative z-10">
+                <h4 className="font-label-lg text-forest-deep mb-4 flex items-center gap-2">
+                  <Wallet className="w-5 h-5 text-primary-custom" />
+                  Wallet Balance
+                </h4>
+                <div className="font-headline-lg text-3xl font-bold text-forest-deep mb-6">
+                  ₹{profile.wallet_balance}
+                </div>
+                <div className="space-y-2">
+                  <Link href="/wallet" className="flex items-center justify-between w-full text-left font-body-md text-forest-deep hover:text-primary-custom transition-colors py-2 border-b border-outline-variant/20">
+                    <span className="flex items-center gap-2"><Wallet className="w-4 h-4" /> My Wallet</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <Link href="/referral" className="flex items-center justify-between w-full text-left font-body-md text-emerald-600 hover:text-emerald-700 transition-colors py-2 border-b border-outline-variant/20">
+                    <span className="flex items-center gap-2"><Gift className="w-4 h-4" /> Refer & Earn ₹50</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+
             <div className="bg-white rounded-2xl shadow-sm border border-outline-variant/30 p-6">
               <h4 className="font-label-lg text-forest-deep mb-4 flex items-center gap-2">
                 <Shield className="w-5 h-5 text-gold-accent" />
                 Account Security
               </h4>
-              <button className="w-full text-left font-body-md text-on-surface-variant hover:text-primary-custom transition-colors py-2 border-b border-outline-variant/20">
+              <button onClick={() => alert('Password reset email sent.')} className="w-full text-left font-body-md text-on-surface-variant hover:text-primary-custom transition-colors py-2 border-b border-outline-variant/20">
                 Change Password
               </button>
-              <button className="w-full text-left font-body-md text-on-surface-variant hover:text-primary-custom transition-colors py-2 border-b border-outline-variant/20">
-                Two-Factor Authentication
+              <button disabled className="w-full text-left font-body-md text-on-surface-variant/50 transition-colors py-2 border-b border-outline-variant/20 cursor-not-allowed">
+                Two-Factor Authentication (Coming Soon)
               </button>
-              <button className="w-full text-left font-body-md text-error hover:text-error/80 transition-colors py-2 mt-2">
-                Delete Account
+              <button disabled className="w-full text-left font-body-md text-error/50 transition-colors py-2 mt-2 cursor-not-allowed">
+                Delete Account (Contact Support)
               </button>
             </div>
           </div>

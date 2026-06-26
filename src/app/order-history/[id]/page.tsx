@@ -5,16 +5,26 @@ import { ArrowLeft, MapPin, Truck, CheckCircle2, Package, Calendar, CreditCard, 
 
 import { use, useEffect, useState } from 'react'
 import { getOrderById } from '@/app/actions/orders'
+import { fetchShipmozoTracking } from '@/app/actions/shipmozo'
 
 export default function OrderDetails({ params }: { params: Promise<{ id: string }> }) {
   const unwrappedParams = use(params);
   const [order, setOrder] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [liveTracking, setLiveTracking] = useState<any>(null);
 
   useEffect(() => {
     getOrderById(unwrappedParams.id).then(data => {
       setOrder(data);
       setLoading(false);
+      
+      if (data?.awb_number) {
+        fetchShipmozoTracking(data.awb_number).then(trackRes => {
+          if (trackRes.success) {
+            setLiveTracking(trackRes.data);
+          }
+        });
+      }
     });
   }, [unwrappedParams.id]);
 
@@ -58,6 +68,44 @@ export default function OrderDetails({ params }: { params: Promise<{ id: string 
     { status: 'Delivered', date: formatTime(order.delivered_at, isDelivered), completed: isDelivered }
   ];
 
+  const renderLiveTracking = () => {
+    if (!liveTracking) return null;
+    
+    let events = [];
+    if (Array.isArray(liveTracking)) events = liveTracking;
+    else if (Array.isArray(liveTracking.tracking_data)) events = liveTracking.tracking_data;
+    else if (Array.isArray(liveTracking.scans)) events = liveTracking.scans;
+    else if (Array.isArray(liveTracking.data)) events = liveTracking.data;
+    
+    if (events.length > 0) {
+      return (
+        <div className="mt-8 pt-8 border-t border-outline-variant/30">
+          <h4 className="font-label-lg text-primary-custom mb-4 flex items-center gap-2"><Truck className="w-4 h-4"/> Live Courier Updates</h4>
+          <div className="space-y-3">
+            {events.map((ev: any, idx: number) => (
+              <div key={idx} className="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/20 shadow-sm text-sm transition-all hover:border-primary-custom/30 hover:shadow-md">
+                <p className="font-bold text-forest-deep text-base mb-1">{ev.status || ev.activity || ev.message || 'Update'}</p>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs text-on-surface-variant font-mono">
+                  <span className="flex items-center gap-1"><Calendar className="w-3 h-3"/> {ev.date || ev.created_at || ev.time || 'Time unknown'}</span>
+                  {ev.location && <span className="flex items-center gap-1"><MapPin className="w-3 h-3"/> {ev.location}</span>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+    
+    return (
+       <div className="mt-8 pt-8 border-t border-outline-variant/30">
+         <h4 className="font-label-lg text-primary-custom mb-4 flex items-center gap-2"><Truck className="w-4 h-4"/> Live Courier Updates</h4>
+         <div className="bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-4 text-xs font-mono whitespace-pre-wrap overflow-auto max-h-64 text-on-surface-variant shadow-inner">
+           {JSON.stringify(liveTracking, null, 2)}
+         </div>
+       </div>
+    );
+  };
+
   return (
     <main className="pt-32 pb-24 bg-cream-bg min-h-screen">
       <div className="max-w-[1000px] mx-auto px-6">
@@ -94,7 +142,7 @@ export default function OrderDetails({ params }: { params: Promise<{ id: string 
                 {order.order_items?.map((item: any, index: number) => (
                   <div key={index} className="p-6 flex gap-6">
                     <div className="w-20 h-20 bg-surface-container-low rounded-xl overflow-hidden border border-outline-variant/10 shrink-0">
-                      <img src={item.product?.image_url || 'https://via.placeholder.com/150'} alt={item.product?.name} className="w-full h-full object-cover" />
+                      <img src={item.product?.image_url || '/product-placeholder.svg'} alt={item.product?.name} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1 flex flex-col justify-center">
                       <h4 className="font-label-lg text-forest-deep text-lg mb-1">{item.product?.name} {item.size && `(${item.size})`}</h4>
@@ -135,6 +183,8 @@ export default function OrderDetails({ params }: { params: Promise<{ id: string 
                   </div>
                 ))}
               </div>
+              
+              {renderLiveTracking()}
             </div>
           </div>
 
@@ -148,6 +198,12 @@ export default function OrderDetails({ params }: { params: Promise<{ id: string 
                   <span>Subtotal</span>
                   <span>₹{subtotal.toFixed(2)}</span>
                 </div>
+                {order.discount_amount > 0 && (
+                  <div className="flex justify-between text-emerald-600 font-bold">
+                    <span>Wallet Discount Used</span>
+                    <span>-₹{order.discount_amount}</span>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span>Shipping</span>
                   <span>{order.total_amount > 0 ? 'FREE' : '₹0.00'}</span>

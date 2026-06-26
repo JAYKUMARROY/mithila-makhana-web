@@ -19,9 +19,7 @@ export function ShopClient({ products }: { products: any[] }) {
     let res = [...products];
     if (categories.length > 0) {
       res = res.filter(p => {
-        let meta: any = {};
-        try { meta = JSON.parse(p.description || '{}') } catch (e) {}
-        return categories.includes(meta.category || 'Premium Makhana');
+        return categories.includes(p.short_description || 'Premium Makhana');
       });
     }
     if (sortParam === 'Price: Low to High') res.sort((a,b) => a.price - b.price);
@@ -119,23 +117,19 @@ export function ShopClient({ products }: { products: any[] }) {
               {activeProducts.map((product, idx) => {
                 let meta: any = {};
                 try { meta = JSON.parse(product.description || '{}') } catch (e) {}
-                
-                let parsedSizes = [{ size: '250g', price: product.price, discountedPrice: null }];
-                if (meta.sizes?.length > 0) {
-                  parsedSizes = typeof meta.sizes[0] === 'string'
-                    ? meta.sizes.map((s: string) => ({ size: s, price: product.price, discountedPrice: meta.discountedPrice || null }))
-                    : meta.sizes;
-                }
-                const largestSizeObj = parsedSizes.reduce((prev: any, current: any) => {
-                  const prevWeight = parseInt(prev.size.replace(/\D/g, '')) || 0;
-                  const currWeight = parseInt(current.size.replace(/\D/g, '')) || 0;
-                  return (prevWeight > currWeight) ? prev : current;
-                }, parsedSizes[0]);
+                const variants = meta.sizes?.length > 0 ? meta.sizes : (product.variants || []);
+                const currentSizeObj = variants.length > 0
+                  ? variants.reduce((prev: any, current: any) => {
+                      const prevW = parseInt(prev.size?.replace(/\D/g, '') || '0');
+                      const curW = parseInt(current.size?.replace(/\D/g, '') || '0');
+                      return prevW > curW ? prev : current;
+                    }, variants[0])
+                  : { size: '250g', price: product.price };
 
-                const category = meta.category || 'Premium Makhana';
-                const currentSizeObj = largestSizeObj;
-                const effectivePrice = currentSizeObj.discountedPrice || currentSizeObj.price;
-                const originalPrice = currentSizeObj.price;
+                const category = product.short_description || 'Premium Makhana';
+                const effectivePrice = currentSizeObj.price;
+                const metaSize = (meta.sizes || []).find((s: any) => s.size === currentSizeObj.size) || (meta.sizes || [])[0];
+                const currentDiscount = metaSize?.discountedPrice || null;
                 
                 return (
                   <StaggerItem key={product.id} className="group bg-white rounded-3xl p-5 border border-outline-variant/20 hover:border-primary-custom/30 shadow-sm hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-500 flex flex-col relative">
@@ -145,8 +139,8 @@ export function ShopClient({ products }: { products: any[] }) {
                           <Verified className="w-3 h-3" /> GI TAGGED
                         </span>
                       )}
-                      {currentSizeObj.discountedPrice && (
-                        <span className="bg-vermillion-clay text-white font-bold text-xs px-3 py-1.5 rounded-full shadow-md w-fit">
+                      {currentDiscount && (
+                        <span className="bg-vermillion-clay text-white font-bold text-xs px-3 py-1.5 rounded-full shadow-md flex items-center gap-1 w-max">
                           SALE
                         </span>
                       )}
@@ -157,7 +151,7 @@ export function ShopClient({ products }: { products: any[] }) {
                         fill 
                         className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out" 
                         alt={product.name} 
-                        src={product.image_url || 'https://via.placeholder.com/300'} 
+                        src={product.image_url || '/product-placeholder.svg'} 
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -173,12 +167,14 @@ export function ShopClient({ products }: { products: any[] }) {
                         <div className="flex flex-col">
                           <span className="text-on-surface-variant text-xs mb-1">Price</span>
                           <div className="flex items-center gap-2">
-                            <span className="text-forest-deep font-display-sm font-bold text-2xl">₹{effectivePrice}</span>
-                            {currentSizeObj.discountedPrice && <span className="text-on-surface-variant text-sm line-through">₹{originalPrice}</span>}
+                            <span className="text-forest-deep font-display-sm font-bold text-2xl">₹{currentDiscount || effectivePrice}</span>
+                            {currentDiscount && (
+                              <span className="text-on-surface-variant line-through text-sm">₹{effectivePrice}</span>
+                            )}
                           </div>
                         </div>
                         <div className="relative z-20">
-                          <AddToCartButton product={product} price={effectivePrice} size={currentSizeObj.size} />
+                          <AddToCartButton product={product} price={currentDiscount || effectivePrice} size={currentSizeObj.size} />
                         </div>
                       </div>
                     </div>

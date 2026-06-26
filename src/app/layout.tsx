@@ -18,8 +18,21 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Mithila Makhana | Premium Superfood from Bihar",
-  description: "Direct from the farms of Bihar to your home.",
+  title: 'Mithila Makhana | Premium GI-Tagged Fox Nuts from Bihar',
+  description: 'Mithila Makhana brings you the finest, GI-tagged organic fox nuts directly from the wetlands of Bihar. 100% vegan, gluten-free superfood for a healthy lifestyle.',
+  keywords: 'makhana, fox nuts, mithila makhana, bihar makhana, healthy snacks, vegan snacks, gi tagged',
+  metadataBase: new URL('https://mithilamakhana.com'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'Mithila Makhana | Premium GI-Tagged Fox Nuts',
+    description: 'The finest, GI-tagged organic fox nuts directly from the wetlands of Bihar.',
+    url: 'https://mithilamakhana.com',
+    siteName: 'Mithila Makhana',
+    locale: 'en_IN',
+    type: 'website',
+  }
 };
 
 export default function RootLayout({
@@ -39,6 +52,17 @@ export default function RootLayout({
           <CartProvider>
             <Navbar />
             <main id="main-content">{children}</main>
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "Mithila Makhana",
+                "url": "https://mithilamakhana.com",
+                "logo": "https://mithilamakhana.com/logo.png",
+                "description": "Premium GI-tagged organic fox nuts directly from the wetlands of Bihar."
+              }) }}
+            />
             <Footer />
             <BackToTop />
           </CartProvider>

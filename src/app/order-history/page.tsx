@@ -1,4 +1,5 @@
 "use client"
+import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { Package, Truck, CheckCircle2, ChevronRight, Download, Eye, FileText } from 'lucide-react'
@@ -66,7 +67,7 @@ export default function OrderHistory() {
                   </div>
                   <div>
                     <p className="text-on-surface-variant font-label-sm uppercase tracking-wider text-[11px] mb-1">Total</p>
-                    <p className="font-label-lg text-forest-deep">₹{order.total_amount}</p>
+                    <p className="font-label-lg text-forest-deep">₹{order.total_amount} {order.discount_amount > 0 && <span className="text-xs text-emerald-600 ml-1">(-₹{order.discount_amount} Wallet)</span>}</p>
                   </div>
                   <div>
                     <p className="text-on-surface-variant font-label-sm uppercase tracking-wider text-[11px] mb-1">Order ID</p>
@@ -109,8 +110,8 @@ export default function OrderHistory() {
                 <div className="space-y-6">
                   {order.order_items?.map((item: any) => (
                     <div key={item.id} className="flex gap-6 items-center">
-                      <div className="w-20 h-20 md:w-24 md:h-24 bg-surface-container-low rounded-xl overflow-hidden border border-outline-variant/10 shrink-0">
-                        <img src={item.product?.image_url || 'https://via.placeholder.com/150'} alt={item.product?.name} className="w-full h-full object-cover" />
+                      <div className="w-20 h-20 md:w-24 md:h-24 bg-surface-container-low rounded-xl overflow-hidden border border-outline-variant/10 shrink-0 relative">
+                        <Image fill sizes="96px" src={item.product?.image_url || '/product-placeholder.svg'} alt={item.product?.name} className="w-full h-full object-cover" />
                       </div>
                       <div className="flex-1">
                         <Link href="/shop" className="font-label-lg text-forest-deep text-lg hover:text-primary-custom transition-colors block mb-1">

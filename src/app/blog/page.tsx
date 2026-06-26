@@ -1,6 +1,7 @@
 "use client"
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowRight, BookOpen } from 'lucide-react'
 import { blogPosts, BlogCategory } from '@/lib/blog-data'
 
@@ -33,10 +34,13 @@ export default function Blog() {
               <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-gold-accent/20 blur-[100px] z-0 mix-blend-screen pointer-events-none"></div>
               <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-primary-custom/30 blur-[100px] z-0 mix-blend-screen pointer-events-none"></div>
 
-              <img 
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+              <Image 
+                fill
+                className="object-cover transition-transform duration-1000 group-hover:scale-105" 
                 alt={featuredPost.title}
                 src={featuredPost.image} 
+                sizes="(max-width: 1280px) 100vw, 1280px"
+                priority
               />
               
               <div className="absolute inset-0 bg-forest-deep/50"></div>
@@ -98,10 +102,12 @@ export default function Blog() {
           {filteredPosts.map((post) => (
             <article key={post.slug} className="group flex flex-col bg-white rounded-3xl shadow-sm border border-outline-variant/20 overflow-hidden hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-500">
               <Link href={`/blog/${post.slug}`} className="relative h-64 overflow-hidden block">
-                <img 
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" 
+                <Image 
+                  fill
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-110" 
                   alt={post.title} 
                   src={post.image} 
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="absolute top-6 left-6">

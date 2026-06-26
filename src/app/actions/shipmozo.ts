@@ -1,7 +1,8 @@
 'use server'
 
-const SHIPMOZO_PUBLIC_KEY = 'CyL9fkjPZGwxhSQBEZng';
-const SHIPMOZO_PRIVATE_KEY = 'GnpuEJKC9S73eWMUPTsY';
+import { requireAdmin } from '@/lib/auth';
+import { createClient } from '@/utils/supabase/server';
+
 const BASE_URL = 'https://shipping-api.com/app/api/v1';
 
 export async function checkPincodeServiceability(deliveryPincode: string) {
@@ -10,8 +11,8 @@ export async function checkPincodeServiceability(deliveryPincode: string) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'public-key': SHIPMOZO_PUBLIC_KEY,
-        'private-key': SHIPMOZO_PRIVATE_KEY
+        'public-key': process.env.SHIPMOZO_PUBLIC_KEY || '',
+        'private-key': process.env.SHIPMOZO_PRIVATE_KEY || ''
       },
       body: JSON.stringify({
         pickup_pincode: "141211", // using a mock warehouse pincode or default
@@ -45,8 +46,8 @@ export async function getOrderLabel(awbNumber: string) {
     const res = await fetch(`${BASE_URL}/get-order-label/${awbNumber}`, {
       method: 'GET',
       headers: {
-        'public-key': SHIPMOZO_PUBLIC_KEY,
-        'private-key': SHIPMOZO_PRIVATE_KEY
+        'public-key': process.env.SHIPMOZO_PUBLIC_KEY || '',
+        'private-key': process.env.SHIPMOZO_PRIVATE_KEY || ''
       }
     });
 
@@ -64,12 +65,15 @@ export async function getOrderLabel(awbNumber: string) {
 }
 
 export async function syncOrderAwb(dbOrderId: string, shipmozoOrderId: string) {
+  const { error } = await requireAdmin();
+  if (error) return { success: false, message: error };
+
   try {
     const res = await fetch(`${BASE_URL}/get-order-detail/${shipmozoOrderId}`, {
       method: 'GET',
       headers: {
-        'public-key': SHIPMOZO_PUBLIC_KEY,
-        'private-key': SHIPMOZO_PRIVATE_KEY
+        'public-key': process.env.SHIPMOZO_PUBLIC_KEY || '',
+        'private-key': process.env.SHIPMOZO_PRIVATE_KEY || ''
       }
     });
 
@@ -83,7 +87,6 @@ export async function syncOrderAwb(dbOrderId: string, shipmozoOrderId: string) {
       
       if (awbNumber) {
         // We need to update our DB! We use the admin client or import createClient here
-        const { createClient } = require('@/utils/supabase/server');
         const supabase = await createClient();
         
         await supabase.from('orders').update({
@@ -120,8 +123,8 @@ export async function calculateShippingRate(params: {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'public-key': SHIPMOZO_PUBLIC_KEY,
-        'private-key': SHIPMOZO_PRIVATE_KEY
+        'public-key': process.env.SHIPMOZO_PUBLIC_KEY || '',
+        'private-key': process.env.SHIPMOZO_PRIVATE_KEY || ''
       },
       body: JSON.stringify({
         pickup_pincode: params.pickupPincode || "122001",
@@ -146,5 +149,39 @@ export async function calculateShippingRate(params: {
     }
   } catch (err: any) {
     return { success: false, message: err.message };
+  }
+}
+
+export async function fetchShipmozoTracking(awb_number: string) {
+  if (awb_number.startsWith('TEST-AWB')) {
+    return {
+      success: true,
+      data: [
+        { status: "Shipment Picked Up", location: "Warehouse, Delhi", date: new Date(Date.now() - 86400000 * 2).toLocaleString() },
+        { status: "In Transit to Destination", location: "Transit Hub, Haryana", date: new Date(Date.now() - 86400000).toLocaleString() },
+        { status: "Out for Delivery", location: "Local Courier Facility", date: new Date().toLocaleString() }
+      ]
+    };
+  }
+
+  try {
+    const res = await fetch(`${BASE_URL}/track-order?awb_number=${awb_number}`, {
+      method: 'GET',
+      headers: {
+        'public-key': process.env.SHIPMOZO_PUBLIC_KEY || '',
+        'private-key': process.env.SHIPMOZO_PRIVATE_KEY || ''
+      },
+      cache: 'no-store'
+    });
+    
+    if (!res.ok) {
+      return { success: false, message: 'Failed to fetch tracking data' };
+    }
+    
+    const data = await res.json();
+    return { success: data.result === "1", data };
+  } catch (err: any) {
+    console.error('Shipmozo tracking error:', err);
+    return { success: false, message: err.message || 'An error occurred while fetching tracking data' };
   }
 }

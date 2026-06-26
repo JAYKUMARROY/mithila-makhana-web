@@ -14,7 +14,7 @@ export function WhyChooseUs() {
           <div className="w-16 h-16 bg-gold-accent/10 rounded-full flex items-center justify-center text-gold-accent mx-auto mb-6">
             <Verified className="w-8 h-8" />
           </div>
-          <h3 className="font-headline-md text-headline-md text-forest-deep mb-3">Purity &amp; Origin</h3>
+          <h3 className="font-headline-md text-headline-md text-forest-deep mb-3">Purity & Origin</h3>
           <p className="text-on-surface-variant text-sm">Directly sourced from the pristine wetlands of Mithila, Bihar.</p>
         </div>
         <div className="p-8 bg-white rounded-xl border border-surface-container shadow-sm text-center hover:scale-105 transition-transform">

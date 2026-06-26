@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ScrollText, ArrowRight, Star, Heart, Leaf, ShieldCheck, CheckCircle2 } from 'lucide-react'
 import { WhyChooseUs } from '@/components/why-choose-us'
 import { ContactUs } from '@/components/contact-us'
@@ -15,7 +16,7 @@ export default function About() {
       {/* 1. Cinematic "Legacy" Hero */}
       <header className="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img className="w-full h-full object-cover scale-105 animate-[pulse_20s_ease-in-out_infinite_alternate]" alt="Mithila wetlands" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT1hqNmvBs3nNUMKlm_qe4pEJeHyD1sbzy6HIy84vBmGkBn2wEmsiHDm2jjHREhm81TA-q0k5x_z8RlSAiQXYr4JRwLuPU4EH2zN_A-TUtI_8zA3en0_k6p7XtO267izloqk2KbKFcx2m_i12Ph3no4bVEM6L4EbMI0iFNzjMYwwt-gDyjxiE40TZbSd-8lGpreppKjSJSSceunm6vm8iaJdfaKGU1YlhuFTHv4YtSzISvP4NHt5WOSC3GvbMa9jks7H_F_ca17QL2" />
+          <Image fill sizes="100vw" className="w-full h-full object-cover scale-105 animate-[pulse_20s_ease-in-out_infinite_alternate]" alt="Mithila wetlands" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT1hqNmvBs3nNUMKlm_qe4pEJeHyD1sbzy6HIy84vBmGkBn2wEmsiHDm2jjHREhm81TA-q0k5x_z8RlSAiQXYr4JRwLuPU4EH2zN_A-TUtI_8zA3en0_k6p7XtO267izloqk2KbKFcx2m_i12Ph3no4bVEM6L4EbMI0iFNzjMYwwt-gDyjxiE40TZbSd-8lGpreppKjSJSSceunm6vm8iaJdfaKGU1YlhuFTHv4YtSzISvP4NHt5WOSC3GvbMa9jks7H_F_ca17QL2" />
           <div className="absolute inset-0 bg-gradient-to-t from-forest-deep via-forest-deep/60 to-transparent"></div>
         </div>
         
@@ -64,7 +65,7 @@ export default function About() {
             
             {/* Vertical Feature Image */}
             <div className="md:col-span-4 relative group overflow-hidden rounded-3xl shadow-sm border border-outline-variant/30 h-[400px] md:h-auto bg-white flex items-center justify-center">
-              <img className="w-full h-full object-contain transition-transform duration-1000 group-hover:scale-110" alt="Madhubani art" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7Z_W_dS-sv_hAg7HrNy7aG96TYJK0gQ53mEPbQHcT_Klq4OA1MCC8Lw-9tRRKd-lsxSqT-_IGzn9Sukg7ZnlRU8Avv38HTENmCHgmKANh_m9gjbpJEZEHEKoDDHRT9svPygv3IVkhHdu458An-gMt2ffLxH0Zx1UPAdhxLMBKk9esLEvb2MX3LVn44f05uEc6r-EQn1ss3CHXJc1yuaZ_cPr4xN0JQOgR_j8fdwNRf6iL31wdbD4QEEgfEkJt4RkuAVT0t3mQzvdD" />
+              <Image fill sizes="(max-width: 768px) 100vw, 33vw" className="w-full h-full object-contain transition-transform duration-1000 group-hover:scale-110" alt="Madhubani art" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7Z_W_dS-sv_hAg7HrNy7aG96TYJK0gQ53mEPbQHcT_Klq4OA1MCC8Lw-9tRRKd-lsxSqT-_IGzn9Sukg7ZnlRU8Avv38HTENmCHgmKANh_m9gjbpJEZEHEKoDDHRT9svPygv3IVkhHdu458An-gMt2ffLxH0Zx1UPAdhxLMBKk9esLEvb2MX3LVn44f05uEc6r-EQn1ss3CHXJc1yuaZ_cPr4xN0JQOgR_j8fdwNRf6iL31wdbD4QEEgfEkJt4RkuAVT0t3mQzvdD" />
               <div className="absolute inset-0 bg-gradient-to-t from-forest-deep via-forest-deep/20 to-transparent flex items-end p-8 pointer-events-none">
                 <div>
                   <p className="text-white font-display-sm text-2xl font-bold mb-1">Cultural Identity</p>
@@ -127,7 +128,7 @@ export default function About() {
               <div className="w-full lg:w-1/2 flex justify-end">
                 <div className="relative w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white/5 group">
                   <div className="absolute inset-0 bg-gold-accent/20 mix-blend-overlay z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <img className="w-full aspect-square md:aspect-video lg:aspect-[4/3] object-cover group-hover:scale-110 transition-transform duration-1000" alt="Wetland Foraging" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBB2MACOJWNBIZCjhAKOgvHOKLF8N2_tK9ri7pbp41dcHw4KbB1i3JluOV-trTmfVEnSM1LiZ_reZu836CwIwLhWGSEHIWmeis8H6J0jZv2Kga8x6yoAPzauhqx8sNuxQyGIKqfbhVFklLgPsjIOlLbdz0sNU3b2xxzOLlnVVd5PJDrnfInQywN8lV61FsNtNOXdo7E5c0tYJvooJ7TeteVzu6k7N0fSe0LdAUXJ3vyki9l4VjB1muAeV30iPMoIyOiQ_91wuJ5qxx9" />
+                  <Image fill sizes="(max-width: 1024px) 100vw, 50vw" className="w-full aspect-square md:aspect-video lg:aspect-[4/3] object-cover group-hover:scale-110 transition-transform duration-1000" alt="Wetland Foraging" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBB2MACOJWNBIZCjhAKOgvHOKLF8N2_tK9ri7pbp41dcHw4KbB1i3JluOV-trTmfVEnSM1LiZ_reZu836CwIwLhWGSEHIWmeis8H6J0jZv2Kga8x6yoAPzauhqx8sNuxQyGIKqfbhVFklLgPsjIOlLbdz0sNU3b2xxzOLlnVVd5PJDrnfInQywN8lV61FsNtNOXdo7E5c0tYJvooJ7TeteVzu6k7N0fSe0LdAUXJ3vyki9l4VjB1muAeV30iPMoIyOiQ_91wuJ5qxx9" />
                 </div>
               </div>
               
@@ -150,7 +151,7 @@ export default function About() {
               <div className="w-full lg:w-1/2 flex justify-start">
                 <div className="relative w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white/5 group">
                   <div className="absolute inset-0 bg-vermillion-clay/20 mix-blend-overlay z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <img className="w-full aspect-square md:aspect-video lg:aspect-[4/3] object-cover group-hover:scale-110 transition-transform duration-1000" alt="The Roasting Ritual" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlHex2oZec_GJW5VD8xYpOrMhN0c8ncK3C8r2mswjrW9tNy5VBqJOv0uhnji6hddRMyuYRcNbdyZFXir6YMcpZcBlrZswvQkL-iC2xXqfD1RXAnwzFydxK8Bax4w6qUEi6r1cfw116v7OngummfPLo0BQkjucWmF1j1Jc3F-NX_fux4cVv4Ryit08DzUjIRqOwHYz4WYN8QMQCrIKsjuNjgYwRMv63oVyv1l9v4XaXJlz7UKU3AhXcqUcO238nIhcAE15Thuv8pah-" />
+                  <Image fill sizes="(max-width: 1024px) 100vw, 50vw" className="w-full aspect-square md:aspect-video lg:aspect-[4/3] object-cover group-hover:scale-110 transition-transform duration-1000" alt="The Roasting Ritual" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlHex2oZec_GJW5VD8xYpOrMhN0c8ncK3C8r2mswjrW9tNy5VBqJOv0uhnji6hddRMyuYRcNbdyZFXir6YMcpZcBlrZswvQkL-iC2xXqfD1RXAnwzFydxK8Bax4w6qUEi6r1cfw116v7OngummfPLo0BQkjucWmF1j1Jc3F-NX_fux4cVv4Ryit08DzUjIRqOwHYz4WYN8QMQCrIKsjuNjgYwRMv63oVyv1l9v4XaXJlz7UKU3AhXcqUcO238nIhcAE15Thuv8pah-" />
                 </div>
               </div>
               
@@ -173,7 +174,7 @@ export default function About() {
               <div className="w-full lg:w-1/2 flex justify-end">
                 <div className="relative w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white/5 group">
                   <div className="absolute inset-0 bg-primary-custom/20 mix-blend-overlay z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <img className="w-full aspect-square md:aspect-video lg:aspect-[4/3] object-cover group-hover:scale-110 transition-transform duration-1000" alt="Pure Selection" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPu0j-XmGTveFoL1LgBD1kG_rGB14YaR3z9WRc7KsgpAaIJLEc_BsO6HD5PHhpG7lTa6clBlYPTW_kBY9HKmrrZM2_v3-VSWM1rkgN33GP62QcHCe0PMSD_wY5_eRaOwF68jWbfqavDX52Y12c_cDirGnzOs8MUMKSGmK4wFoRCto-KBMfDWIu2vAToZENyJkvD6F52mZDY40vn1ZbzZ3g_6zA2Cj0LjzEmOIBWqYXe-Po-InGjKtTZ3pZZbRqhTL8oOZiik-XO7_m" />
+                  <Image fill sizes="(max-width: 1024px) 100vw, 50vw" className="w-full aspect-square md:aspect-video lg:aspect-[4/3] object-cover group-hover:scale-110 transition-transform duration-1000" alt="Pure Selection" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPu0j-XmGTveFoL1LgBD1kG_rGB14YaR3z9WRc7KsgpAaIJLEc_BsO6HD5PHhpG7lTa6clBlYPTW_kBY9HKmrrZM2_v3-VSWM1rkgN33GP62QcHCe0PMSD_wY5_eRaOwF68jWbfqavDX52Y12c_cDirGnzOs8MUMKSGmK4wFoRCto-KBMfDWIu2vAToZENyJkvD6F52mZDY40vn1ZbzZ3g_6zA2Cj0LjzEmOIBWqYXe-Po-InGjKtTZ3pZZbRqhTL8oOZiik-XO7_m" />
                 </div>
               </div>
               
@@ -231,7 +232,7 @@ export default function About() {
           <div className="lg:w-1/2 grid grid-cols-2 gap-4 h-[600px]">
             <div className="space-y-4 h-full flex flex-col">
               <div className="rounded-3xl overflow-hidden h-[55%] relative shadow-lg group">
-                <img className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Woman farmer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBibSVKWb8ZMSGQbI__2CIWDMmzJb700i-8AuImh9t_gTXvs4lGg1eAZ5uhuXX6onjRQrDRDunv4S8qM1naTIPPMDRe3JO8N_8xsRbjnyu7T2yReQy7GWy3vo19yiOaDzd8u9l5x0LXQCkAPQHJXlw7G-GQHfRiWQ79KPTcCPx8rK9PruHn5rgjI1uAexMjvBeK1_U1NlJh3IcYzlD7DS-_Y2mQSPmJZ3swt_T_NAE1gVBlyuSNFxvjA68_Yg79htHMUruFRC2d-grW" />
+                <Image fill sizes="(max-width: 1024px) 50vw, 25vw" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Woman farmer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBibSVKWb8ZMSGQbI__2CIWDMmzJb700i-8AuImh9t_gTXvs4lGg1eAZ5uhuXX6onjRQrDRDunv4S8qM1naTIPPMDRe3JO8N_8xsRbjnyu7T2yReQy7GWy3vo19yiOaDzd8u9l5x0LXQCkAPQHJXlw7G-GQHfRiWQ79KPTcCPx8rK9PruHn5rgjI1uAexMjvBeK1_U1NlJh3IcYzlD7DS-_Y2mQSPmJZ3swt_T_NAE1gVBlyuSNFxvjA68_Yg79htHMUruFRC2d-grW" />
               </div>
               <div className="rounded-3xl overflow-hidden h-[45%] bg-forest-deep flex items-center justify-center p-6 text-center shadow-lg relative group">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary-custom/20 rounded-full blur-[30px] group-hover:scale-150 transition-transform duration-700"></div>
@@ -241,10 +242,10 @@ export default function About() {
             
             <div className="space-y-4 pt-12 h-full flex flex-col">
               <div className="rounded-3xl overflow-hidden h-[45%] relative shadow-lg group">
-                <img className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Local children" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkPGTJagykCY9k87keM1EkC-eVDWQ1j6g_gi1b25chwo01zctMhLxdaXYTDSZoJXa5GJnqlyh3pgPGOW439v_nyHI04he89LLckw7MAFhEpi_tS7-3s4prfhycDBMgyao3VtKQjxfPwkzL1S_A_Bj-1y_xkQVgZpAzjN-p1whH37zWLP87ALhMAeKu3baPbl4SHYpvINIHudly_c7MJWInSY1F7q8oLg6VFNq0grR0McQDVcmaJeUfPEXOgPZkgXZ9R3AbIZFmFVGH" />
+                <Image fill sizes="(max-width: 1024px) 50vw, 25vw" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Local children" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkPGTJagykCY9k87keM1EkC-eVDWQ1j6g_gi1b25chwo01zctMhLxdaXYTDSZoJXa5GJnqlyh3pgPGOW439v_nyHI04he89LLckw7MAFhEpi_tS7-3s4prfhycDBMgyao3VtKQjxfPwkzL1S_A_Bj-1y_xkQVgZpAzjN-p1whH37zWLP87ALhMAeKu3baPbl4SHYpvINIHudly_c7MJWInSY1F7q8oLg6VFNq0grR0McQDVcmaJeUfPEXOgPZkgXZ9R3AbIZFmFVGH" />
               </div>
               <div className="rounded-3xl overflow-hidden h-[55%] relative shadow-lg group">
-                <img className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Aerial drone shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3xI-VnMvAuCGp3HsVGvFjssr7OpI-D8nZ6I_rnFSyEO2lM3CLdLb8vD2oc6r3jvHAooWPMlNfmhKR6dLPycdL0aXv6SWIWRqlbuJY9yx_OwMoC85yjaCJI0Nf9erH5gq74AeQodvKzwz7TkjwpMVr-DEKWy_2eFIHEDzto9rVce3OscWFr0Znu3d2P228OZw_WR2fsBU67VYAIM0qTRwVrtPI970rWxUd34_Wmw8XFThI1qJ2AMrU3Ogkz7UkonTDvXhCR-nExbeO" />
+                <Image fill sizes="(max-width: 1024px) 50vw, 25vw" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Aerial drone shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3xI-VnMvAuCGp3HsVGvFjssr7OpI-D8nZ6I_rnFSyEO2lM3CLdLb8vD2oc6r3jvHAooWPMlNfmhKR6dLPycdL0aXv6SWIWRqlbuJY9yx_OwMoC85yjaCJI0Nf9erH5gq74AeQodvKzwz7TkjwpMVr-DEKWy_2eFIHEDzto9rVce3OscWFr0Znu3d2P228OZw_WR2fsBU67VYAIM0qTRwVrtPI970rWxUd34_Wmw8XFThI1qJ2AMrU3Ogkz7UkonTDvXhCR-nExbeO" />
               </div>
             </div>
           </div>

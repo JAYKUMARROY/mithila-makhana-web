@@ -1,7 +1,8 @@
 import { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Share2, Link2, Mail, Calendar, Clock } from 'lucide-react'
+import { ArrowLeft, Calendar, Clock } from 'lucide-react'
+import { ShareButtons } from '@/components/share-buttons'
 import { blogPosts } from '@/lib/blog-data'
 
 type Props = {
@@ -70,7 +71,7 @@ export default async function BlogPostPage({ params }: Props) {
               {post.category}
             </span>
             <span className="text-forest-deep/50 font-medium text-sm flex items-center gap-2">
-              <Calendar className="w-4 h-4" /> Oct 24, 2024
+              <Calendar className="w-4 h-4" /> {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
             </span>
             <span className="text-forest-deep/50 font-medium text-sm flex items-center gap-2">
               <Clock className="w-4 h-4" /> {post.readTime}
@@ -110,18 +111,7 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
             </div>
             
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-bold text-forest-deep/40 uppercase tracking-widest mr-2">Share Article</span>
-              <button className="w-10 h-10 rounded-full bg-cream-bg border border-outline-variant/50 flex items-center justify-center text-forest-deep hover:bg-forest-deep hover:text-white transition-colors shadow-sm">
-                <Share2 className="w-4 h-4" />
-              </button>
-              <button className="w-10 h-10 rounded-full bg-cream-bg border border-outline-variant/50 flex items-center justify-center text-forest-deep hover:bg-forest-deep hover:text-white transition-colors shadow-sm">
-                <Link2 className="w-4 h-4" />
-              </button>
-              <button className="w-10 h-10 rounded-full bg-cream-bg border border-outline-variant/50 flex items-center justify-center text-forest-deep hover:bg-forest-deep hover:text-white transition-colors shadow-sm">
-                <Mail className="w-4 h-4" />
-              </button>
-            </div>
+            <ShareButtons title={post.title} url={`https://mithilamakhana.com/blog/${post.slug}`} />
           </div>
 
           {/* Text Content */}

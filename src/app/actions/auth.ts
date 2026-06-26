@@ -71,6 +71,7 @@ export async function signup(formData: FormData) {
   const identifier = formData.get('identifier') as string
   const password = formData.get('password') as string
   const name = formData.get('name') as string
+  const referralCode = formData.get('referral_code') as string || ''
 
   let credentials: any = {
     password,
@@ -120,6 +121,45 @@ export async function signup(formData: FormData) {
         status: 'ACTIVE'
       }
     ], { onConflict: 'id' });
+
+    // Link referrer if valid code provided
+    if (referralCode) {
+      const { data: referrers } = await supabase
+        .rpc('get_referrer_by_code', { code_to_check: referralCode.toUpperCase() })
+        
+      if (referrers && referrers.length > 0) {
+        const referrer = referrers[0];
+        if (referrer.id !== data.user.id) {
+          // Verify daily limit (max 3 per day) before crediting using RPC
+          const { data: limitExceeded } = await supabase
+            .rpc('check_referral_limit_exceeded', { referrer_uuid: referrer.id })
+
+          if (!limitExceeded) {
+            // Under limit, apply referral
+            await supabase.from('profiles').update({ referred_by: referrer.id }).eq('id', data.user.id);
+            await supabase.from('referral_ledger').insert({
+              referrer_id: referrer.id,
+              referred_id: data.user.id,
+              status: 'PENDING'
+            });
+          } else {
+            console.warn(`Signup referral blocked: ${referrer.id} exceeded daily limit.`);
+          }
+        }
+      }
+    }
+
+    // Auto-generate referral code for new user
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    let newCode = ''
+    let isUnique = false
+    while (!isUnique) {
+      newCode = ''
+      for (let i = 0; i < 8; i++) newCode += chars.charAt(Math.floor(Math.random() * chars.length))
+      const { data: exists } = await supabase.rpc('check_referral_code_exists', { code_to_check: newCode })
+      if (!exists) isUnique = true
+    }
+    await supabase.from('profiles').update({ referral_code: newCode }).eq('id', data.user.id);
   }
 
   revalidatePath('/', 'layout')

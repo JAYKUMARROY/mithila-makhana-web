@@ -1,6 +1,7 @@
 "use client"
 
 import { motion, HTMLMotionProps } from "framer-motion"
+import Image from 'next/image'
 
 export function FadeInUp({ 
   children, 
@@ -38,7 +39,7 @@ export function FadeInRight({
 } & HTMLMotionProps<"div">) {
   return (
     <motion.div
-      initial={{ opacity: 0, x: -30 }}
+      initial={{ opacity: 0, x: 30 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98], delay }}
@@ -126,7 +127,7 @@ export function ParallaxImage({
       transition={{ duration: 1.5, ease: "easeOut" }}
       className="w-full h-full overflow-hidden"
     >
-      <img src={src} alt={alt} className={`w-full h-full object-cover ${className}`} />
+      <Image src={src} alt={alt} fill className={`object-cover ${className}`} sizes="(max-width: 768px) 100vw, 50vw" priority />
     </motion.div>
   )
 }

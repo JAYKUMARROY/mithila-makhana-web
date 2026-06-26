@@ -29,6 +29,8 @@ export default function TaxInvoicePage({ params }: { params: Promise<{ id: strin
   });
 
   const subtotal = order.order_items?.reduce((acc: number, item: any) => acc + (item.price_at_time * item.quantity), 0) || 0;
+  const discount = order.discount_amount || 0;
+  const shipping = Math.max(0, order.total_amount - subtotal + discount);
   
   // Example tax calculation (Assuming 5% GST on snacks, modify if different)
   // Let's say the prices are inclusive of GST.
@@ -123,9 +125,15 @@ export default function TaxInvoicePage({ params }: { params: Promise<{ id: strin
             <span>GST (5% included):</span>
             <span>₹{totalGst.toFixed(2)}</span>
           </div>
+          {discount > 0 && (
+            <div className="flex justify-between py-2 border-b border-outline-variant/20 text-sm text-emerald-600 font-bold">
+              <span>Wallet Discount Used:</span>
+              <span>-₹{discount.toFixed(2)}</span>
+            </div>
+          )}
           <div className="flex justify-between py-2 border-b border-outline-variant/20 text-sm">
             <span>Shipping Charges:</span>
-            <span>{order.total_amount > subtotal ? `₹${(order.total_amount - subtotal).toFixed(2)}` : 'FREE'}</span>
+            <span>{shipping > 0 ? `₹${shipping.toFixed(2)}` : 'FREE'}</span>
           </div>
           <div className="flex justify-between py-3 border-b-2 border-forest-deep font-bold text-lg">
             <span>Grand Total:</span>

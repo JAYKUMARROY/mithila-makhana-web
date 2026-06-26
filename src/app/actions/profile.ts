@@ -21,7 +21,10 @@ export async function getProfile() {
     email: user.email,
     name: profile?.name || user.user_metadata?.full_name || '',
     phone: profile?.phone || user.user_metadata?.phone || '',
-    addresses: profile?.addresses || user.user_metadata?.addresses || []
+    addresses: profile?.addresses || user.user_metadata?.addresses || [],
+    referral_code: profile?.referral_code || '',
+    referred_by: profile?.referred_by || null,
+    wallet_balance: profile?.wallet_balance || 0
   }
 }
 
@@ -32,6 +35,17 @@ export async function updateProfile(formData: FormData) {
 
   const name = formData.get('name') as string
   const phone = formData.get('phone') as string
+
+  if (phone) {
+    const { data: existingUser } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('phone', phone)
+      .neq('id', user.id)
+      .maybeSingle()
+    
+    if (existingUser) return { error: 'This phone number is already registered to another account.' }
+  }
 
   // Update user metadata
   const { error: authError } = await supabase.auth.updateUser({
@@ -52,7 +66,7 @@ export async function updateProfile(formData: FormData) {
   if (profileError) return { error: profileError.message }
 
   revalidatePath('/profile')
-  return { success: true }
+  return { data: true }
 }
 
 export async function manageAddress(action: 'add' | 'edit' | 'delete' | 'set_default', addressData: any) {
@@ -99,5 +113,5 @@ export async function manageAddress(action: 'add' | 'edit' | 'delete' | 'set_def
   
   revalidatePath('/profile')
   revalidatePath('/') // To update navbar
-  return { success: true }
+  return { data: true }
 }

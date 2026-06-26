@@ -3,14 +3,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 
-async function requireAdmin() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not logged in', supabase, user: null }
-  const adminEmails = process.env.ADMIN_EMAILS ? process.env.ADMIN_EMAILS.split(',').map(e => e.trim()) : [];
-  if (!adminEmails.includes(user.email || '')) return { error: 'Unauthorized', supabase, user }
-  return { error: null, supabase, user }
-}
+import { requireAdmin } from '@/lib/auth'
 
 export async function getProducts() {
   const supabase = await createClient()
@@ -19,8 +12,8 @@ export async function getProducts() {
     .select('*')
     .order('created_at', { ascending: false })
   
-  if (error) return []
-  return data
+  if (error) return { data: [], error: error.message }
+  return { data }
 }
 
 export async function getProductBySlug(slug: string) {
@@ -31,17 +24,19 @@ export async function getProductBySlug(slug: string) {
     .eq('slug', slug)
     .single()
   
-  if (error) return null
-  return data
+  if (error) return { data: null, error: error.message }
+  return { data }
 }
 
 export async function addProduct(product: {
   name: string
   slug: string
+  short_description?: string
   description?: string
   price: number
   image_url?: string
   stock_quantity?: number
+  is_active?: boolean
 }) {
   const { error, supabase } = await requireAdmin()
   if (error) return { error }
@@ -54,6 +49,7 @@ export async function addProduct(product: {
     .from('products')
     .insert([product])
     .select()
+    .single()
 
   if (dbError) return { error: dbError.message }
   
@@ -63,7 +59,16 @@ export async function addProduct(product: {
   return { data }
 }
 
-export async function updateProduct(id: string, updates: any) {
+export async function updateProduct(id: string, updates: {
+  name?: string;
+  slug?: string;
+  short_description?: string;
+  description?: string;
+  price?: number;
+  image_url?: string;
+  stock_quantity?: number;
+  is_active?: boolean;
+}) {
   const { error, supabase } = await requireAdmin()
   if (error) return { error }
 
@@ -96,7 +101,7 @@ export async function deleteStorageImage(imageUrl: string) {
   } catch(e) {
     console.error('Failed to delete image:', e);
   }
-  return { success: true }
+  return { data: true }
 }
 
 export async function deleteProduct(id: string) {
@@ -127,5 +132,5 @@ export async function deleteProduct(id: string) {
   revalidatePath('/admin/products')
   revalidatePath('/admin/inventory')
   revalidatePath('/shop')
-  return { success: true }
+  return { data: true }
 }

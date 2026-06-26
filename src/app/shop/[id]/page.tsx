@@ -35,19 +35,14 @@ export default function ProductDetail() {
   useEffect(() => {
     const slug = params.id as string;
     Promise.all([getProductBySlug(slug), getProducts()]).then(([data, all]) => {
-      setProduct(data);
-      setAllProducts(all);
-      if (data?.image_url) setActiveImg(data.image_url);
-      if (data?.description) {
-        try {
-          const meta = JSON.parse(data.description);
-          if (meta.sizes?.length > 0) {
-            const parsedSizes = typeof meta.sizes[0] === 'string'
-              ? meta.sizes.map((s: string) => ({ size: s, price: data.price, discountedPrice: meta.discountedPrice || null }))
-              : meta.sizes;
-            setSelectedSize(parsedSizes[0].size);
-          }
-        } catch(e) {}
+      setProduct(data.data);
+      setAllProducts(all.data || []);
+      if (data.data?.image_url) setActiveImg(data.data.image_url);
+      if (data.data?.variants?.length > 0) {
+        setSelectedSize(data.data.variants[0].size);
+      } else if (data.data?.price) {
+        // Fallback for products without variants
+        setSelectedSize('');
       }
       setLoading(false);
     });
@@ -72,18 +67,13 @@ export default function ProductDetail() {
   let meta: any = {};
   try { meta = JSON.parse(product.description || '{}') } catch (e) {}
   
-  let parsedSizes: any[] = [{ size: '250g', price: product.price, discountedPrice: null }];
-  if (meta.sizes?.length > 0) {
-    parsedSizes = typeof meta.sizes[0] === 'string'
-      ? meta.sizes.map((s: string) => ({ size: s, price: product.price, discountedPrice: meta.discountedPrice || null }))
-      : meta.sizes;
-  }
-
-  const category = meta.category || 'Premium Makhana';
-  const currentSizeObj = parsedSizes.find((s: any) => s.size === selectedSize) || parsedSizes[0];
-  const currentStock = Number(currentSizeObj.stock) || 0;
-  const currentPrice = currentSizeObj.price;
-  const currentDiscount = currentSizeObj.discountedPrice;
+  const variants = meta.sizes?.length > 0 ? meta.sizes : (product.variants || []);
+  const category = product.short_description || meta.category || 'Premium Makhana';
+  const currentVariant = variants.find((v: any) => v.size === selectedSize) || variants[0] || { stock: product.stock_quantity || 0, price: product.price };
+  const currentStock = Number(currentVariant.stock) || 0;
+  const currentPrice = currentVariant.price;
+  const metaSize = (meta.sizes || []).find((s: any) => s.size === selectedSize) || (meta.sizes || [])[0];
+  const currentDiscount = metaSize?.discountedPrice || null;
   const nutrition = meta.nutrition || { calories: '347 kcal', protein: '9.7g', carbohydrate: '76.9g', fat: '0.1g' };
   const images = meta.images?.length > 0 ? meta.images : [product.image_url].filter(Boolean);
   const relatedProducts = allProducts.filter((p: any) => p.id !== product.id).slice(0, 4);
@@ -153,17 +143,19 @@ export default function ProductDetail() {
             </StaggerItem>
             <StaggerItem className="mb-6">
               <label className="block font-label-lg text-label-lg text-forest-deep mb-3 uppercase tracking-wider">Size Selection</label>
-              <div className="flex flex-wrap gap-3">
-                {parsedSizes.map((s: any, idx: number) => (
-                  <button key={idx} onClick={() => setSelectedSize(s.size)} className={`px-6 py-2 border-2 ${selectedSize === s.size ? 'border-primary-custom bg-primary-custom/5 text-primary-custom' : 'border-outline-variant hover:border-primary-custom'} rounded-lg font-bold transition-all hover:scale-105 active:scale-95`}>{s.size}</button>
-                ))}
-              </div>
+              {variants.length > 0 && (
+                <div className="flex flex-wrap gap-3">
+                  {variants.map((v: any, idx: number) => (
+                    <button key={v.size || idx} onClick={() => setSelectedSize(v.size)} className={`px-6 py-2 border-2 ${selectedSize === v.size ? 'border-primary-custom bg-primary-custom/5 text-primary-custom' : 'border-outline-variant hover:border-primary-custom'} rounded-lg font-bold transition-all hover:scale-105 active:scale-95`}>{v.size}</button>
+                  ))}
+                </div>
+              )}
               {currentStock > 0 && currentStock < 10 && (
                 <div className="text-vermillion-clay font-bold text-sm mt-3 animate-pulse">
                   Only {currentStock} left in stock - order soon!
                 </div>
               )}
-              {currentStock <= 0 && currentSizeObj.stock !== undefined && (
+              {currentStock <= 0 && (
                 <div className="text-vermillion-clay font-bold text-sm mt-3">
                   Currently out of stock.
                 </div>
@@ -259,7 +251,7 @@ export default function ProductDetail() {
               {relatedProducts.map((item) => (
                 <Link key={item.id} href={`/shop/${item.slug}`} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all group border border-outline-variant/10">
                   <div className="h-48 overflow-hidden rounded-t-xl bg-surface relative">
-                    <Image fill className="object-cover group-hover:scale-110 transition-transform" alt={`${item.name} - related product`} src={item.image_url || 'https://via.placeholder.com/300'} sizes="(max-width: 768px) 50vw, 25vw" />
+                    <Image fill className="object-cover group-hover:scale-110 transition-transform" alt={`${item.name} - related product`} src={item.image_url || '/product-placeholder.svg'} sizes="(max-width: 768px) 50vw, 25vw" />
                   </div>
                   <div className="p-4">
                     <h4 className="font-bold text-forest-deep mb-1 line-clamp-1">{item.name}</h4>

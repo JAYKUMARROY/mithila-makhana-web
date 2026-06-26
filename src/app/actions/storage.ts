@@ -1,11 +1,19 @@
 'use server'
 
 import { createClient } from '@/utils/supabase/server'
+import { requireAdmin } from '@/lib/auth'
 
 export async function uploadProductImage(formData: FormData) {
   try {
+    const { error: authError } = await requireAdmin()
+    if (authError) return { error: authError }
+
     const file = formData.get('file') as File;
     if (!file) return { error: "No file provided" };
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
+    if (!allowedTypes.includes(file.type)) return { error: 'Invalid file type. Only JPG, PNG, WEBP allowed.' }
+    if (file.size > 5 * 1024 * 1024) return { error: 'File size must be under 5MB' }
 
     const supabase = await createClient();
     

@@ -106,8 +106,8 @@ export function Footer() {
         <div className="mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white/50 text-sm">© {new Date().getFullYear()} Mithila Makhana. Preserving Heritage, Promoting Health.</p>
           <div className="flex gap-6 text-sm">
-            <span className="text-white/50 hover:text-white transition-colors cursor-pointer">Privacy Policy</span>
-            <span className="text-white/50 hover:text-white transition-colors cursor-pointer">Terms of Service</span>
+            <Link href="/privacy" className="text-white/50 hover:text-white transition-colors cursor-pointer">Privacy Policy</Link>
+            <Link href="/terms" className="text-white/50 hover:text-white transition-colors cursor-pointer">Terms of Service</Link>
           </div>
         </div>
       </div>

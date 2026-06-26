@@ -17,18 +17,28 @@ export default function InventoryControl() {
   }, []);
 
   const fetchInventory = async () => {
-    const data = await getProducts();
-    const parsedData = data.map((p: any) => {
+    const { data } = await getProducts();
+    const parsedData = (data || []).map((p: any) => {
       let meta: any = {};
       try { meta = JSON.parse(p.description || '{}') } catch (e) {}
       
-      let mappedSizes = [{ size: "250g", price: p.price.toString(), discountedPrice: "", stock: p.stock_quantity || 0 }];
+      let mappedSizes = [];
       if (meta.sizes && meta.sizes.length > 0) {
-        if (typeof meta.sizes[0] === 'string') {
-          mappedSizes = meta.sizes.map((s: string) => ({ size: s, price: p.price.toString(), discountedPrice: meta.discountedPrice || "", stock: p.stock_quantity || 0 }));
-        } else {
-          mappedSizes = meta.sizes.map((s: any) => ({ ...s, stock: s.stock || 0 }));
-        }
+        mappedSizes = meta.sizes.map((s: any) => ({
+          size: s.size,
+          price: s.price?.toString() || "0",
+          discountedPrice: s.discountedPrice || "",
+          stock: s.stock?.toString() || "0"
+        }));
+      } else if (p.variants && p.variants.length > 0) {
+        mappedSizes = p.variants.map((v: any) => ({
+          size: v.size,
+          price: v.price?.toString() || "0",
+          discountedPrice: "",
+          stock: v.stock_quantity?.toString() || "0"
+        }));
+      } else {
+        mappedSizes = [{ size: "250g", price: p.price?.toString() || "0", discountedPrice: "", stock: p.stock_quantity?.toString() || "0" }];
       }
 
       const totalStock = mappedSizes.reduce((acc: number, s: any) => acc + Number(s.stock), 0);
@@ -38,7 +48,7 @@ export default function InventoryControl() {
       return {
         id: p.id,
         name: p.name,
-        sku: meta.sku || `SKU-${p.id.substring(0, 4)}`,
+        sku: p.sku || meta.sku || `SKU-${p.id.substring(0, 4)}`,
         sizes: mappedSizes,
         totalStock,
         isLowStock,
@@ -68,7 +78,16 @@ export default function InventoryControl() {
     if (!selectedProduct) return;
     
     const updatedMeta = { ...selectedProduct.meta, sizes: editedSizes };
-    await updateProduct(selectedProduct.id, { description: JSON.stringify(updatedMeta) });
+    const variants = editedSizes.map((s: any) => ({
+      size: s.size,
+      weight_grams: parseInt(s.size.replace(/\D/g, '')) || 0,
+      price: parseFloat(s.price),
+      stock_quantity: parseInt(s.stock) || 0
+    }));
+    await updateProduct(selectedProduct.id, { 
+      description: JSON.stringify(updatedMeta), 
+      stock_quantity: variants.reduce((acc, v) => acc + v.stock_quantity, 0),
+    });
     setIsUpdateModalOpen(false);
     fetchInventory();
   };
@@ -143,54 +162,75 @@ export default function InventoryControl() {
       </div>
 
       {/* Inventory Table Container */}
-      <div className="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-outline-variant/10">
+      <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden border border-outline-variant/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-shadow">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-surface-container-low border-b border-outline-variant/20">
-                <th className="px-6 py-5 font-label-lg text-forest-deep">Product</th>
-                <th className="px-6 py-5 font-label-lg text-forest-deep">SKU</th>
-                <th className="px-6 py-5 font-label-lg text-forest-deep">Available Stock (Per Size)</th>
-                <th className="px-6 py-5 font-label-lg text-forest-deep text-center">Status</th>
-                <th className="px-6 py-5 font-label-lg text-forest-deep text-right">Action</th>
+          <table className="w-full text-left font-body-sm whitespace-nowrap">
+            <thead className="bg-surface-container-low/30 text-on-surface-variant text-[11px] uppercase tracking-wider font-bold">
+              <tr>
+                <th className="px-8 py-5">Product Details</th>
+                <th className="px-8 py-5">Stock By Size</th>
+                <th className="px-8 py-5 text-center">Status</th>
+                <th className="px-8 py-5 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-outline-variant/10">
+            <tbody className="divide-y divide-outline-variant/10 text-sm">
               {filteredInventory.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="text-center py-12 text-on-surface-variant">No items found.</td>
+                  <td colSpan={4} className="px-8 py-20 text-center">
+                    <div className="flex flex-col items-center justify-center text-on-surface-variant opacity-60">
+                      <AlertTriangle className="w-12 h-12 mb-3 opacity-50 text-outline-variant" />
+                      <p className="font-label-lg text-lg mb-1">No items found.</p>
+                      <p className="font-body-sm">Try adjusting your filters.</p>
+                    </div>
+                  </td>
                 </tr>
               )}
               {filteredInventory.map(item => (
-                <tr key={item.id} className={`transition-colors ${item.isOutOfStock ? 'bg-surface-container-high/30 hover:bg-surface-container-high/40' : item.isLowStock ? 'bg-error-container/10 hover:bg-error-container/20' : 'hover:bg-cream-bg'}`}>
-                  <td className={`px-6 py-4 font-label-lg ${item.isOutOfStock ? 'text-on-surface-variant/70' : 'text-forest-deep'}`}>{item.name}</td>
-                  <td className="px-6 py-4 font-body-md text-on-surface-variant">{item.sku}</td>
-                  <td className="px-6 py-4 font-headline-md">
-                    <div className="space-y-1">
-                      {item.sizes.map((s: any, idx: number) => (
-                        <div key={idx} className={`text-sm ${Number(s.stock) === 0 ? 'text-on-surface-variant' : Number(s.stock) <= 10 ? 'text-error' : 'text-forest-deep'}`}>
-                          <span className="text-on-surface-variant mr-2">{s.size}:</span>{s.stock}
-                        </div>
-                      ))}
+                <tr key={item.id} className={`transition-colors group hover:bg-surface-container-lowest/80 ${item.isOutOfStock ? 'bg-surface-container/20' : ''}`}>
+                  <td className="px-8 py-5">
+                    <div>
+                      <p className={`font-headline-md text-base mb-1 ${item.isOutOfStock ? 'text-on-surface-variant/70' : 'text-forest-deep'}`}>{item.name}</p>
+                      <span className="text-[10px] font-mono text-on-surface-variant/70 bg-surface-container-low px-1.5 py-0.5 rounded border border-outline-variant/20">
+                        {item.sku}
+                      </span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-center">
+                  <td className="px-8 py-5">
+                    <div className="flex flex-wrap gap-2">
+                      {item.sizes.map((s: any, idx: number) => {
+                        const stockNum = Number(s.stock);
+                        const isLow = stockNum > 0 && stockNum <= 10;
+                        const isOut = stockNum === 0;
+                        return (
+                          <div key={idx} className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border shadow-sm ${isOut ? 'bg-surface-container-high/30 text-on-surface-variant/70 border-outline-variant/20' : isLow ? 'bg-error-container/30 text-error border-error/20' : 'bg-white text-forest-deep border-outline-variant/30'}`}>
+                            <span className="text-[10px] uppercase font-bold tracking-wider opacity-60">{s.size}</span>
+                            <span className="font-bold">{stockNum}</span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </td>
+                  <td className="px-8 py-5 text-center">
                     {item.isOutOfStock ? (
-                      <span className="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1">
-                        Out of Stock
+                      <span className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border bg-surface-container-high text-on-surface-variant border-outline-variant/30">
+                        <span className="w-1.5 h-1.5 rounded-full bg-outline-variant"></span> Out of Stock
                       </span>
                     ) : item.isLowStock ? (
-                      <span className="bg-error-container text-error px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1">
+                      <span className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border bg-error-container text-error border-error/30 animate-pulse">
                         <AlertTriangle className="w-3 h-3" /> Low Stock
                       </span>
                     ) : (
-                      <span className="bg-secondary-container/50 text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span> In Stock
+                      <span className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border bg-emerald-50 text-emerald-700 border-emerald-200">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> In Stock
                       </span>
                     )}
                   </td>
-                  <td className="px-6 py-4 text-right">
-                    <button onClick={() => openModal(item.id)} className="text-primary-custom hover:underline font-label-sm">
+                  <td className="px-8 py-5 text-right">
+                    <button 
+                      onClick={() => openModal(item.id)} 
+                      className={`inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl font-bold text-xs transition-all shadow-sm border ${item.isLowStock || item.isOutOfStock ? 'bg-forest-deep text-white hover:bg-forest-deep/90 border-transparent' : 'bg-white text-forest-deep border-outline-variant/40 hover:bg-cream-bg hover:border-primary-custom/40'}`}
+                    >
+                      <Edit className="w-3.5 h-3.5" />
                       {item.isLowStock || item.isOutOfStock ? 'Restock' : 'Adjust'}
                     </button>
                   </td>

@@ -1,10 +1,14 @@
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 import { Calendar, IndianRupee, TrendingUp, ShoppingCart, Users, AlertTriangle, Eye, MoreHorizontal, PackageOpen, ChevronRight, CheckCircle2 } from 'lucide-react'
 import { createClient } from '@/utils/supabase/server'
 import { AdminDatePicker } from '@/components/admin-date-picker'
+import { requireAdmin } from '@/lib/auth'
 
 export default async function AdminDashboard({ searchParams }: { searchParams: Promise<{ filter?: string, start?: string, end?: string, month?: string, year?: string }> }) {
   const supabase = await createClient();
+  const admin = await requireAdmin();
+  if (!admin) redirect('/admin/login');
   const params = await searchParams;
   const filter = params?.filter || 'all';
   
@@ -34,10 +38,52 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
     // default to beginning of time
     startDate = new Date(0);
   }
+
+  // Calculate previous period boundaries for revenue % change
+  let prevStartDate = new Date(0);
+  let prevEndDate = new Date(0);
+  let hasPrevPeriod = false;
+
+  if (filter === 'today') {
+    prevStartDate = new Date(startDate);
+    prevStartDate.setDate(prevStartDate.getDate() - 1);
+    prevEndDate = new Date(prevStartDate);
+    prevEndDate.setHours(23,59,59,999);
+    hasPrevPeriod = true;
+  } else if (filter === 'weekly') {
+    prevEndDate = new Date(startDate);
+    prevEndDate.setMilliseconds(-1);
+    prevStartDate = new Date(prevEndDate);
+    prevStartDate.setDate(prevStartDate.getDate() - 7);
+    hasPrevPeriod = true;
+  } else if (filter === 'monthly') {
+    prevEndDate = new Date(startDate);
+    prevEndDate.setMilliseconds(-1);
+    prevStartDate = new Date(prevEndDate);
+    prevStartDate.setDate(prevStartDate.getDate() - 30);
+    hasPrevPeriod = true;
+  } else if (filter === 'range' && params?.start && params?.end) {
+    const duration = endDate.getTime() - startDate.getTime();
+    prevEndDate = new Date(startDate.getTime() - 1);
+    prevStartDate = new Date(prevEndDate.getTime() - duration);
+    hasPrevPeriod = true;
+  } else if (filter === 'month' && params?.month) {
+    const [y, m] = params.month.split('-');
+    let py = Number(y);
+    let pm = Number(m) - 1;
+    if (pm === 0) { py -= 1; pm = 12; }
+    prevStartDate = new Date(py, pm - 1, 1);
+    prevEndDate = new Date(py, pm, 0, 23, 59, 59, 999);
+    hasPrevPeriod = true;
+  } else if (filter === 'year' && params?.year) {
+    prevStartDate = new Date(Number(params.year) - 1, 0, 1);
+    prevEndDate = new Date(Number(params.year) - 1, 11, 31, 23, 59, 59, 999);
+    hasPrevPeriod = true;
+  }
   
   // Fetch real data
   const { data: allOrders } = await supabase.from('orders').select('*, profile:profiles(name, email), order_items(*)').order('created_at', { ascending: false });
-  const { data: products } = await supabase.from('products').select('*');
+  const { data: products } = await supabase.from('products').select('*, product_variants(*)');
   
   // Filter orders by date
   const orders = allOrders?.filter(o => {
@@ -57,9 +103,32 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
   // 2. Orders
   const ordersCount = orders?.length || 0;
   
-  // 3. New Customers (unique users) - ALWAYS ALL TIME
-  const uniqueUsers = new Set(allOrders?.map(o => o.user_id));
-  const newCustomers = uniqueUsers.size;
+  // Previous Period Revenue
+  let revenueChangePercent = 0;
+  let revenueChangeIsPositive = true;
+  
+  if (hasPrevPeriod) {
+    const prevOrders = allOrders?.filter(o => {
+      const oDate = new Date(o.created_at);
+      return oDate >= prevStartDate && oDate <= prevEndDate;
+    }) || [];
+    
+    const prevRevenue = prevOrders.reduce((acc, order) => {
+      if (order.status !== 'CANCELLED') return acc + order.total_amount;
+      return acc;
+    }, 0);
+    
+    if (prevRevenue === 0) {
+      revenueChangePercent = totalRevenue > 0 ? 100 : 0;
+    } else {
+      revenueChangePercent = Math.round(((totalRevenue - prevRevenue) / prevRevenue) * 100);
+    }
+    revenueChangeIsPositive = revenueChangePercent >= 0;
+  }
+  
+  // 3. Total Registered Customers (All Time)
+  const { count: totalProfilesCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
+  const newCustomers = totalProfilesCount || 0;
 
   // 4. Low Stock
   let lowStockCount = 0;
@@ -67,14 +136,9 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
   
   products?.forEach(p => {
     productsWithSales[p.id] = { product: p, quantitySold: 0, revenue: 0 };
-    if (p.description) {
-      try {
-        const meta = JSON.parse(p.description);
-        if (meta.sizes) {
-          const hasLowStock = meta.sizes.some((s: any) => Number(s.stock) < 10);
-          if (hasLowStock) lowStockCount++;
-        }
-      } catch(e) {}
+    if (p.product_variants && p.product_variants.length > 0) {
+      const hasLowStock = p.product_variants.some((v: any) => v.stock_quantity < 10);
+      if (hasLowStock) lowStockCount++;
     }
   });
 
@@ -140,9 +204,11 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
             <div className="p-3 bg-gradient-to-br from-secondary-container to-secondary-container/50 rounded-2xl shadow-inner">
               <IndianRupee className="text-forest-deep w-6 h-6" />
             </div>
-            <span className="text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg font-bold text-xs flex items-center gap-1 border border-emerald-100">
-              <TrendingUp className="w-3 h-3" /> +12%
-            </span>
+            {hasPrevPeriod && (
+              <span className={`${revenueChangeIsPositive ? 'text-emerald-600 bg-emerald-50 border-emerald-100' : 'text-error bg-error-container/30 border-error/10'} px-2 py-1 rounded-lg font-bold text-xs flex items-center gap-1 border`}>
+                <TrendingUp className={`w-3 h-3 ${!revenueChangeIsPositive && 'rotate-180'}`} /> {revenueChangeIsPositive ? '+' : ''}{revenueChangePercent}%
+              </span>
+            )}
           </div>
           <h3 className="text-on-surface-variant font-bold text-xs mb-2 uppercase tracking-widest relative z-10">Total Revenue</h3>
           <p className="font-display-lg text-4xl text-forest-deep relative z-10">₹{totalRevenue.toLocaleString()}</p>
@@ -173,7 +239,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
             </div>
             <span className="text-tertiary bg-tertiary-container/30 px-2 py-1 rounded-lg font-bold text-xs border border-tertiary/10">All Time</span>
           </div>
-          <h3 className="text-on-surface-variant font-bold text-xs mb-2 uppercase tracking-widest relative z-10">Unique Customers</h3>
+          <h3 className="text-on-surface-variant font-bold text-xs mb-2 uppercase tracking-widest relative z-10">Total Customers</h3>
           <p className="font-display-lg text-4xl text-forest-deep relative z-10">{newCustomers}</p>
         </div>
 
@@ -293,7 +359,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
                 return (
                   <div key={ts.product.id} className="flex gap-4 items-center group">
                     <div className="w-16 h-16 rounded-2xl bg-surface-container overflow-hidden shrink-0 border border-outline-variant/20 shadow-sm relative">
-                      <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={ts.product.name} src={ts.product.image_url || 'https://via.placeholder.com/150'} />
+                      <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={ts.product.name} src={ts.product.image_url || '/product-placeholder.svg'} />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                     </div>
                     <div className="flex-grow">

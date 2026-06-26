@@ -42,5 +42,12 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
+  const protectedUserRoutes = ['/profile', '/order-history', '/invoice', '/tax-invoice', '/referral', '/wallet'];
+  const isUserRoute = protectedUserRoutes.some(route => request.nextUrl.pathname.startsWith(route));
+  
+  if (isUserRoute && !user) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
   return supabaseResponse
 }

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { Plus, Search, FilterX, Edit, Trash2, X, Upload, PackageSearch, Package, Image as ImageIcon } from 'lucide-react'
 import { getProducts, addProduct, deleteProduct, updateProduct, deleteStorageImage } from '@/app/actions/products'
+import { ConfirmationDialog } from '@/components/ui/confirmation-dialog'
 
 export default function ProductManagement() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -30,8 +31,17 @@ export default function ProductManagement() {
   const [localImages, setLocalImages] = useState<{ url?: string, file?: File }[]>([]);
   const [uploading, setUploading] = useState(false);
 
+  useEffect(() => {
+    return () => {
+      localImages.forEach(img => {
+        if (img.file && img.url) URL.revokeObjectURL(img.url);
+      });
+    };
+  }, [localImages]);
+
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [productToDelete, setProductToDelete] = useState<string | null>(null);
 
   // Filter States
   const [searchTerm, setSearchTerm] = useState('');
@@ -43,30 +53,40 @@ export default function ProductManagement() {
   }, []);
 
   const fetchProducts = async () => {
-    const data = await getProducts();
-    const parsedData = data.map((p: any) => {
+    const { data } = await getProducts();
+    const parsedData = (data || []).map((p: any) => {
       let meta: any = {};
       try { meta = JSON.parse(p.description || '{}') } catch (e) {}
       
-      let mappedSizes = [{ size: "250g", price: p.price?.toString() || "", discountedPrice: "", stock: p.stock_quantity || "0" }];
+      let mappedSizes = [];
       if (meta.sizes && meta.sizes.length > 0) {
-        if (typeof meta.sizes[0] === 'string') {
-          mappedSizes = meta.sizes.map((s: string) => ({ size: s, price: p.price?.toString() || "", discountedPrice: meta.discountedPrice || "", stock: p.stock_quantity || "0" }));
-        } else {
-          mappedSizes = meta.sizes.map((s: any) => ({ ...s, stock: s.stock || "0" }));
-        }
+        mappedSizes = meta.sizes.map((s: any) => ({
+          size: s.size,
+          price: s.price?.toString() || "0",
+          discountedPrice: s.discountedPrice || "",
+          stock: s.stock?.toString() || "0"
+        }));
+      } else if (p.variants && p.variants.length > 0) {
+        mappedSizes = p.variants.map((v: any) => ({
+          size: v.size,
+          price: v.price?.toString() || "0",
+          discountedPrice: "",
+          stock: v.stock_quantity?.toString() || "0"
+        }));
+      } else {
+        mappedSizes = [{ size: "250g", price: p.price?.toString() || "", discountedPrice: "", stock: p.stock_quantity?.toString() || "0" }];
       }
 
       return {
         id: p.id,
         name: p.name,
-        sku: meta.sku || `SKU-${p.id.substring(0, 4)}`,
-        category: meta.category || 'Raw Makhana',
+        sku: p.sku || meta.sku || `SKU-${p.id.substring(0, 4)}`,
+        category: p.short_description || meta.category || 'Raw Makhana',
         price: p.price,
         sizes: mappedSizes,
         nutrition: meta.nutrition || initialProductState.nutrition,
         status: p.is_active ? 'Active' : 'Draft',
-        image_url: p.image_url || 'https://via.placeholder.com/150',
+        image_url: p.image_url || '/product-placeholder.svg',
         images: meta.images || (p.image_url ? [p.image_url] : [])
       }
     });
@@ -110,12 +130,22 @@ export default function ProductManagement() {
       images: finalImages
     };
 
+    const variants = newProduct.sizes.map((s: any) => ({
+      size: s.size,
+      weight_grams: parseInt(s.size.replace(/\D/g, '')) || 0,
+      price: parseFloat(s.price || newProduct.sizes[0].price),
+      stock_quantity: parseInt(s.stock) || 0
+    }));
+
     const result = await addProduct({
       name: newProduct.name,
       slug: newProduct.name.toLowerCase().replace(/\s+/g, '-') + '-' + Math.floor(Math.random() * 1000),
       price: parseFloat(newProduct.sizes[0].price),
       description: JSON.stringify(meta),
-      image_url: finalImageUrl
+      image_url: finalImageUrl,
+      short_description: newProduct.category,
+      stock_quantity: variants.reduce((acc, v) => acc + v.stock_quantity, 0),
+      is_active: newProduct.status === 'Active'
     });
 
     if (result.error) {
@@ -168,12 +198,21 @@ export default function ProductManagement() {
       images: finalImages
     };
 
+    const variants = editingProduct.sizes.map((s: any) => ({
+      size: s.size,
+      weight_grams: parseInt(s.size.replace(/\D/g, '')) || 0,
+      price: parseFloat(s.price || editingProduct.sizes[0].price),
+      stock_quantity: parseInt(s.stock) || 0
+    }));
+
     const result = await updateProduct(editingProduct.id.toString(), {
       name: editingProduct.name,
       price: parseFloat(editingProduct.sizes[0].price),
       description: JSON.stringify(meta),
       image_url: finalImageUrl,
-      is_active: editingProduct.status === 'Active'
+      is_active: editingProduct.status === 'Active',
+      short_description: editingProduct.category,
+      stock_quantity: variants.reduce((acc, v) => acc + v.stock_quantity, 0),
     });
 
     if (result.error) {
@@ -195,8 +234,10 @@ export default function ProductManagement() {
     setIsEditModalOpen(true);
   };
 
-  const handleDeleteProduct = async (id: string) => {
-    await deleteProduct(id);
+  const handleDeleteProduct = async () => {
+    if (!productToDelete) return;
+    await deleteProduct(productToDelete);
+    setProductToDelete(null);
     fetchProducts();
   };
 
@@ -413,7 +454,7 @@ export default function ProductManagement() {
                           <Edit className="w-4 h-4" />
                         </button>
                         <button 
-                          onClick={(e) => { e.stopPropagation(); handleDeleteProduct(product.id.toString()); }} 
+                          onClick={(e) => { e.stopPropagation(); setProductToDelete(product.id.toString()); }} 
                           className="flex items-center justify-center w-10 h-10 bg-white border border-outline-variant/40 rounded-xl text-error/80 hover:text-error hover:border-error/40 hover:bg-error-container/20 transition-all shadow-sm"
                           title="Delete Product"
                         >

@@ -1,28 +1,25 @@
 "use client"
 import { useState, useMemo, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
 import { logout } from '@/app/actions/auth'
-import { Search, ShoppingCart, User, ShoppingBag, X, Minus, Plus, Trash2, ArrowRight, ShieldCheck, SearchIcon, Menu, Star } from 'lucide-react'
-import { createOrder } from '@/app/actions/orders'
+import { getProfile } from '@/app/actions/profile'
+import { Search, ShoppingCart, User, Menu, Wallet } from 'lucide-react'
 import { getProducts } from '@/app/actions/products'
-import { getProfile, manageAddress } from '@/app/actions/profile'
 import { useCart } from '@/components/cart-context'
-import { useToast } from '@/components/toast'
+import { SearchOverlay } from '@/components/search-overlay'
+import { CartDrawer } from '@/components/cart-drawer'
 
 export function Navbar() {
   const pathname = usePathname();
-  const router = useRouter();
-  const { showToast } = useToast();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [walletBalance, setWalletBalance] = useState<number>(0);
   const [allProducts, setAllProducts] = useState<any[]>([]);
-  const { cartItems, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, clearCart, addToCart } = useCart();
+  const { cartItems, isCartOpen, setIsCartOpen } = useCart();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const supabase = useMemo(() => createClient(), []);
@@ -30,11 +27,26 @@ export function Navbar() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setIsLoggedIn(!!session);
+      if (session) {
+        getProfile().then(p => {
+          if (p) setWalletBalance(p.wallet_balance || 0);
+        });
+      }
     });
+  }, [pathname, supabase]);
+
+  useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setIsLoggedIn(!!session);
+      if (session) {
+        getProfile().then(p => {
+          if (p) setWalletBalance(p.wallet_balance || 0);
+        });
+      } else {
+        setWalletBalance(0);
+      }
     });
-    getProducts().then(setAllProducts);
+    getProducts().then(res => setAllProducts(res.data || []));
     return () => subscription.unsubscribe();
   }, [supabase]);
 
@@ -55,153 +67,9 @@ export function Navbar() {
   useEffect(() => { setIsMobileMenuOpen(false); }, [pathname]);
 
   const toggleCart = () => setIsCartOpen(!isCartOpen);
-  const toggleSearch = () => {
-    setIsSearchOpen(!isSearchOpen);
-    if (isSearchOpen) setSearchQuery('');
-  };
+  const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
 
-  const filteredProducts = allProducts.filter(p => 
-    p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
-
-  const cartTotal = cartItems.reduce((acc, item) => acc + item.price_at_time * item.quantity, 0);
   const cartItemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
-
-  const [isCheckingOut, setIsCheckingOut] = useState(false);
-  const [showAddressForm, setShowAddressForm] = useState(false);
-  const [shippingAddress, setShippingAddress] = useState({ name: '', address: '', city: '', state: '', pincode: '', phone: '' });
-  const [userProfile, setUserProfile] = useState<any>(null);
-  const [selectedAddressId, setSelectedAddressId] = useState<string>('');
-  const [isAddingNewAddress, setIsAddingNewAddress] = useState(false);
-  const [showPaymentSimulation, setShowPaymentSimulation] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<'PREPAID' | 'COD'>('PREPAID');
-
-  useEffect(() => {
-    if (showAddressForm && isLoggedIn) {
-      getProfile().then(p => {
-        setUserProfile(p);
-        if (p?.addresses?.length > 0) {
-          const defaultAddr = p!.addresses.find((a:any) => a.isDefault) || p!.addresses[0];
-          setSelectedAddressId(defaultAddr.id);
-          setIsAddingNewAddress(false);
-        } else {
-          setIsAddingNewAddress(true);
-        }
-      });
-    }
-  }, [showAddressForm, isLoggedIn]);
-
-  const handleCheckout = async () => {
-    if (cartItems.length === 0) {
-      showToast("Your cart is empty!", 'error');
-      return;
-    }
-    if (!isLoggedIn) {
-      router.push('/login');
-      setIsCartOpen(false);
-      return;
-    }
-    if (!showAddressForm) {
-      setShowAddressForm(true);
-      return;
-    }
-
-    let finalAddress: any = null;
-    
-    if (isAddingNewAddress) {
-      if (!shippingAddress.name || !shippingAddress.address || !shippingAddress.city || !shippingAddress.pincode || !shippingAddress.phone) {
-        showToast("Please fill all shipping details", 'error');
-        return;
-      }
-      if (!/^\d{6}$/.test(shippingAddress.pincode)) {
-        showToast("Please enter a valid 6-digit PIN code", 'error');
-        return;
-      }
-      if (!/^\d{10}$/.test(shippingAddress.phone)) {
-        showToast("Please enter a valid 10-digit Phone Number", 'error');
-        return;
-      }
-      finalAddress = { ...shippingAddress, zip: shippingAddress.pincode };
-    } else {
-      const selected = userProfile?.addresses?.find((a:any) => a.id === selectedAddressId);
-      if (!selected) {
-        showToast("Please select a shipping address", 'error');
-        return;
-      }
-      finalAddress = { name: selected.name, address: selected.address, city: selected.city, pincode: selected.zip || selected.pincode, phone: selected.phone };
-    }
-
-    if (paymentMethod === 'COD') {
-      processOrder(true, 'COD');
-    } else {
-      setShowPaymentSimulation(true);
-      setIsCheckingOut(false);
-    }
-  }
-
-  const processOrder = async (isSuccess: boolean, method: 'PREPAID' | 'COD' = 'PREPAID') => {
-    setShowPaymentSimulation(false);
-    
-    if (!isSuccess) {
-      showToast("Payment failed. Please try again.", 'error');
-      return;
-    }
-
-    setIsCheckingOut(true);
-    try {
-      let finalAddress: any = null;
-      if (isAddingNewAddress) {
-        finalAddress = { ...shippingAddress, zip: shippingAddress.pincode };
-      } else {
-        const selected = userProfile?.addresses?.find((a:any) => a.id === selectedAddressId);
-        finalAddress = { name: selected.name, address: selected.address, city: selected.city, pincode: selected.zip || selected.pincode, phone: selected.phone };
-      }
-
-      const orderItems = cartItems.map(item => ({
-        product_id: item.product.id,
-        quantity: item.quantity,
-        price_at_time: item.price_at_time,
-        size: item.size || '250g'
-      }));
-      const total = orderItems.reduce((acc, item) => acc + (item.price_at_time * item.quantity), 0);
-      const res = await createOrder({
-        total_amount: total,
-        shipping_address: finalAddress,
-        items: orderItems,
-        payment_method: method
-      });
-      if (res?.error) {
-        if (res.error === 'Not logged in') {
-          router.push('/login');
-          setIsCartOpen(false);
-        } else {
-          showToast("Error: " + res.error, 'error');
-        }
-      } else {
-        if (isAddingNewAddress && (!userProfile?.addresses || userProfile.addresses.length < 10)) {
-          await manageAddress('add', {
-            name: shippingAddress.name,
-            phone: shippingAddress.phone,
-            address: shippingAddress.address,
-            city: shippingAddress.city,
-            state: shippingAddress.state || '',
-            zip: shippingAddress.pincode
-          });
-        }
-        
-        clearCart();
-        setShowAddressForm(false);
-        setShippingAddress({ name: '', address: '', city: '', state: '', pincode: '', phone: '' });
-        showToast("Order placed successfully!");
-        router.push('/order-history');
-        setIsCartOpen(false);
-      }
-    } catch (e) {
-      showToast("Something went wrong", 'error');
-    }
-    setIsCheckingOut(false);
-  }
 
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => setIsMounted(true), []);
@@ -226,6 +94,12 @@ export function Navbar() {
             <button onClick={toggleSearch} className="text-forest-deep hover:text-primary-custom transition-colors duration-200" aria-label="Search products">
               <Search className="w-6 h-6" />
             </button>
+            {isLoggedIn && (
+              <Link href="/wallet" className="text-forest-deep hover:text-primary-custom transition-colors duration-200 flex items-center gap-1 font-bold bg-primary-container/20 px-3 py-1.5 rounded-full" aria-label="Wallet">
+                <Wallet className="w-5 h-5" />
+                <span className="text-sm">₹{walletBalance}</span>
+              </Link>
+            )}
             <button onClick={toggleCart} className="text-forest-deep hover:text-primary-custom transition-colors duration-200 relative" aria-label="Open shopping cart" aria-expanded={isCartOpen}>
               <ShoppingCart className="w-6 h-6" />
               {isMounted && cartItemCount > 0 && (
@@ -242,6 +116,8 @@ export function Navbar() {
                     <>
                       <Link href="/profile" onClick={() => setIsProfileDropdownOpen(false)} className="block px-4 py-2 font-label-lg text-forest-deep hover:bg-cream-bg transition-colors" role="menuitem">Profile</Link>
                       <Link href="/order-history" onClick={() => setIsProfileDropdownOpen(false)} className="block px-4 py-2 font-label-lg text-forest-deep hover:bg-cream-bg transition-colors" role="menuitem">Orders</Link>
+                      <Link href="/wallet" onClick={() => setIsProfileDropdownOpen(false)} className="block px-4 py-2 font-label-lg text-forest-deep hover:bg-cream-bg transition-colors" role="menuitem">Wallet</Link>
+                      <Link href="/referral" onClick={() => setIsProfileDropdownOpen(false)} className="block px-4 py-2 font-label-lg text-emerald-600 hover:bg-emerald-50 transition-colors" role="menuitem">Refer & Earn</Link>
                       <div className="border-t border-outline-variant/10 my-1"></div>
                       <button onClick={async () => { setIsProfileDropdownOpen(false); await logout(); }} className="w-full text-left px-4 py-2 font-label-lg text-vermillion-clay hover:bg-error-container/20 transition-colors" role="menuitem">Logout</button>
                     </>
@@ -267,305 +143,16 @@ export function Navbar() {
         )}
       </nav>
 
-      {/* Search Overlay */}
-      <div
-        className={`fixed inset-0 z-[60] backdrop-blur-sm bg-charcoal-text/40 transition-all duration-300 flex flex-col items-center pt-24 px-4 ${isSearchOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`}
-        onClick={toggleSearch}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Search products"
-      >
-        <div className={`w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300 ${isSearchOpen ? "translate-y-0 scale-100" : "-translate-y-8 scale-95"}`} onClick={(e) => e.stopPropagation()}>
-          <div className="relative flex items-center border-b border-outline-variant/20 p-2">
-            <SearchIcon className="w-6 h-6 text-on-surface-variant absolute left-6" />
-            <input type="text" className="w-full py-4 pl-14 pr-12 text-lg font-body-lg text-forest-deep outline-none placeholder:text-outline-variant/60 bg-transparent" placeholder="Search for 'Raw Phool Makhana'..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} autoFocus={isSearchOpen} />
-            <button className="absolute right-4 p-2 text-on-surface-variant hover:text-forest-deep rounded-full hover:bg-surface-container transition-colors" onClick={toggleSearch} aria-label="Close search">
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-          <div className="max-h-[60vh] overflow-y-auto">
-            {searchQuery.trim() === '' ? (
-              <div className="p-8 text-center text-on-surface-variant">
-                <p className="font-body-md mb-2">Popular Searches</p>
-                <div className="flex flex-wrap justify-center gap-2">
-                  <button onClick={() => setSearchQuery('Raw Phool')} className="px-4 py-2 bg-surface-container-low rounded-full text-sm hover:bg-surface-container transition-colors">Raw Phool</button>
-                  <button onClick={() => setSearchQuery('Peri Peri')} className="px-4 py-2 bg-surface-container-low rounded-full text-sm hover:bg-surface-container transition-colors">Peri Peri</button>
-                  <button onClick={() => setSearchQuery('Honey')} className="px-4 py-2 bg-surface-container-low rounded-full text-sm hover:bg-surface-container transition-colors">Honey Glazed</button>
-                </div>
-              </div>
-            ) : filteredProducts.length > 0 ? (
-              <ul className="p-2">
-                {filteredProducts.map((product) => (
-                  <li key={product.id}>
-                    <button className="w-full text-left p-4 flex items-center gap-4 hover:bg-cream-bg rounded-xl transition-colors group" onClick={() => { toggleSearch(); router.push(`/shop/${product.slug}`); }}>
-                      <Image src={product.image_url || 'https://via.placeholder.com/150'} alt={product.name} width={64} height={64} className="w-16 h-16 rounded-lg object-cover bg-surface-container-low border border-outline-variant/10" />
-                      <div className="flex-1">
-                        <h4 className="font-label-lg text-forest-deep group-hover:text-primary-custom transition-colors">{product.name}</h4>
-                        <span className="text-label-sm text-on-surface-variant">₹{product.price}</span>
-                      </div>
-                      <ArrowRight className="w-5 h-5 text-on-surface-variant opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <div className="p-12 text-center text-on-surface-variant">
-                <SearchIcon className="w-12 h-12 mx-auto mb-4 opacity-20" />
-                <p className="font-body-lg text-forest-deep mb-1">No products found</p>
-                <p className="text-sm">Try searching for something else.</p>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Shopping Cart Drawer */}
-      <div
-        className={`fixed inset-0 z-[60] backdrop-blur-sm bg-charcoal-text/20 transition-all duration-300 flex justify-end ${isCartOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`}
-        onClick={toggleCart}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Shopping cart"
-      >
-        <aside className={`w-full max-w-md bg-white h-full shadow-2xl transform transition-transform duration-500 ease-out ${isCartOpen ? "translate-x-0" : "translate-x-full"}`} onClick={(e) => e.stopPropagation()}>
-          <div className="h-full w-full overflow-y-auto flex flex-col">
-            <div className="px-8 py-6 flex justify-between items-center bg-cream-bg border-b border-surface-container shrink-0 sticky top-0 z-20">
-            <div className="flex items-center gap-3">
-              <ShoppingBag className="w-6 h-6 text-forest-deep" />
-              <h2 className="font-headline-md text-forest-deep">Your Basket</h2>
-            </div>
-            <button className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-forest-deep" onClick={toggleCart} aria-label="Close cart">
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
-          <div className="flex-1 px-8 py-6 space-y-8">
-            {cartItems.length > 0 && !showAddressForm && (
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-sm font-label-lg text-on-surface-variant">{cartItems.length} items</span>
-                <button onClick={clearCart} className="text-sm font-label-lg text-error hover:text-error/80 underline decoration-error/30 transition-colors">Clear Basket</button>
-              </div>
-            )}
-            {cartItems.length === 0 ? (
-              <div className="text-center py-12 text-on-surface-variant">
-                <ShoppingBag className="w-12 h-12 mx-auto mb-4 opacity-20" />
-                <p>Your basket is empty.</p>
-              </div>
-            ) : showAddressForm ? (
-              <div className="space-y-6">
-                <h3 className="font-headline-md text-forest-deep text-lg">Select Shipping Address</h3>
-                
-                {userProfile?.addresses?.length > 0 && !isAddingNewAddress && (
-                  <div className="space-y-4">
-                    {userProfile.addresses.map((addr: any) => (
-                      <div 
-                        key={addr.id} 
-                        onClick={() => setSelectedAddressId(addr.id)}
-                        className={`p-5 border rounded-xl cursor-pointer transition-all ${selectedAddressId === addr.id ? 'border-primary-custom bg-surface-container-low shadow-sm' : 'border-outline-variant/30 hover:border-primary-custom/50'}`}
-                      >
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-headline-sm text-forest-deep flex items-center gap-2 font-bold">
-                            {addr.name}
-                            {addr.isDefault && <span className="bg-primary-container text-on-primary-container px-2 py-0.5 text-[10px] font-bold rounded uppercase">Default</span>}
-                          </h4>
-                          <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedAddressId === addr.id ? 'border-primary-custom bg-primary-custom' : 'border-outline-variant'}`}>
-                            {selectedAddressId === addr.id && <div className="w-2 h-2 rounded-full bg-white" />}
-                          </div>
-                        </div>
-                        <p className="text-on-surface-variant text-sm mb-1">{addr.phone}</p>
-                        <p className="text-on-surface-variant font-body-sm leading-relaxed">
-                          {addr.address}<br />
-                          {addr.city}, {addr.state} {addr.zip}
-                        </p>
-                      </div>
-                    ))}
-                    
-                    {userProfile.addresses.length < 10 && (
-                      <button 
-                        onClick={() => setIsAddingNewAddress(true)}
-                        className="w-full py-4 border border-dashed border-primary-custom text-primary-custom rounded-xl font-label-lg hover:bg-surface-container-low transition-colors"
-                      >
-                        + Add New Address
-                      </button>
-                    )}
-                  </div>
-                )}
-                
-                {isAddingNewAddress && (
-                  <div className="space-y-4">
-                    <input className="w-full px-4 py-3 bg-white border border-outline-variant rounded-xl font-body-md text-forest-deep focus:outline-none focus:border-primary-custom focus:ring-1 focus:ring-primary-custom transition-colors" placeholder="Full Name" value={shippingAddress.name} onChange={e => setShippingAddress(p => ({...p, name: e.target.value}))} />
-                    <input className="w-full px-4 py-3 bg-white border border-outline-variant rounded-xl font-body-md text-forest-deep focus:outline-none focus:border-primary-custom focus:ring-1 focus:ring-primary-custom transition-colors" placeholder="Address" value={shippingAddress.address} onChange={e => setShippingAddress(p => ({...p, address: e.target.value}))} />
-                    <div className="grid grid-cols-2 gap-3">
-                      <input className="w-full px-4 py-3 bg-white border border-outline-variant rounded-xl font-body-md text-forest-deep focus:outline-none focus:border-primary-custom focus:ring-1 focus:ring-primary-custom transition-colors" placeholder="City" value={shippingAddress.city} onChange={e => setShippingAddress(p => ({...p, city: e.target.value}))} />
-                      <input type="text" maxLength={6} pattern="\d{6}" className="w-full px-4 py-3 bg-white border border-outline-variant rounded-xl font-body-md text-forest-deep focus:outline-none focus:border-primary-custom focus:ring-1 focus:ring-primary-custom transition-colors" placeholder="PIN/ZIP Code" value={shippingAddress.pincode} onChange={e => setShippingAddress(p => ({...p, pincode: e.target.value.replace(/\D/g, '')}))} />
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <input className="w-full px-4 py-3 bg-white border border-outline-variant rounded-xl font-body-md text-forest-deep focus:outline-none focus:border-primary-custom focus:ring-1 focus:ring-primary-custom transition-colors" placeholder="State" value={shippingAddress.state} onChange={e => setShippingAddress(p => ({...p, state: e.target.value}))} />
-                      <input type="text" maxLength={10} pattern="\d{10}" className="w-full px-4 py-3 bg-white border border-outline-variant rounded-xl font-body-md text-forest-deep focus:outline-none focus:border-primary-custom focus:ring-1 focus:ring-primary-custom transition-colors" placeholder="Phone Number" value={shippingAddress.phone} onChange={e => setShippingAddress(p => ({...p, phone: e.target.value.replace(/\D/g, '')}))} />
-                    </div>
-                    
-                    {userProfile?.addresses?.length > 0 && (
-                      <button onClick={() => setIsAddingNewAddress(false)} className="text-sm text-primary-custom hover:underline font-label-lg mt-2 inline-block">Cancel & Use Saved Address</button>
-                    )}
-                  </div>
-                )}
-
-                <div className="space-y-4 pt-8 border-t border-surface-container mt-8">
-                  <h3 className="font-headline-sm text-forest-deep text-lg">Payment Method</h3>
-                  <div className="flex flex-col gap-3">
-                    <label className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${paymentMethod === 'PREPAID' ? 'border-primary-custom bg-surface-container-low shadow-sm' : 'border-outline-variant/30 hover:border-primary-custom/50'}`}>
-                      <input type="radio" name="payment" className="accent-primary-custom w-4 h-4" checked={paymentMethod === 'PREPAID'} onChange={() => setPaymentMethod('PREPAID')} />
-                      <span className="font-label-lg text-forest-deep">Prepaid (Pay Online)</span>
-                    </label>
-                    <label className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${paymentMethod === 'COD' ? 'border-primary-custom bg-surface-container-low shadow-sm' : 'border-outline-variant/30 hover:border-primary-custom/50'}`}>
-                      <input type="radio" name="payment" className="accent-primary-custom w-4 h-4" checked={paymentMethod === 'COD'} onChange={() => setPaymentMethod('COD')} />
-                      <span className="font-label-lg text-forest-deep">Cash on Delivery (COD)</span>
-                    </label>
-                  </div>
-                </div>
-
-                <button onClick={() => setShowAddressForm(false)} className="text-sm text-on-surface-variant hover:text-forest-deep underline block mt-6 font-label-lg transition-colors">← Back to cart</button>
-              </div>
-            ) : (
-              <>
-                {cartItems.map((item, idx) => (
-                  <div key={`${item.product.id}-${item.size}-${idx}`} className="flex gap-4">
-                    <div className="w-24 h-24 bg-surface-container-low rounded-lg overflow-hidden flex-shrink-0 relative">
-                      <Image fill className="object-cover" alt={item.product.name} src={item.product.image_url || 'https://via.placeholder.com/150'} sizes="96px" />
-                    </div>
-                    <div className="flex-1 flex flex-col justify-between">
-                      <div>
-                        <div className="flex justify-between items-start mb-1">
-                          <h4 className="font-label-lg text-forest-deep line-clamp-2 pr-2">{item.product.name}</h4>
-                          <span className="font-label-lg text-forest-deep whitespace-nowrap">₹{item.price_at_time}</span>
-                        </div>
-                        <p className="text-on-surface-variant text-label-sm mb-4">{item.size || 'Standard Size'}</p>
-                      </div>
-                      <div className="flex items-center justify-between mt-auto">
-                        <div className="flex items-center border border-outline-variant rounded-full px-2 py-1 bg-white">
-                          <button className="w-6 h-6 flex items-center justify-center hover:text-primary-custom transition-colors" onClick={() => updateQuantity(item.product.id, item.quantity - 1, item.size)} aria-label="Decrease quantity">
-                            <Minus className="w-4 h-4" strokeWidth={2.5} />
-                          </button>
-                          <span className="px-3 font-label-lg text-forest-deep w-6 text-center">{item.quantity}</span>
-                          <button className="w-6 h-6 flex items-center justify-center hover:text-primary-custom transition-colors" onClick={() => updateQuantity(item.product.id, item.quantity + 1, item.size)} aria-label="Increase quantity">
-                            <Plus className="w-4 h-4" strokeWidth={2.5} />
-                          </button>
-                        </div>
-                        <button className="text-on-surface-variant hover:text-vermillion-clay transition-colors flex items-center gap-1" onClick={() => removeFromCart(item.product.id, item.size)} aria-label={`Remove ${item.product.name}`}>
-                          <Trash2 className="w-[16px] h-[16px]" />
-                          <span className="text-[12px] font-label-sm">Remove</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-                {/* Upsell block */}
-                {!showAddressForm && cartItems.length > 0 && allProducts.filter(p => !cartItems.find(c => c.product.id === p.id)).length > 0 && (
-                  <div className="pt-8 border-t border-surface-container mt-4">
-                    <h5 className="text-label-lg text-on-surface-variant mb-4 flex items-center gap-2">
-                      <Star className="w-[18px] h-[18px] fill-gold-accent text-gold-accent" />
-                      Complete your health ritual
-                    </h5>
-                    <div 
-                      className="bg-surface-container-low p-4 rounded-xl flex items-center gap-4 group cursor-pointer hover:bg-surface-container transition-colors"
-                      onClick={() => {
-                        const recommendation = allProducts.find(p => !cartItems.find(c => c.product.id === p.id));
-                        if (recommendation) {
-                           addToCart({ product: recommendation, quantity: 1, price_at_time: recommendation.price, size: recommendation.sizes?.[0] || '250g' });
-                           showToast(`Added ${recommendation.name} to cart!`);
-                        }
-                      }}
-                    >
-                      <div className="w-16 h-16 bg-white rounded-lg overflow-hidden flex-shrink-0 relative">
-                        <Image fill sizes="64px" className="object-cover" alt="Recommendation" src={allProducts.find(p => !cartItems.find(c => c.product.id === p.id))?.image_url || 'https://via.placeholder.com/150'} />
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-label-lg text-forest-deep line-clamp-1">
-                          {allProducts.find(p => !cartItems.find(c => c.product.id === p.id))?.name}
-                        </p>
-                        <p className="text-[12px] text-on-surface-variant mt-0.5">
-                          Add for only ₹{allProducts.find(p => !cartItems.find(c => c.product.id === p.id))?.price}
-                        </p>
-                      </div>
-                      <button className="bg-forest-deep text-white w-8 h-8 rounded-full hover:bg-primary-custom transition-colors flex items-center justify-center flex-shrink-0 shadow-sm">
-                        <Plus className="w-5 h-5" />
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-
-          <div className="px-8 py-8 bg-surface-container-lowest border-t border-surface-container space-y-4 shrink-0 mt-auto">
-            <div className="space-y-2">
-              <div className="flex justify-between text-on-surface-variant">
-                <span className="font-body-md">Subtotal</span>
-                <span className="font-body-md">₹{cartTotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between text-on-surface-variant">
-                <span className="font-body-md">Shipping</span>
-                <span className="font-body-md text-forest-deep font-semibold">{cartTotal > 0 ? 'FREE' : '₹0.00'}</span>
-              </div>
-              <div className="flex justify-between pt-2 border-t border-outline-variant">
-                <span className="font-headline-md text-forest-deep">Total</span>
-                <span className="font-headline-md text-forest-deep">₹{cartTotal.toFixed(2)}</span>
-              </div>
-            </div>
-            <div className="pt-4 space-y-3">
-              <button onClick={handleCheckout} disabled={isCheckingOut || cartItems.length === 0} className="w-full bg-gold-accent text-on-primary-container h-14 rounded-xl font-label-lg text-[16px] hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
-                <span>{isCheckingOut ? 'Processing...' : showAddressForm ? 'Place Order' : 'Checkout Now'}</span>
-                <ArrowRight className="w-5 h-5" />
-              </button>
-              <button className="w-full text-center text-forest-deep font-label-lg hover:text-primary-custom transition-colors py-2 underline underline-offset-4" onClick={toggleCart}>
-                Continue Shopping
-              </button>
-            </div>
-            <div className="flex items-center justify-center gap-2 pt-2 text-on-surface-variant">
-              <ShieldCheck className="w-[16px] h-[16px]" />
-              <span className="text-[10px] uppercase tracking-widest font-label-sm">Secure Payment Guaranteed</span>
-            </div>
-          </div>
-          </div>
-        </aside>
-      </div>
-
-      {/* Payment Simulation Modal */}
-      {showPaymentSimulation && (
-        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl p-8 max-w-[400px] w-full shadow-2xl text-center">
-            <ShieldCheck className="w-16 h-16 text-gold-accent mx-auto mb-4" />
-            <h3 className="font-headline-md text-forest-deep text-2xl mb-2">Payment Gateway Simulation</h3>
-            <p className="text-on-surface-variant font-body-sm mb-8">
-              This is a testing environment. Choose whether the payment should succeed or fail to test the checkout flow.
-            </p>
-            <div className="space-y-3">
-              <button 
-                onClick={() => processOrder(true, 'PREPAID')} 
-                disabled={isCheckingOut}
-                className="w-full py-3 bg-forest-deep text-white font-label-lg rounded-xl hover:bg-primary-custom transition-colors shadow-md disabled:opacity-50"
-              >
-                {isCheckingOut ? 'Processing...' : 'Simulate Success'}
-              </button>
-              <button 
-                onClick={() => processOrder(false)} 
-                disabled={isCheckingOut}
-                className="w-full py-3 bg-error-container text-error font-label-lg rounded-xl hover:bg-error-container/80 transition-colors"
-              >
-                Simulate Failure
-              </button>
-              <button 
-                onClick={() => setShowPaymentSimulation(false)} 
-                disabled={isCheckingOut}
-                className="w-full py-2 text-on-surface-variant hover:text-forest-deep font-label-sm underline mt-2"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <SearchOverlay 
+        isOpen={isSearchOpen} 
+        onClose={() => setIsSearchOpen(false)} 
+        allProducts={allProducts} 
+      />
+      
+      <CartDrawer 
+        isLoggedIn={isLoggedIn}
+        allProducts={allProducts}
+      />
     </>
   )
 }

@@ -46,9 +46,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setCartItems(prev => {
       const existing = prev.find(i => i.product.id === sanitized.product.id && i.size === sanitized.size);
       if (existing) {
-        return prev.map(i => (i.product.id === sanitized.product.id && i.size === sanitized.size) ? { ...i, quantity: i.quantity + sanitized.quantity } : i);
+        const newQuantity = Math.min(existing.quantity + sanitized.quantity, 10);
+        return prev.map(i => (i.product.id === sanitized.product.id && i.size === sanitized.size) ? { ...i, quantity: newQuantity } : i);
       }
-      return [...prev, sanitized];
+      const newQuantity = Math.min(sanitized.quantity, 10);
+      return [...prev, { ...sanitized, quantity: newQuantity }];
     });
     setIsCartOpen(true);
   };
@@ -59,7 +61,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const updateQuantity = (productId: string, quantity: number, size?: string) => {
     if (quantity <= 0) { removeFromCart(productId, size); return; }
-    setCartItems(prev => prev.map(i => (i.product.id === productId && i.size === size) ? { ...i, quantity } : i));
+    const newQuantity = Math.min(quantity, 10);
+    setCartItems(prev => prev.map(i => (i.product.id === productId && i.size === size) ? { ...i, quantity: newQuantity } : i));
   };
 
   const clearCart = () => setCartItems([]);

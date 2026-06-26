@@ -6,6 +6,7 @@ export interface BlogPost {
   description: string
   category: Exclude<BlogCategory, "All Posts">
   image: string
+  date: string
   readTime: string
   content: string // HTML string
 }
@@ -16,6 +17,7 @@ export const blogPosts: BlogPost[] = [
     title: "Makhana: The Superfood of the Future",
     description: "Discover how this ancient seed from the ponds of Mithila is becoming the global standard for clean, plant-based nutrition.",
     category: "Heritage",
+    date: "2024-05-12",
     image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBYB3bhlLwwPF0hkK9aL7kGrgO0RRFSvey6nkIfPch4vgDLklUV_EMJf22v8OzSBwe0oySNplUyTCzjfIv1XUa80Zk-QADVknySxGGnGo_L-5oSjYdbUEdsLC1pbjjcO5-i6gDKscPyWEFukjSbFXcr0Q9eAjkWS-6HfBKRZdjxEFIFbP7CSdzbIkF9C3-BaX8_MLOFklej0pXURKnAIgKW8dbVSqVXAJwAedKkW7dkowFLNFffn4-0J5AtfwXv5yNg-uNgtz2ebVjX",
     readTime: "6 Min Read",
     content: `
@@ -47,6 +49,7 @@ export const blogPosts: BlogPost[] = [
     title: "5 Health Benefits You Didn't Know",
     description: "From magnesium levels to protein-packed snacking, learn why Makhana is the ultimate choice for weight management and heart health.",
     category: "Nutrition",
+    date: "2024-06-05",
     image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBw3nMGdJV3lAszYfkIbf8ZOuQBhZpZnUe_h5qYKkHK9tAN9PMaA4X95_MheNiQsfPeJHyKa4FWA5LKBW2oxq20bMWiHuTMBAlMkeCWDGTh_XM9J9tyv2AGLvBdOBhzCWQ-xHEAKgs70dCZFuwMC_OAFU1Ykre0Wh7JrIXauoxOhm47RatGAQyiTwHNmYjyU8IU_qPO7cbEcKlN-BDNvM664KsBHtxmSl4oqNKn9Owqusle58qwAB4XmFZqWf__lVX_UoYAn4RqaZOT",
     readTime: "7 Min Read",
     content: `
@@ -109,6 +112,7 @@ export const blogPosts: BlogPost[] = [
     title: "Gourmet Roasted Makhana Three Ways",
     description: "Elevate your snacking game with our exclusive recipes for Peri-Peri, Himalayan Pink Salt, and Caramelized gold variants.",
     category: "Recipes",
+    date: "2024-07-21",
     image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC8V4D8HJAxPQxL4zKalNGxLkQFyb7FNVCr4OcJeNXStkiiTL4KWJLfROM5IMqKRS8wtbj0xic0R_8d1viNyWs3tal6aDIJ5rN9OK03qE7wSW4uWLaEGRrjRLS5fHfQw5hZdKiaCZSD0WOdcrsN2F6svDLexPdWxjfsuQtMvtaxVBDTCI76r1ViyCGtWdW4WIamj35WvPgiB40nhCjhgRlH8p3K02oxlvjsCADuFhf2W3lEryJOd2ulwPr6_lfz-sQSO8zL9rOQde39",
     readTime: "8 Min Read",
     content: `
@@ -154,6 +158,7 @@ export const blogPosts: BlogPost[] = [
     title: "The Soul of Mithila: GI Tag Story",
     description: "Understanding the significance of the Geographical Indication tag and how it protects the traditional harvesters of Bihar.",
     category: "Heritage",
+    date: "2024-08-10",
     image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDrLEYZ4G53saOg4k6MGo5STL-n24WeNYvnpdMkzcfijbOUxFCe5rC2kIxXPlETlzITZoZIPDlxfhiV-HlwT-QM-1RSw-V60WDH0VZEGI6OreAmAujg48hd5ZqJqSVIatwqMLDUfDNgQoSRSC4a6P3ANGXnvq9jUvnMP6tPs6-x5QWIzuo9EJP_TsY7lFmU3i774xnqqEZVuFxZMwcKqY0gi6ctAFxeuJb-UJrvllJ6vNIu_8lczpYuGMcSDgkEvVdQXXcfm5YjxFDG",
     readTime: "9 Min Read",
     content: `
@@ -183,6 +188,7 @@ export const blogPosts: BlogPost[] = [
     title: "Art and Agriculture: Madhubani Roots",
     description: "Exploring the deep cultural connection between the traditional folk art of Bihar and the cultivation of Makhana seeds.",
     category: "Heritage",
+    date: "2024-09-02",
     image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCIpK2dtbnx4CE4OuRxNkbBf5Lip0ollBX4v9t7lPCGq8siPI-WPI6aYQBMcgEZnYUxM20eUsy2ye3yPdJiMobOIGQ9DZd2abbIYqn3WpkL7Wiv7DWmiCfQGngLM4E2UqkFRItp757sUTXQkXKHSGcvowUWnnR7EhadUQPKhSyYwcposj4HVzYiKIxe82WLGENrWJwi-ODvLGJGGn4QW30rFfamnevTs03M-hB9_eatqFc7BnihXHtzFxPO9hnMlqcyCAwA7GyCQd_8",
     readTime: "7 Min Read",
     content: `
@@ -213,6 +219,7 @@ export const blogPosts: BlogPost[] = [
     title: "Makhana as a Post-Workout Fuel",
     description: "Why top fitness experts are swapping protein bars for traditional roasted seeds to aid muscle recovery and sustained energy.",
     category: "Nutrition",
+    date: "2024-10-15",
     image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAsSp7QghBl57jp6t09bQtMw9cJ4jlpX3UecxqXHWLdwjk5ZUS5JxGmVspHvEskLWaE5O4yLB_rnzJS2BXmXgPxZ2RvkLgqR5CPsxYfjjvihgW-eAp3g6c-JAu_OQJ5GCboyJB0XuWTdnlw42m2SBqMypTfi-97FLBMx_bfO53ylYA8hF0_i1Kz_L5a3HemWptsPrIjnXpx_8jl9S-6sGzLaw4d2OApl8dzH8Pca_uNlu74Qvyo01u7gRNEfSw04cYakxEG-r97rej4",
     readTime: "6 Min Read",
     content: `
@@ -246,6 +253,7 @@ export const blogPosts: BlogPost[] = [
     title: "Festive Delights: Royal Makhana Kheer",
     description: "A step-by-step guide to preparing the most authentic, creamy dessert from the kitchens of Darbhanga royalty.",
     category: "Recipes",
+    date: "2024-10-24",
     image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDMw5TdlKiU-DKX1yW2AKIUEfiuqzSZStxvCYCnyb9SSkhMogJk7NTeQGyyObMr1lLHKHKb3yymAEaSoORHSjvv3VO10_Ka8VEtGbfqaH4hx2f9eynwPYntOP5j417DnPsZOyxd9c31Cnk1wO1fKNbMSLpK1lXO2w0Q1WSvpOlOWYzTlZ3sVZF6q9HK9AS5fb9W3-s1ByjY2Lhh0WWbsXEdKbWY62hoOdo1xpiWamtCFCYlq00qwgNLeGLXReQRVJeyk82aioHUqIDv",
     readTime: "8 Min Read",
     content: `

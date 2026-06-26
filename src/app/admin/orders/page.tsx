@@ -304,15 +304,7 @@ export default function OrderManagement() {
                     </td>
                     <td className="px-8 py-5 text-right">
                       <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        {!order.shipmozo_order_id && order.payment_status === 'PENDING' && (
-                          <button 
-                            onClick={() => handlePushShipmozo(order.id)} 
-                            title="Push to Shipmozo" 
-                            className="flex items-center justify-center w-10 h-10 bg-surface-container-lowest border border-outline-variant/40 rounded-xl text-primary-custom hover:border-primary-custom/40 hover:bg-primary-container/10 transition-all shadow-sm"
-                          >
-                            <Send className="w-4 h-4" />
-                          </button>
-                        )}
+
                         <a 
                           href={`/invoice/${order.id}`} 
                           target="_blank" 

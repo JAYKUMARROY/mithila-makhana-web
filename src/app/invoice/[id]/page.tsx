@@ -1,7 +1,8 @@
 import { getOrderById, getAllOrders } from '@/app/actions/orders';
 import { getOrderLabel } from '@/app/actions/shipmozo';
 import { createClient } from '@/utils/supabase/server';
-import { AlertTriangle, Printer } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
+import { InvoicePrintButton } from '@/components/invoice-print-button';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -67,14 +68,7 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
   return (
     <div className="min-h-screen bg-gray-100 py-8 print:p-0 print:bg-white flex flex-col items-center">
       <div className="max-w-[800px] w-full mb-4 px-4 flex justify-end print:hidden">
-        <button 
-          onClick={() => {
-            if (typeof window !== 'undefined') window.print();
-          }} 
-          className="bg-forest-deep text-white px-6 py-2.5 rounded-lg font-bold shadow-sm hover:opacity-90 transition flex items-center gap-2"
-        >
-          <Printer className="w-4 h-4" /> Print Label / Invoice
-        </button>
+        <InvoicePrintButton />
       </div>
       
       <div className="bg-white shadow-md print:shadow-none w-full max-w-[800px] mx-auto p-4 flex justify-center">
@@ -86,15 +80,7 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
         />
       </div>
 
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.onload = function() {
-              window.print();
-            }
-          `
-        }}
-      />
+
     </div>
   );
 }

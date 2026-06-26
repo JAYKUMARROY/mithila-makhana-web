@@ -1,14 +1,10 @@
 'use server'
 
-import { createClient } from '@/utils/supabase/server'
+import { requireAdmin } from '@/lib/auth'
 
 export async function getAllUsers() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return []
-
-  const adminEmails = process.env.ADMIN_EMAILS ? process.env.ADMIN_EMAILS.split(',').map(e => e.trim()) : [];
-  if (!adminEmails.includes(user.email || '')) return []
+  const { error, supabase } = await requireAdmin()
+  if (error) return []
 
   // Fetch all profiles along with their non-cancelled orders to compute purchased products
   const { data } = await supabase
@@ -26,18 +22,16 @@ export async function getAllUsers() {
 }
 
 export async function updateUserStatus(userId: string, status: string) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not logged in' }
+  const { error, supabase } = await requireAdmin()
+  if (error) return { error }
 
-  const adminEmails = process.env.ADMIN_EMAILS ? process.env.ADMIN_EMAILS.split(',').map(e => e.trim()) : [];
-  if (!adminEmails.includes(user.email || '')) return { error: 'Unauthorized' }
+  if (status !== 'ACTIVE' && status !== 'BANNED') return { error: 'Invalid status' }
 
-  const { error } = await supabase
+  const { error: updateError } = await supabase
     .from('profiles')
     .update({ status })
     .eq('id', userId)
 
-  if (error) return { error: error.message }
-  return { success: true }
+  if (updateError) return { error: updateError.message }
+  return { data: true }
 }

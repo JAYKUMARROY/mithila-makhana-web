@@ -12,7 +12,8 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic'
 
 export default async function Shop() {
-  const productsData = await getProducts()
+  const { data: productsData } = await getProducts()
+  const activeProducts = (productsData || []).filter((p: any) => p.is_active !== false);
 
   return (
     <div className="bg-cream-bg min-h-screen selection:bg-gold-accent/30">
@@ -51,7 +52,7 @@ export default async function Shop() {
       
       {/* Main Shop Interface */}
       <div className="max-w-[1280px] mx-auto px-6 py-12">
-        <ShopClient products={productsData.filter((p: any) => p.is_active !== false)} />
+        <ShopClient products={activeProducts} />
       </div>
     </div>
   )

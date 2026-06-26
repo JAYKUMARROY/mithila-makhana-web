@@ -9,8 +9,8 @@ import { AddToCartButton } from '@/components/add-to-cart-button'
 import { NewsletterForm } from '@/components/newsletter-form'
 
 export default async function Home() {
-  const products = await getProducts();
-  const activeProducts = products.filter((p: any) => p.is_active !== false);
+  const { data: products } = await getProducts();
+  const activeProducts = (products || []).filter((p: any) => p.is_active !== false);
   const bestsellers = activeProducts.slice(0, 4);
 
   return (
@@ -204,23 +204,13 @@ export default async function Home() {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {bestsellers.map((product, idx) => {
-              let meta: any = {};
-              try { meta = JSON.parse(product.description || '{}') } catch(e) {}
-              let parsedSizes = [{ size: '250g', price: product.price, discountedPrice: null }];
-              if (meta.sizes?.length > 0) {
-                parsedSizes = typeof meta.sizes[0] === 'string'
-                  ? meta.sizes.map((s: string) => ({ size: s, price: product.price, discountedPrice: meta.discountedPrice || null }))
-                  : meta.sizes;
-              }
-              const largestSizeObj = parsedSizes.reduce((prev: any, current: any) => {
-                const prevWeight = parseInt(prev.size.replace(/\D/g, '')) || 0;
-                const currWeight = parseInt(current.size.replace(/\D/g, '')) || 0;
-                return (prevWeight > currWeight) ? prev : current;
-              }, parsedSizes[0]);
-
-              const category = meta.category || 'Premium Makhana';
-              const effectivePrice = largestSizeObj.discountedPrice || largestSizeObj.price;
-              const originalPrice = largestSizeObj.price;
+              const variants = product.variants || [];
+              const defaultVariant = variants.length > 0 
+                ? variants.reduce((prev: any, current: any) => (prev.weight_grams > current.weight_grams ? prev : current), variants[0])
+                : { size: '250g', price: product.price };
+              
+              const effectivePrice = defaultVariant.price;
+              const category = product.short_description || 'Premium Makhana';
               
               return (
                 <div key={product.id} className="group bg-white rounded-3xl p-5 border border-outline-variant/20 hover:border-primary-custom/30 shadow-sm hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-500 flex flex-col relative">
@@ -230,11 +220,7 @@ export default async function Home() {
                         <Star className="w-3 h-3" /> BESTSELLER
                       </span>
                     )}
-                    {largestSizeObj.discountedPrice && (
-                      <span className="bg-vermillion-clay text-white font-bold text-xs px-3 py-1.5 rounded-full shadow-md w-fit">
-                        SALE
-                      </span>
-                    )}
+
                   </div>
                   
                   <Link href={`/shop/${product.slug}`} className="relative h-64 rounded-2xl bg-surface-container-low mb-6 overflow-hidden block">
@@ -242,7 +228,7 @@ export default async function Home() {
                       fill 
                       className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out" 
                       alt={product.name} 
-                      src={product.image_url || 'https://via.placeholder.com/300'} 
+                      src={product.image_url || '/product-placeholder.svg'} 
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -259,11 +245,10 @@ export default async function Home() {
                         <span className="text-on-surface-variant text-xs mb-1">Starting at</span>
                         <div className="flex items-center gap-2">
                           <span className="text-forest-deep font-display-sm font-bold text-2xl">₹{effectivePrice}</span>
-                          {largestSizeObj.discountedPrice && <span className="text-on-surface-variant text-sm line-through">₹{originalPrice}</span>}
                         </div>
                       </div>
                       <div className="relative z-20">
-                        <AddToCartButton product={product} price={effectivePrice} size={largestSizeObj.size} />
+                        <AddToCartButton product={product} price={effectivePrice} size={defaultVariant.size} />
                       </div>
                     </div>
                   </div>
